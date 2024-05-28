@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: "config-server"
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "classpath:/config"
+#        git:
+#          uri: https://...git
+#          default-label: "main"
+#          timeout: 5            # timout in 5s
+#          clone-on-start: true  # clone repository to local when start
+#          force-pull: true      # overwrite local changes when start/restart
+
+server:
+  port: 9000
