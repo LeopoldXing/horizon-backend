@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: service-bank
+server:
+  port: 9003

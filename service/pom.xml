@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.leopoldhsing.horizon</groupId>
+        <artifactId>horizon-backend</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <modules>
+        <module>service-bank</module>
+        <module>service-transaction</module>
+        <module>service-user</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <artifactId>service</artifactId>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--  common  -->
+        <dependency>
+            <groupId>com.leopoldhsing.horizon</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--  model  -->
+        <dependency>
+            <groupId>com.leopoldhsing.horizon</groupId>
+            <artifactId>model</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
