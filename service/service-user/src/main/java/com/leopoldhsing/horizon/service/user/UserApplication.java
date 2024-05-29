@@ -1,11 +1,11 @@
-package com.leopoldhsing.service.transaction;
+package com.leopoldhsing.horizon.service.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TransactionApplication {
+public class UserApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TransactionApplication.class, args);
+        SpringApplication.run(UserApplication.class, args);
     }
 }
