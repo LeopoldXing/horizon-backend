@@ -1,5 +1,9 @@
 spring:
   application:
-    name: service-bank
+    name: bank
+  profiles:
+    active: dev
+  config:
+    import: "configserver:http://localhost:9000/"
 server:
   port: 9003
