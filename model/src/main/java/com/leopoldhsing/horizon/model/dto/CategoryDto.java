@@ -1,32 +1,17 @@
-package com.leopoldhsing.horizon.model.entity;
+package com.leopoldhsing.horizon.model.dto;
 
-import jakarta.persistence.Entity;
-
-import java.util.Date;
 import java.util.Objects;
 
-@Entity
-public class Category extends BaseEntity {
+public class CategoryDto {
 
     private String categoryName;
     private String description;
     private String categoryCode;
 
-    public Category() {
+    public CategoryDto() {
     }
 
-    public Category(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
-    }
-
-    public Category(String categoryName, String description, String categoryCode) {
-        this.categoryName = categoryName;
-        this.description = description;
-        this.categoryCode = categoryCode;
-    }
-
-    public Category(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String categoryName, String description, String categoryCode) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public CategoryDto(String categoryName, String description, String categoryCode) {
         this.categoryName = categoryName;
         this.description = description;
         this.categoryCode = categoryCode;
@@ -34,7 +19,7 @@ public class Category extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "CategoryDto{" +
                 "categoryName='" + categoryName + '\'' +
                 ", description='" + description + '\'' +
                 ", categoryCode='" + categoryCode + '\'' +
@@ -69,16 +54,14 @@ public class Category extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
-        Category category = (Category) o;
-        return Objects.equals(categoryName, category.categoryName) && Objects.equals(description, category.description) && Objects.equals(categoryCode, category.categoryCode);
+        CategoryDto that = (CategoryDto) o;
+        return Objects.equals(categoryName, that.categoryName) && Objects.equals(description, that.description) && Objects.equals(categoryCode, that.categoryCode);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(categoryName);
+        int result = Objects.hashCode(categoryName);
         result = 31 * result + Objects.hashCode(description);
         result = 31 * result + Objects.hashCode(categoryCode);
         return result;

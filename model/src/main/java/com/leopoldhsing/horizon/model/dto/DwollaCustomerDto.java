@@ -1,34 +1,18 @@
-package com.leopoldhsing.horizon.model.entity;
+package com.leopoldhsing.horizon.model.dto;
 
-import jakarta.persistence.Entity;
-
-import java.util.Date;
 import java.util.Objects;
 
-@Entity
-public class DwollaCustomer extends BaseEntity {
+public class DwollaCustomerDto {
 
     private String dwollaCustomerUrl;
     private String status;
     private Integer customerType;
     private Integer customerStatus;
 
-    public DwollaCustomer() {
+    public DwollaCustomerDto() {
     }
 
-    public DwollaCustomer(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
-    }
-
-    public DwollaCustomer(String dwollaCustomerUrl, String status, Integer customerType, Integer customerStatus) {
-        this.dwollaCustomerUrl = dwollaCustomerUrl;
-        this.status = status;
-        this.customerType = customerType;
-        this.customerStatus = customerStatus;
-    }
-
-    public DwollaCustomer(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String dwollaCustomerUrl, String status, Integer customerType, Integer customerStatus) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public DwollaCustomerDto(String dwollaCustomerUrl, String status, Integer customerType, Integer customerStatus) {
         this.dwollaCustomerUrl = dwollaCustomerUrl;
         this.status = status;
         this.customerType = customerType;
@@ -37,7 +21,7 @@ public class DwollaCustomer extends BaseEntity {
 
     @Override
     public String toString() {
-        return "DwollaCustomer{" +
+        return "DwollaCustomerDto{" +
                 "dwollaCustomerUrl='" + dwollaCustomerUrl + '\'' +
                 ", status='" + status + '\'' +
                 ", customerType=" + customerType +
@@ -81,16 +65,14 @@ public class DwollaCustomer extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
-        DwollaCustomer that = (DwollaCustomer) o;
+        DwollaCustomerDto that = (DwollaCustomerDto) o;
         return Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && Objects.equals(status, that.status) && Objects.equals(customerType, that.customerType) && Objects.equals(customerStatus, that.customerStatus);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(dwollaCustomerUrl);
+        int result = Objects.hashCode(dwollaCustomerUrl);
         result = 31 * result + Objects.hashCode(status);
         result = 31 * result + Objects.hashCode(customerType);
         result = 31 * result + Objects.hashCode(customerStatus);

@@ -13,7 +13,7 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private Long id;
 
     @CreatedDate
     @Column(updatable = false)
@@ -34,7 +34,7 @@ public class BaseEntity {
     public BaseEntity() {
     }
 
-    public BaseEntity(String id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
+    public BaseEntity(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -45,7 +45,7 @@ public class BaseEntity {
     @Override
     public String toString() {
         return "BaseEntity{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", createdBy='" + createdBy + '\'' +
@@ -53,11 +53,11 @@ public class BaseEntity {
                 '}';
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

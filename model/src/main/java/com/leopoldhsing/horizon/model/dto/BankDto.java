@@ -1,55 +1,34 @@
-package com.leopoldhsing.horizon.model.entity;
+package com.leopoldhsing.horizon.model.dto;
 
-import jakarta.persistence.Entity;
-
-import java.util.Date;
 import java.util.Objects;
 
-@Entity
-public class Bank extends BaseEntity {
+public class BankDto {
 
     private String bankName;
-
     private String accountId;
-
     private String fundingSourceUrl;
-
     private String shareableId;
+    private UserDto userDto;
 
-    private String userId;
-
-    public Bank() {
+    public BankDto() {
     }
 
-    public Bank(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
-    }
-
-    public Bank(String bankName, String accountId, String fundingSourceUrl, String shareableId, String userId) {
+    public BankDto(String bankName, String accountId, String fundingSourceUrl, String shareableId, UserDto userDto) {
         this.bankName = bankName;
         this.accountId = accountId;
         this.fundingSourceUrl = fundingSourceUrl;
         this.shareableId = shareableId;
-        this.userId = userId;
-    }
-
-    public Bank(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String bankName, String accountId, String fundingSourceUrl, String shareableId, String userId) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
-        this.bankName = bankName;
-        this.accountId = accountId;
-        this.fundingSourceUrl = fundingSourceUrl;
-        this.shareableId = shareableId;
-        this.userId = userId;
+        this.userDto = userDto;
     }
 
     @Override
     public String toString() {
-        return "Bank{" +
+        return "BankDto{" +
                 "bankName='" + bankName + '\'' +
                 ", accountId='" + accountId + '\'' +
                 ", fundingSourceUrl='" + fundingSourceUrl + '\'' +
                 ", shareableId='" + shareableId + '\'' +
-                ", userId='" + userId + '\'' +
+                ", userDto=" + userDto +
                 '}';
     }
 
@@ -85,32 +64,30 @@ public class Bank extends BaseEntity {
         this.shareableId = shareableId;
     }
 
-    public String getUserId() {
-        return userId;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
-        Bank bank = (Bank) o;
-        return Objects.equals(bankName, bank.bankName) && Objects.equals(accountId, bank.accountId) && Objects.equals(fundingSourceUrl, bank.fundingSourceUrl) && Objects.equals(shareableId, bank.shareableId) && Objects.equals(userId, bank.userId);
+        BankDto bankDto = (BankDto) o;
+        return Objects.equals(bankName, bankDto.bankName) && Objects.equals(accountId, bankDto.accountId) && Objects.equals(fundingSourceUrl, bankDto.fundingSourceUrl) && Objects.equals(shareableId, bankDto.shareableId) && Objects.equals(userDto, bankDto.userDto);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(bankName);
+        int result = Objects.hashCode(bankName);
         result = 31 * result + Objects.hashCode(accountId);
         result = 31 * result + Objects.hashCode(fundingSourceUrl);
         result = 31 * result + Objects.hashCode(shareableId);
-        result = 31 * result + Objects.hashCode(userId);
+        result = 31 * result + Objects.hashCode(userDto);
         return result;
     }
 }

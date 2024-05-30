@@ -10,34 +10,25 @@ import java.util.Objects;
 @Entity
 public class Transaction extends BaseEntity {
 
-    @Column(name = "name")
-    private String transactionName;
-
+    private String name;
     private BigDecimal amount;
-
     private String email;
-
     private String channel;
-
     private String categoryId;
-
     private String senderId;
-
     private String receiverId;
-
     private String senderBankId;
-
     private String receiverBankId;
 
     public Transaction() {
     }
 
-    public Transaction(String id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
+    public Transaction(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
     }
 
-    public Transaction(String transactionName, BigDecimal amount, String email, String channel, String categoryId, String senderId, String receiverId, String senderBankId, String receiverBankId) {
-        this.transactionName = transactionName;
+    public Transaction(String name, BigDecimal amount, String email, String channel, String categoryId, String senderId, String receiverId, String senderBankId, String receiverBankId) {
+        this.name = name;
         this.amount = amount;
         this.email = email;
         this.channel = channel;
@@ -48,9 +39,9 @@ public class Transaction extends BaseEntity {
         this.receiverBankId = receiverBankId;
     }
 
-    public Transaction(String id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String transactionName, BigDecimal amount, String email, String channel, String categoryId, String senderId, String receiverId, String senderBankId, String receiverBankId) {
+    public Transaction(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String name, BigDecimal amount, String email, String channel, String categoryId, String senderId, String receiverId, String senderBankId, String receiverBankId) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
-        this.transactionName = transactionName;
+        this.name = name;
         this.amount = amount;
         this.email = email;
         this.channel = channel;
@@ -64,7 +55,7 @@ public class Transaction extends BaseEntity {
     @Override
     public String toString() {
         return "Transaction{" +
-                "transactionName='" + transactionName + '\'' +
+                "transactionName='" + name + '\'' +
                 ", amount=" + amount +
                 ", email='" + email + '\'' +
                 ", channel='" + channel + '\'' +
@@ -76,12 +67,12 @@ public class Transaction extends BaseEntity {
                 '}';
     }
 
-    public String getTransactionName() {
-        return transactionName;
+    public String getName() {
+        return name;
     }
 
-    public void setTransactionName(String transactionName) {
-        this.transactionName = transactionName;
+    public void setName(String transactionName) {
+        this.name = transactionName;
     }
 
     public BigDecimal getAmount() {
@@ -155,13 +146,13 @@ public class Transaction extends BaseEntity {
         if (!super.equals(o)) return false;
 
         Transaction that = (Transaction) o;
-        return Objects.equals(transactionName, that.transactionName) && Objects.equals(amount, that.amount) && Objects.equals(email, that.email) && Objects.equals(channel, that.channel) && Objects.equals(categoryId, that.categoryId) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId);
+        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(email, that.email) && Objects.equals(channel, that.channel) && Objects.equals(categoryId, that.categoryId) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(transactionName);
+        result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(amount);
         result = 31 * result + Objects.hashCode(email);
         result = 31 * result + Objects.hashCode(channel);

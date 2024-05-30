@@ -1,41 +1,24 @@
-package com.leopoldhsing.horizon.model.entity;
+package com.leopoldhsing.horizon.model.dto;
 
-import jakarta.persistence.Entity;
-
-import java.util.Date;
 import java.util.Objects;
 
-@Entity
-public class User extends BaseEntity {
+public class UserDto {
 
     private String firstName;
-
     private String lastName;
-
     private String email;
-
     private String address;
-
     private String city;
-
     private String postalCode;
-
-    private Date dateOfBirth;
-
+    private String dateOfBirth;
     private String ssn;
-
     private String state;
+    private DwollaCustomerDto dwollaCustomerDto;
 
-    private String dwollaCustomerId;
-
-    public User() {
+    public UserDto() {
     }
 
-    public User(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
-    }
-
-    public User(String firstName, String lastName, String email, String address, String city, String postalCode, Date dateOfBirth, String ssn, String state, String dwollaCustomerId) {
+    public UserDto(String firstName, String lastName, String email, String address, String city, String postalCode, String dateOfBirth, String ssn, String state, DwollaCustomerDto dwollaCustomerDto) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -45,36 +28,22 @@ public class User extends BaseEntity {
         this.dateOfBirth = dateOfBirth;
         this.ssn = ssn;
         this.state = state;
-        this.dwollaCustomerId = dwollaCustomerId;
-    }
-
-    public User(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String firstName, String lastName, String email, String address, String city, String postalCode, Date dateOfBirth, String ssn, String state, String dwollaCustomerId) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.dateOfBirth = dateOfBirth;
-        this.ssn = ssn;
-        this.state = state;
-        this.dwollaCustomerId = dwollaCustomerId;
+        this.dwollaCustomerDto = dwollaCustomerDto;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDto{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", ssn='" + ssn + '\'' +
                 ", state='" + state + '\'' +
-                ", dwollaCustomerId='" + dwollaCustomerId + '\'' +
+                ", dwollaCustomerDto=" + dwollaCustomerDto +
                 '}';
     }
 
@@ -126,11 +95,11 @@ public class User extends BaseEntity {
         this.postalCode = postalCode;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -150,28 +119,26 @@ public class User extends BaseEntity {
         this.state = state;
     }
 
-    public String getDwollaCustomerId() {
-        return dwollaCustomerId;
+    public DwollaCustomerDto getDwollaCustomerDto() {
+        return dwollaCustomerDto;
     }
 
-    public void setDwollaCustomerId(String dwollaCustomerId) {
-        this.dwollaCustomerId = dwollaCustomerId;
+    public void setDwollaCustomerDto(DwollaCustomerDto dwollaCustomerDto) {
+        this.dwollaCustomerDto = dwollaCustomerDto;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
-        User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(address, user.address) && Objects.equals(city, user.city) && Objects.equals(postalCode, user.postalCode) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(ssn, user.ssn) && Objects.equals(state, user.state) && Objects.equals(dwollaCustomerId, user.dwollaCustomerId);
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(email, userDto.email) && Objects.equals(address, userDto.address) && Objects.equals(city, userDto.city) && Objects.equals(postalCode, userDto.postalCode) && Objects.equals(dateOfBirth, userDto.dateOfBirth) && Objects.equals(ssn, userDto.ssn) && Objects.equals(state, userDto.state) && Objects.equals(dwollaCustomerDto, userDto.dwollaCustomerDto);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(firstName);
+        int result = Objects.hashCode(firstName);
         result = 31 * result + Objects.hashCode(lastName);
         result = 31 * result + Objects.hashCode(email);
         result = 31 * result + Objects.hashCode(address);
@@ -180,7 +147,7 @@ public class User extends BaseEntity {
         result = 31 * result + Objects.hashCode(dateOfBirth);
         result = 31 * result + Objects.hashCode(ssn);
         result = 31 * result + Objects.hashCode(state);
-        result = 31 * result + Objects.hashCode(dwollaCustomerId);
+        result = 31 * result + Objects.hashCode(dwollaCustomerDto);
         return result;
     }
 }
