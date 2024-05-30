@@ -11,6 +11,7 @@ CREATE TABLE `categories`
 (
     `id`               varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
     `category_name`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `description`      varchar(255)                                                  DEFAULT NULL,
     `category_code`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
     `created_at`       datetime                                                      DEFAULT NULL,
     `created_by`       varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,

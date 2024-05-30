@@ -19,7 +19,7 @@ public class Transaction extends BaseEntity {
 
     private String channel;
 
-    private String category;
+    private String categoryId;
 
     private String senderId;
 
@@ -36,25 +36,25 @@ public class Transaction extends BaseEntity {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
     }
 
-    public Transaction(String transactionName, BigDecimal amount, String email, String channel, String category, String senderId, String receiverId, String senderBankId, String receiverBankId) {
+    public Transaction(String transactionName, BigDecimal amount, String email, String channel, String categoryId, String senderId, String receiverId, String senderBankId, String receiverBankId) {
         this.transactionName = transactionName;
         this.amount = amount;
         this.email = email;
         this.channel = channel;
-        this.category = category;
+        this.categoryId = categoryId;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.senderBankId = senderBankId;
         this.receiverBankId = receiverBankId;
     }
 
-    public Transaction(String id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String transactionName, BigDecimal amount, String email, String channel, String category, String senderId, String receiverId, String senderBankId, String receiverBankId) {
+    public Transaction(String id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String transactionName, BigDecimal amount, String email, String channel, String categoryId, String senderId, String receiverId, String senderBankId, String receiverBankId) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
         this.transactionName = transactionName;
         this.amount = amount;
         this.email = email;
         this.channel = channel;
-        this.category = category;
+        this.categoryId = categoryId;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.senderBankId = senderBankId;
@@ -68,7 +68,7 @@ public class Transaction extends BaseEntity {
                 ", amount=" + amount +
                 ", email='" + email + '\'' +
                 ", channel='" + channel + '\'' +
-                ", category='" + category + '\'' +
+                ", categoryId='" + categoryId + '\'' +
                 ", senderId='" + senderId + '\'' +
                 ", receiverId='" + receiverId + '\'' +
                 ", senderBankId='" + senderBankId + '\'' +
@@ -108,12 +108,12 @@ public class Transaction extends BaseEntity {
         this.channel = channel;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getSenderId() {
@@ -155,7 +155,7 @@ public class Transaction extends BaseEntity {
         if (!super.equals(o)) return false;
 
         Transaction that = (Transaction) o;
-        return Objects.equals(transactionName, that.transactionName) && Objects.equals(amount, that.amount) && Objects.equals(email, that.email) && Objects.equals(channel, that.channel) && Objects.equals(category, that.category) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId);
+        return Objects.equals(transactionName, that.transactionName) && Objects.equals(amount, that.amount) && Objects.equals(email, that.email) && Objects.equals(channel, that.channel) && Objects.equals(categoryId, that.categoryId) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class Transaction extends BaseEntity {
         result = 31 * result + Objects.hashCode(amount);
         result = 31 * result + Objects.hashCode(email);
         result = 31 * result + Objects.hashCode(channel);
-        result = 31 * result + Objects.hashCode(category);
+        result = 31 * result + Objects.hashCode(categoryId);
         result = 31 * result + Objects.hashCode(senderId);
         result = 31 * result + Objects.hashCode(receiverId);
         result = 31 * result + Objects.hashCode(senderBankId);
