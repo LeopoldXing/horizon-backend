@@ -2,7 +2,9 @@ package com.leopoldhsing.horizon.service.bank;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+@EntityScan("com.leopoldhsing.horizon.model")
 @SpringBootApplication
 public class BankApplication {
 
