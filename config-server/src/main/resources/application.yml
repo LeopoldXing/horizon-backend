@@ -17,21 +17,3 @@ spring:
 
 server:
   port: 9000
-
-horizon:
-  plaid:
-    client-id: 662e1e5fdca064001c3e0086
-    secret: be405988983be57fe34bef8e9038b3
-    env: sandbox
-    products:
-      - auth
-      - transactions
-      - identity
-    country-codes:
-      - US
-      - CA
-  dwolla:
-    base-url: https://api-sandbox.dwolla.com
-    key: qAN5xkFYOSQeUNpN7GSPcGPHH8nSpVrPKSL8Ye5mSSP5AzddNt
-    secret: FI50i6NbUQ90106Bt1n9bH6aCNWhcs8Rliy7VRqrXgNbKtLy00
-    env: sandbox

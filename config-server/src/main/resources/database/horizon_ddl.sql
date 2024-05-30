@@ -5,6 +5,21 @@ CREATE DATABASE `horizon` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `horizon`;
 
 
+-- horizon.categories definition
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE `categories`
+(
+    `id`               varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `category_name`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `category_code`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+    `created_at`       datetime                                                      DEFAULT NULL,
+    `created_by`       varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+    `last_modified_at` datetime                                                      DEFAULT NULL,
+    `last_modified_by` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 -- horizon.dwolla_customer definition
 DROP TABLE IF EXISTS `dwolla_customer`;
 CREATE TABLE `dwolla_customer`

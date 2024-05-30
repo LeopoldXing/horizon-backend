@@ -12,6 +12,7 @@
         <module>service-bank</module>
         <module>service-transaction</module>
         <module>service-user</module>
+        <module>service-dwolla</module>
     </modules>
 
     <packaging>pom</packaging>

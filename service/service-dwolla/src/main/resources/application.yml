@@ -1,0 +1,10 @@
+server:
+  port: 9004
+
+spring:
+  application:
+    name: dwolla
+  profiles:
+    active: dev
+  config:
+    import: "configserver:http://localhost:9000/"
