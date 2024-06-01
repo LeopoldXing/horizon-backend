@@ -17,6 +17,7 @@
         <module>model</module>
         <module>common</module>
         <module>service</module>
+        <module>eureka-server</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
