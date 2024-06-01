@@ -9,11 +9,11 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>service-transaction</artifactId>
+    <artifactId>plaid</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -24,7 +24,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.6</version>
                 <configuration>
-                    <mainClass>com.leopoldhsing.horizon.service.transaction.TransactionApplication</mainClass>
+                    <mainClass>com.leopoldhsing.horizon.service.plaid.PlaidApplication</mainClass>
                     <image>
                         <name>docker.io/dbroccoli/${project.artifactId}:${version}</name>
                     </image>
@@ -39,5 +39,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

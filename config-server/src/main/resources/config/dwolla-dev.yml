@@ -8,7 +8,7 @@ spring:
     show-sql: true
 
 dwolla:
-  base-url: https://api-sandbox.dwolla.com
-  key: qAN5xkFYOSQeUNpN7GSPcGPHH8nSpVrPKSL8Ye5mSSP5AzddNt
-  secret: FI50i6NbUQ90106Bt1n9bH6aCNWhcs8Rliy7VRqrXgNbKtLy00
+  base-url:
+  key:
+  secret:
   env: sandbox

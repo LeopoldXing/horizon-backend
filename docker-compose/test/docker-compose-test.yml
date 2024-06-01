@@ -1,0 +1,137 @@
+services:
+  bank-db:
+    container_name: horizon-bank-db
+    image: mysql:8.2.0
+    ports:
+      - 10000:3306
+    environment:
+      MYSQL_DATABASE: banks
+    extends:
+      file: common-test.yml
+      service: horizon-db-config
+
+  user-db:
+    container_name: horizon-user-db
+    image: mysql:8.2.0
+    ports:
+      - 10001:3306
+    environment:
+      MYSQL_DATABASE: users
+    extends:
+      file: common-test.yml
+      service: horizon-db-config
+
+  dwolla-db:
+    container_name: horizon-dwolla-db
+    image: mysql:8.2.0
+    ports:
+      - 10002:3306
+    environment:
+      MYSQL_DATABASE: dwolla
+    extends:
+      file: common-test.yml
+      service: horizon-db-config
+
+  plaid-db:
+    container_name: horizon-plaid-db
+    image: mysql:8.2.0
+    ports:
+      - 10003:3306
+    environment:
+      MYSQL_DATABASE: plaid
+    extends:
+      file: common-test.yml
+      service: horizon-db-config
+
+  configserver:
+    container_name: horizon-config-server
+    image: dbroccoli/config-server:0.0.1
+    ports:
+      - 9000:8080
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 3s
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8080/
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  bank:
+    container_name: horizon-bank
+    image: dbroccoli/bank:0.0.1
+    ports:
+      - 9001:8080
+    environment:
+      SPRING_APPLICATION_NAME: "bank"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://bank-db:3306/banks"
+    depends_on:
+      bank-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  user:
+    container_name: horizon-user
+    image: dbroccoli/user:0.0.1
+    ports:
+      - 9002:8080
+    environment:
+      SPRING_APPLICATION_NAME: "user"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://user-db:3306/users"
+    depends_on:
+      user-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  dwolla:
+    container_name: horizon-dwolla
+    image: dbroccoli/dwolla:0.0.1
+    ports:
+      - 9003:8080
+    environment:
+      SPRING_APPLICATION_NAME: "dwolla"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://dwolla-db:3306/dwolla"
+    depends_on:
+      dwolla-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  plaid:
+    container_name: horizon-plaid
+    image: dbroccoli/plaid:0.0.1
+    ports:
+      - 9004:8080
+    environment:
+      SPRING_APPLICATION_NAME: "plaid"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://plaid-db:3306/plaid"
+    depends_on:
+      plaid-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+networks:
+  horizon-test-network:
+    driver: "bridge"
+    name: "horizon-test-network"

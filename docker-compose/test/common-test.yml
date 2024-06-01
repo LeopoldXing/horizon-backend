@@ -1,0 +1,33 @@
+services:
+  horizon-base-config:
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+    extends:
+      service: horizon-network-service
+
+  horizon-network-service:
+    networks:
+      - horizon-test-network
+
+  horizon-db-config:
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping","-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 3s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    extends:
+      service: horizon-base-config
+
+  horizon-configserver-config:
+    extends:
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root

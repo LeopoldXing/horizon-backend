@@ -9,7 +9,7 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>service-dwolla</artifactId>
+    <artifactId>dwolla</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,11 +65,11 @@
                     <compilerPlugins>
                         <plugin>spring</plugin>
                     </compilerPlugins>
-                    <pluginOptions>
-                        <!-- Each annotation is placed on its own line -->
+                    <!--<pluginOptions>
+                        &lt;!&ndash; Each annotation is placed on its own line &ndash;&gt;
                         <option>all-open:annotation=com.my.Annotation</option>
                         <option>all-open:annotation=com.their.AnotherAnnotation</option>
-                    </pluginOptions>
+                    </pluginOptions>-->
                 </configuration>
                 <dependencies>
                     <dependency>

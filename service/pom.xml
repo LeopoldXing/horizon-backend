@@ -10,9 +10,9 @@
     </parent>
     <modules>
         <module>service-bank</module>
-        <module>service-transaction</module>
         <module>service-user</module>
         <module>service-dwolla</module>
+        <module>service-plaid</module>
     </modules>
 
     <packaging>pom</packaging>
