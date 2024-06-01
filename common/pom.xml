@@ -24,6 +24,7 @@
     </properties>
 
     <dependencies>
+        <!--  model  -->
         <dependency>
             <groupId>com.leopoldhsing.horizon</groupId>
             <artifactId>model</artifactId>
