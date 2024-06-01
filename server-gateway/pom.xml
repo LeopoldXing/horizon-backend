@@ -8,52 +8,27 @@
         <artifactId>horizon-backend</artifactId>
         <version>0.0.1</version>
     </parent>
-    <modules>
-        <module>service-bank</module>
-        <module>service-user</module>
-        <module>service-dwolla</module>
-        <module>service-plaid</module>
-    </modules>
 
-    <packaging>pom</packaging>
-
-    <artifactId>service</artifactId>
+    <artifactId>gateway</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        <!--  common-utils  -->
+        <!--  gateway  -->
         <dependency>
-            <groupId>com.leopoldhsing.horizon</groupId>
-            <artifactId>common-utils</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <!--  model  -->
-        <dependency>
-            <groupId>com.leopoldhsing.horizon</groupId>
-            <artifactId>model</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <!--  web  -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!-- MySQL -->
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
         <!--  actuator  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!--  config client  -->
+        <!--  config  -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
@@ -64,5 +39,28 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.2.6</version>
+                <configuration>
+                    <mainClass>com.leopoldhsing.horizon.gateway.GatewayApplication</mainClass>
+                    <image>
+                        <name>docker.io/dbroccoli/${project.artifactId}:${version}</name>
+                    </image>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

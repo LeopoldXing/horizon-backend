@@ -18,6 +18,7 @@
         <module>common</module>
         <module>service</module>
         <module>eureka-server</module>
+        <module>server-gateway</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
@@ -32,25 +33,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!--  web  -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.web.version}</version>
         </dependency>
     </dependencies>
 
@@ -64,14 +56,18 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <!--  web  -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.web.version}</version>
+            </dependency>
             <!--  actuator  -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>3.2.6</version>
             </dependency>
-
             <!-- MySQL -->
             <dependency>
                 <groupId>com.mysql</groupId>
@@ -79,21 +75,18 @@
                 <version>${mysql.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
             <!--  SpringData JPA  -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
                 <version>${spring.jpa.version}</version>
             </dependency>
-
             <!--  open api documentation  -->
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>2.5.0</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
