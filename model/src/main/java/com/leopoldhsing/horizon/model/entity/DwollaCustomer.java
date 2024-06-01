@@ -2,35 +2,32 @@ package com.leopoldhsing.horizon.model.entity;
 
 import jakarta.persistence.Entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 public class DwollaCustomer extends BaseEntity {
 
     private String dwollaCustomerUrl;
-    private String status;
-    private Integer customerType;
-    private Integer customerStatus;
+    private String customerType;
+    private String customerStatus;
 
     public DwollaCustomer() {
     }
 
-    public DwollaCustomer(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
+    public DwollaCustomer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
     }
 
-    public DwollaCustomer(String dwollaCustomerUrl, String status, Integer customerType, Integer customerStatus) {
+    public DwollaCustomer(String dwollaCustomerUrl, String customerType, String customerStatus) {
         this.dwollaCustomerUrl = dwollaCustomerUrl;
-        this.status = status;
         this.customerType = customerType;
         this.customerStatus = customerStatus;
     }
 
-    public DwollaCustomer(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String dwollaCustomerUrl, String status, Integer customerType, Integer customerStatus) {
+    public DwollaCustomer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String dwollaCustomerUrl, String customerType, String customerStatus) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
         this.dwollaCustomerUrl = dwollaCustomerUrl;
-        this.status = status;
         this.customerType = customerType;
         this.customerStatus = customerStatus;
     }
@@ -39,9 +36,8 @@ public class DwollaCustomer extends BaseEntity {
     public String toString() {
         return "DwollaCustomer{" +
                 "dwollaCustomerUrl='" + dwollaCustomerUrl + '\'' +
-                ", status='" + status + '\'' +
-                ", customerType=" + customerType +
-                ", customerStatus=" + customerStatus +
+                ", customerType='" + customerType + '\'' +
+                ", customerStatus='" + customerStatus + '\'' +
                 '}';
     }
 
@@ -53,27 +49,19 @@ public class DwollaCustomer extends BaseEntity {
         this.dwollaCustomerUrl = dwollaCustomerUrl;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getCustomerType() {
+    public String getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(Integer customerType) {
+    public void setCustomerType(String customerType) {
         this.customerType = customerType;
     }
 
-    public Integer getCustomerStatus() {
+    public String getCustomerStatus() {
         return customerStatus;
     }
 
-    public void setCustomerStatus(Integer customerStatus) {
+    public void setCustomerStatus(String customerStatus) {
         this.customerStatus = customerStatus;
     }
 
@@ -84,14 +72,13 @@ public class DwollaCustomer extends BaseEntity {
         if (!super.equals(o)) return false;
 
         DwollaCustomer that = (DwollaCustomer) o;
-        return Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && Objects.equals(status, that.status) && Objects.equals(customerType, that.customerType) && Objects.equals(customerStatus, that.customerStatus);
+        return Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && Objects.equals(customerType, that.customerType) && Objects.equals(customerStatus, that.customerStatus);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + Objects.hashCode(dwollaCustomerUrl);
-        result = 31 * result + Objects.hashCode(status);
         result = 31 * result + Objects.hashCode(customerType);
         result = 31 * result + Objects.hashCode(customerStatus);
         return result;

@@ -2,95 +2,67 @@ package com.leopoldhsing.horizon.model.entity;
 
 import jakarta.persistence.Entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 public class Bank extends BaseEntity {
 
-    private String bankName;
-
-    private String accountId;
-
-    private String fundingSourceUrl;
-
-    private String shareableId;
-
-    private String userId;
+    private String name;
+    private String url;
+    private String status;
 
     public Bank() {
     }
 
-    public Bank(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
+    public Bank(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
     }
 
-    public Bank(String bankName, String accountId, String fundingSourceUrl, String shareableId, String userId) {
-        this.bankName = bankName;
-        this.accountId = accountId;
-        this.fundingSourceUrl = fundingSourceUrl;
-        this.shareableId = shareableId;
-        this.userId = userId;
+    public Bank(String name, String url, String status) {
+        this.name = name;
+        this.url = url;
+        this.status = status;
     }
 
-    public Bank(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String bankName, String accountId, String fundingSourceUrl, String shareableId, String userId) {
+    public Bank(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String name, String url, String status) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
-        this.bankName = bankName;
-        this.accountId = accountId;
-        this.fundingSourceUrl = fundingSourceUrl;
-        this.shareableId = shareableId;
-        this.userId = userId;
+        this.name = name;
+        this.url = url;
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "Bank{" +
-                "bankName='" + bankName + '\'' +
-                ", accountId='" + accountId + '\'' +
-                ", fundingSourceUrl='" + fundingSourceUrl + '\'' +
-                ", shareableId='" + shareableId + '\'' +
-                ", userId='" + userId + '\'' +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 
-    public String getBankName() {
-        return bankName;
+    public String getName() {
+        return name;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getUrl() {
+        return url;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getFundingSourceUrl() {
-        return fundingSourceUrl;
+    public String getStatus() {
+        return status;
     }
 
-    public void setFundingSourceUrl(String fundingSourceUrl) {
-        this.fundingSourceUrl = fundingSourceUrl;
-    }
-
-    public String getShareableId() {
-        return shareableId;
-    }
-
-    public void setShareableId(String shareableId) {
-        this.shareableId = shareableId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -100,17 +72,15 @@ public class Bank extends BaseEntity {
         if (!super.equals(o)) return false;
 
         Bank bank = (Bank) o;
-        return Objects.equals(bankName, bank.bankName) && Objects.equals(accountId, bank.accountId) && Objects.equals(fundingSourceUrl, bank.fundingSourceUrl) && Objects.equals(shareableId, bank.shareableId) && Objects.equals(userId, bank.userId);
+        return Objects.equals(name, bank.name) && Objects.equals(url, bank.url) && Objects.equals(status, bank.status);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(bankName);
-        result = 31 * result + Objects.hashCode(accountId);
-        result = 31 * result + Objects.hashCode(fundingSourceUrl);
-        result = 31 * result + Objects.hashCode(shareableId);
-        result = 31 * result + Objects.hashCode(userId);
+        result = 31 * result + Objects.hashCode(name);
+        result = 31 * result + Objects.hashCode(url);
+        result = 31 * result + Objects.hashCode(status);
         return result;
     }
 }

@@ -1,20 +1,18 @@
 package com.leopoldhsing.horizon.model.dto;
 
+import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerStatus;
+import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType;
+
 import java.util.Objects;
 
 public class DwollaCustomerDto {
 
     private String dwollaCustomerUrl;
-    private String status;
-    private Integer customerType;
-    private Integer customerStatus;
+    private DwollaCustomerType customerType;
+    private DwollaCustomerStatus customerStatus;
 
-    public DwollaCustomerDto() {
-    }
-
-    public DwollaCustomerDto(String dwollaCustomerUrl, String status, Integer customerType, Integer customerStatus) {
+    public DwollaCustomerDto(String dwollaCustomerUrl, DwollaCustomerType customerType, DwollaCustomerStatus customerStatus) {
         this.dwollaCustomerUrl = dwollaCustomerUrl;
-        this.status = status;
         this.customerType = customerType;
         this.customerStatus = customerStatus;
     }
@@ -23,7 +21,6 @@ public class DwollaCustomerDto {
     public String toString() {
         return "DwollaCustomerDto{" +
                 "dwollaCustomerUrl='" + dwollaCustomerUrl + '\'' +
-                ", status='" + status + '\'' +
                 ", customerType=" + customerType +
                 ", customerStatus=" + customerStatus +
                 '}';
@@ -37,27 +34,19 @@ public class DwollaCustomerDto {
         this.dwollaCustomerUrl = dwollaCustomerUrl;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getCustomerType() {
+    public DwollaCustomerType getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(Integer customerType) {
+    public void setCustomerType(DwollaCustomerType customerType) {
         this.customerType = customerType;
     }
 
-    public Integer getCustomerStatus() {
+    public DwollaCustomerStatus getCustomerStatus() {
         return customerStatus;
     }
 
-    public void setCustomerStatus(Integer customerStatus) {
+    public void setCustomerStatus(DwollaCustomerStatus customerStatus) {
         this.customerStatus = customerStatus;
     }
 
@@ -67,13 +56,12 @@ public class DwollaCustomerDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         DwollaCustomerDto that = (DwollaCustomerDto) o;
-        return Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && Objects.equals(status, that.status) && Objects.equals(customerType, that.customerType) && Objects.equals(customerStatus, that.customerStatus);
+        return Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && customerType == that.customerType && customerStatus == that.customerStatus;
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hashCode(dwollaCustomerUrl);
-        result = 31 * result + Objects.hashCode(status);
         result = 31 * result + Objects.hashCode(customerType);
         result = 31 * result + Objects.hashCode(customerStatus);
         return result;

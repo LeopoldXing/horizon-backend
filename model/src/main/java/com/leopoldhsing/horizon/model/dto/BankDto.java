@@ -1,75 +1,65 @@
 package com.leopoldhsing.horizon.model.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class BankDto {
 
-    private String bankName;
-    private String accountId;
-    private String fundingSourceUrl;
-    private String shareableId;
-    private UserDto userDto;
+    private String name;
+    private String url;
+    private String status;
+    private List<String> countryCodeList;
 
     public BankDto() {
     }
 
-    public BankDto(String bankName, String accountId, String fundingSourceUrl, String shareableId, UserDto userDto) {
-        this.bankName = bankName;
-        this.accountId = accountId;
-        this.fundingSourceUrl = fundingSourceUrl;
-        this.shareableId = shareableId;
-        this.userDto = userDto;
+    public BankDto(String name, String url, String status, List<String> countryCodeList) {
+        this.name = name;
+        this.url = url;
+        this.status = status;
+        this.countryCodeList = countryCodeList;
     }
 
     @Override
     public String toString() {
         return "BankDto{" +
-                "bankName='" + bankName + '\'' +
-                ", accountId='" + accountId + '\'' +
-                ", fundingSourceUrl='" + fundingSourceUrl + '\'' +
-                ", shareableId='" + shareableId + '\'' +
-                ", userDto=" + userDto +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", status='" + status + '\'' +
+                ", countryCodeList=" + countryCodeList +
                 '}';
     }
 
-    public String getBankName() {
-        return bankName;
+    public String getName() {
+        return name;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getUrl() {
+        return url;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getFundingSourceUrl() {
-        return fundingSourceUrl;
+    public String getStatus() {
+        return status;
     }
 
-    public void setFundingSourceUrl(String fundingSourceUrl) {
-        this.fundingSourceUrl = fundingSourceUrl;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getShareableId() {
-        return shareableId;
+    public List<String> getCountryCodeList() {
+        return countryCodeList;
     }
 
-    public void setShareableId(String shareableId) {
-        this.shareableId = shareableId;
-    }
-
-    public UserDto getUserDto() {
-        return userDto;
-    }
-
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setCountryCodeList(List<String> countryCodeList) {
+        this.countryCodeList = countryCodeList;
     }
 
     @Override
@@ -78,16 +68,15 @@ public class BankDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         BankDto bankDto = (BankDto) o;
-        return Objects.equals(bankName, bankDto.bankName) && Objects.equals(accountId, bankDto.accountId) && Objects.equals(fundingSourceUrl, bankDto.fundingSourceUrl) && Objects.equals(shareableId, bankDto.shareableId) && Objects.equals(userDto, bankDto.userDto);
+        return Objects.equals(name, bankDto.name) && Objects.equals(url, bankDto.url) && Objects.equals(status, bankDto.status) && Objects.equals(countryCodeList, bankDto.countryCodeList);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(bankName);
-        result = 31 * result + Objects.hashCode(accountId);
-        result = 31 * result + Objects.hashCode(fundingSourceUrl);
-        result = 31 * result + Objects.hashCode(shareableId);
-        result = 31 * result + Objects.hashCode(userDto);
+        int result = Objects.hashCode(name);
+        result = 31 * result + Objects.hashCode(url);
+        result = 31 * result + Objects.hashCode(status);
+        result = 31 * result + Objects.hashCode(countryCodeList);
         return result;
     }
 }

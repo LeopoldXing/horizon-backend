@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.model.dto;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class UserDto {
@@ -9,25 +10,25 @@ public class UserDto {
     private String email;
     private String address;
     private String city;
-    private String postalCode;
-    private String dateOfBirth;
-    private String ssn;
     private String state;
+    private String postalCode;
+    private Date dateOfBirth;
+    private String ssn;
     private DwollaCustomerDto dwollaCustomerDto;
 
     public UserDto() {
     }
 
-    public UserDto(String firstName, String lastName, String email, String address, String city, String postalCode, String dateOfBirth, String ssn, String state, DwollaCustomerDto dwollaCustomerDto) {
+    public UserDto(String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, DwollaCustomerDto dwollaCustomerDto) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.address = address;
         this.city = city;
+        this.state = state;
         this.postalCode = postalCode;
         this.dateOfBirth = dateOfBirth;
         this.ssn = ssn;
-        this.state = state;
         this.dwollaCustomerDto = dwollaCustomerDto;
     }
 
@@ -39,10 +40,10 @@ public class UserDto {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", ssn='" + ssn + '\'' +
                 ", state='" + state + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", ssn='" + ssn + '\'' +
                 ", dwollaCustomerDto=" + dwollaCustomerDto +
                 '}';
     }
@@ -87,6 +88,14 @@ public class UserDto {
         this.city = city;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public String getPostalCode() {
         return postalCode;
     }
@@ -95,11 +104,11 @@ public class UserDto {
         this.postalCode = postalCode;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -109,14 +118,6 @@ public class UserDto {
 
     public void setSsn(String ssn) {
         this.ssn = ssn;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     public DwollaCustomerDto getDwollaCustomerDto() {
@@ -133,7 +134,7 @@ public class UserDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         UserDto userDto = (UserDto) o;
-        return Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(email, userDto.email) && Objects.equals(address, userDto.address) && Objects.equals(city, userDto.city) && Objects.equals(postalCode, userDto.postalCode) && Objects.equals(dateOfBirth, userDto.dateOfBirth) && Objects.equals(ssn, userDto.ssn) && Objects.equals(state, userDto.state) && Objects.equals(dwollaCustomerDto, userDto.dwollaCustomerDto);
+        return Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(email, userDto.email) && Objects.equals(address, userDto.address) && Objects.equals(city, userDto.city) && Objects.equals(state, userDto.state) && Objects.equals(postalCode, userDto.postalCode) && Objects.equals(dateOfBirth, userDto.dateOfBirth) && Objects.equals(ssn, userDto.ssn) && Objects.equals(dwollaCustomerDto, userDto.dwollaCustomerDto);
     }
 
     @Override
@@ -143,10 +144,10 @@ public class UserDto {
         result = 31 * result + Objects.hashCode(email);
         result = 31 * result + Objects.hashCode(address);
         result = 31 * result + Objects.hashCode(city);
+        result = 31 * result + Objects.hashCode(state);
         result = 31 * result + Objects.hashCode(postalCode);
         result = 31 * result + Objects.hashCode(dateOfBirth);
         result = 31 * result + Objects.hashCode(ssn);
-        result = 31 * result + Objects.hashCode(state);
         result = 31 * result + Objects.hashCode(dwollaCustomerDto);
         return result;
     }

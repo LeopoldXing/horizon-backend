@@ -2,7 +2,7 @@ package com.leopoldhsing.horizon.model.entity;
 
 import jakarta.persistence.Entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +15,7 @@ public class Category extends BaseEntity {
     public Category() {
     }
 
-    public Category(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy) {
+    public Category(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
     }
 
@@ -25,7 +25,7 @@ public class Category extends BaseEntity {
         this.categoryCode = categoryCode;
     }
 
-    public Category(Long id, Date createdAt, Date updatedAt, String createdBy, String updatedBy, String categoryName, String description, String categoryCode) {
+    public Category(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String categoryName, String description, String categoryCode) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
         this.categoryName = categoryName;
         this.description = description;
