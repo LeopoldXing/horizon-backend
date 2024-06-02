@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.common.utils.exception;
 
+import com.leopoldhsing.horizon.common.utils.exception.plaid.PublicTokenInvalidException;
 import com.leopoldhsing.horizon.model.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ public class GlobalExceptionHandler {
 
     /**
      * handle all unmatched exception in global scope
+     *
      * @param exception
      * @param webRequest
      * @return
@@ -26,8 +28,25 @@ public class GlobalExceptionHandler {
                 exception.getMessage(),
                 LocalDateTime.now()
         );
-
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * handle PublicTokenInvalidException
+     *
+     * @param exception
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(PublicTokenInvalidException.class)
+    public ResponseEntity<ErrorResponseDto> handlePublicTokenInvalidException(PublicTokenInvalidException exception, WebRequest request) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                request.getDescription(false),
+                HttpStatus.EXPECTATION_FAILED,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.EXPECTATION_FAILED);
     }
 
 }
