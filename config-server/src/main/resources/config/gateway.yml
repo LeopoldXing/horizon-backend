@@ -2,7 +2,26 @@ spring:
   cloud:
     gateway:
       discovery:
-        enabled: true
+        locator:
+          enabled: false
+          lower-case-service-id: true
+      routes:
+        - id: service_bank
+          uri: lb://bank
+          predicates:
+            - Path=/api/*/bank/**
+        - id: service_dwolla
+          uri: lb://dwolla
+          predicates:
+            - Path=/api/*/dwolla/**
+        - id: service_plaid
+          uri: lb://plaid
+          predicates:
+            - Path=/api/*/plaid/**
+        - id: service_user
+          uri: lb://user
+          predicates:
+            - Path=/api/*/user/**
 
 eureka:
   instance:
