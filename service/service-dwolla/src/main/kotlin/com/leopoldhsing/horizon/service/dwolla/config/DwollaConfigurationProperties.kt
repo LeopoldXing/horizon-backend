@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @ConfigurationProperties(prefix = "dwolla")
-data class DwollaConfiguration(
+data class DwollaConfigurationProperties(
     var key: String = "",
     var secret: String = "",
     var baseUrl: String = "",

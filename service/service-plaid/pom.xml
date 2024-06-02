@@ -17,6 +17,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <!--  plaid  -->
+        <dependency>
+            <groupId>com.plaid</groupId>
+            <artifactId>plaid-java</artifactId>
+            <version>23.0.0</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
