@@ -6,8 +6,12 @@ import com.leopoldhsing.horizon.model.mapper.UserMapper;
 import com.leopoldhsing.horizon.model.vo.UserSignUpVo;
 import com.leopoldhsing.horizon.service.user.repository.UserRepository;
 import com.leopoldhsing.horizon.service.user.service.IUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -24,6 +28,14 @@ public class UserServiceImpl implements IUserService {
     public UserDto userSignUp(UserSignUpVo userSignUpVo) {
         // 1. create new user
         User user = new User();
+        BeanUtils.copyProperties(userSignUpVo, user);
+        // 1.2 set dob
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            user.setDateOfBirth(sdf.parse(userSignUpVo.getDateOfBirth()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         // 2. create dwolla customer and get the dwollaCustomerId
 
