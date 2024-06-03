@@ -1,6 +1,7 @@
-package com.leopoldhsing.horizon.common.utils.exception;
+package com.leopoldhsing.horizon.common.utils.exception.handler;
 
-import com.leopoldhsing.horizon.common.utils.exception.plaid.PublicTokenInvalidException;
+import com.leopoldhsing.horizon.common.utils.exception.PublicTokenInvalidException;
+import com.leopoldhsing.horizon.common.utils.exception.ResourcesNotAccessible;
 import com.leopoldhsing.horizon.model.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,4 +50,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.EXPECTATION_FAILED);
     }
 
+    /**
+     * handle ResourcesNotAccessible exception
+     * @param exception
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(ResourcesNotAccessible.class)
+    public ResponseEntity<ErrorResponseDto> handleResourcesNotAccessibleException(ResourcesNotAccessible exception, WebRequest request) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                request.getDescription(false),
+                HttpStatus.UNAUTHORIZED,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.UNAUTHORIZED);
+    }
 }

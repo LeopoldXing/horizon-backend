@@ -1,6 +1,6 @@
 package com.leopoldhsing.horizon.service.plaid.service.impl;
 
-import com.leopoldhsing.horizon.common.utils.exception.plaid.PublicTokenInvalidException;
+import com.leopoldhsing.horizon.common.utils.exception.PublicTokenInvalidException;
 import com.leopoldhsing.horizon.service.plaid.config.PlaidConfigurationProperties;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidService;
 import com.plaid.client.model.ItemPublicTokenExchangeRequest;

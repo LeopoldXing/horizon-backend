@@ -18,6 +18,12 @@
     </properties>
 
     <dependencies>
+        <!--  model  -->
+        <dependency>
+            <groupId>com.leopoldhsing.horizon</groupId>
+            <artifactId>model</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!--  gateway  -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

@@ -1,4 +1,4 @@
-package com.leopoldhsing.horizon.common.utils.exception.plaid;
+package com.leopoldhsing.horizon.common.utils.exception;
 
 public class PublicTokenInvalidException extends RuntimeException {
 
