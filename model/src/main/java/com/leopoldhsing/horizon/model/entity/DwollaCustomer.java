@@ -1,10 +1,12 @@
 package com.leopoldhsing.horizon.model.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Table(name = "dwolla_customer")
 @Entity
 public class DwollaCustomer extends BaseEntity {
 

@@ -12,7 +12,7 @@ USE
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories`
 (
-    `id`               bigint                                                        NOT NULL,
+    `id`               bigint                                                        NOT NULL AUTO_INCREMENT,
     `category_name`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `description`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `category_code`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -28,13 +28,13 @@ CREATE TABLE `categories`
 DROP TABLE IF EXISTS `country_code`;
 CREATE TABLE `country_code`
 (
-    `id`               bigint NOT NULL,
-    `code`             varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `country_name`     varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `created_at`       datetime                                DEFAULT NULL,
-    `created_by`       varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `last_modified_at` datetime                                DEFAULT NULL,
-    `last_modified_by` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `id`               bigint NOT NULL AUTO_INCREMENT,
+    `code`             varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `country_name`     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `created_at`       datetime                                                      DEFAULT NULL,
+    `created_by`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `last_modified_at` datetime                                                      DEFAULT NULL,
+    `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `country_code_unique` (`code`),
     UNIQUE KEY `country_code_unique_1` (`country_name`)
@@ -45,7 +45,7 @@ CREATE TABLE `country_code`
 DROP TABLE IF EXISTS `dwolla_customer`;
 CREATE TABLE `dwolla_customer`
 (
-    `id`                  bigint NOT NULL,
+    `id`                  bigint NOT NULL AUTO_INCREMENT,
     `dwolla_customer_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `customer_type`       varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `customer_status`     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE `dwolla_customer`
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
-    `id`                 bigint NOT NULL,
+    `id`                 bigint NOT NULL AUTO_INCREMENT,
     `email`              varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `first_name`         varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `last_name`          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -79,14 +79,14 @@ CREATE TABLE `users`
     PRIMARY KEY (`id`),
     KEY                  `users_dwolla_customer_FK` (`dwolla_customer_id`),
     CONSTRAINT `users_dwolla_customer_FK` FOREIGN KEY (`dwolla_customer_id`) REFERENCES `dwolla_customer` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 -- horizon.banks definition
 DROP TABLE IF EXISTS `banks`;
 CREATE TABLE `banks`
 (
-    `id`               bigint                                                        NOT NULL,
+    `id`               bigint                                                        NOT NULL AUTO_INCREMENT,
     `name`             varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `url`              varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `status`           varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE `banks`
 DROP TABLE IF EXISTS `link_bank_country_code`;
 CREATE TABLE `link_bank_country_code`
 (
-    `id`               bigint NOT NULL,
+    `id`               bigint NOT NULL AUTO_INCREMENT,
     `bank_id`          bigint NOT NULL,
     `country_code_id`  bigint NOT NULL,
     `created_at`       datetime                                                      DEFAULT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE `link_bank_country_code`
     KEY                `link_bank_country_code_banks_FK` (`bank_id`),
     KEY                `link_bank_country_code_country_code_FK` (`country_code_id`),
     CONSTRAINT `link_bank_country_code_banks_FK` FOREIGN KEY (`bank_id`) REFERENCES `banks` (`id`),
-    CONSTRAINT `link_bank_country_code_country_code_FK` FOREIGN KEY (`country_code_id`) REFERENCES `country_code` (`id`)
+    CONSTRAINT `link_bank_country_code_users_FK` FOREIGN KEY (`country_code_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -121,7 +121,7 @@ CREATE TABLE `link_bank_country_code`
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts`
 (
-    `id`                    bigint                                                        NOT NULL,
+    `id`                    bigint                                                        NOT NULL AUTO_INCREMENT,
     `name`                  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `official_name`         varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `ownerId`               bigint                                                        NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE `accounts`
     `iso_currency_code`     varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
     `institution_id`        bigint                                                        DEFAULT NULL,
     `shareable_id`          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `funding_source_url`    varchar(255) COLLATE utf8mb4_general_ci                       DEFAULT NULL,
+    `funding_source_url`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `mask`                  varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT NULL,
     `persistent_account_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `type`                  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE `accounts`
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions`
 (
-    `id`                  bigint                                                        NOT NULL,
+    `id`                  bigint                                                        NOT NULL AUTO_INCREMENT,
     `name`                varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `amount`              decimal(10, 2)                                                NOT NULL,
     `currency`            varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,

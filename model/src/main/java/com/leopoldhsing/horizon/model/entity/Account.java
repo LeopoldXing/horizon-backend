@@ -1,11 +1,13 @@
 package com.leopoldhsing.horizon.model.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Table(name = "accounts")
 @Entity
 public class Account extends BaseEntity {
 

@@ -1,12 +1,14 @@
 package com.leopoldhsing.horizon.model.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Table(name = "transactions")
 @Entity
 public class Transaction extends BaseEntity {
 

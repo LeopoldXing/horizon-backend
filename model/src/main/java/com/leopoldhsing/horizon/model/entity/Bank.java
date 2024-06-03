@@ -1,10 +1,12 @@
 package com.leopoldhsing.horizon.model.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Table(name = "banks")
 @Entity
 public class Bank extends BaseEntity {
 
