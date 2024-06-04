@@ -37,7 +37,7 @@ public class UserServiceImpl implements IUserService {
             throw new RuntimeException(e);
         }
 
-        // 2. create dwolla customer and get the dwollaCustomerId
+        // 2. create dwolla customer and get the dwollaCustomerId [RPC]
 
         // 3. set dwollaCustomerId into the user object
 
