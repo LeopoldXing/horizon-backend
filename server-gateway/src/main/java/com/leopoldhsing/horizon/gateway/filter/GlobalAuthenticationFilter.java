@@ -2,6 +2,7 @@ package com.leopoldhsing.horizon.gateway.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leopoldhsing.horizon.common.utils.constants.GatewayConstants;
 import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
 import com.leopoldhsing.horizon.gateway.config.AuthConfigurationProperties;
 import com.leopoldhsing.horizon.model.dto.ErrorResponseDto;
@@ -151,7 +152,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
     private UserDto getUserDtoByToken(String token) {
         UserDto userDto = null;
         if (!StringUtils.hasLength(token)) {
-            String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_KEY_SUFFIX + token;
+            String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_SUFFIX + token;
             String userDtoJson = redisTemplate.opsForValue().get(key);
             if (!StringUtils.hasLength(userDtoJson)) {
                 try {
@@ -237,7 +238,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
      * @return
      */
     private Boolean tokenExistsInRedis(String token) {
-        String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_KEY_SUFFIX + token;
+        String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_SUFFIX + token;
         return redisTemplate.hasKey(key);
     }
 
@@ -255,7 +256,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
         ServerHttpResponse response = exchange.getResponse();
 
         // 2. add userId to the request
-        ServerHttpRequest newRequest = request.mutate().header(RedisConstants.USER_ID_KEY, String.valueOf(userId)).build();
+        ServerHttpRequest newRequest = request.mutate().header(GatewayConstants.USERID_HEADER_KEY, String.valueOf(userId)).build();
         ServerWebExchange newExchange = exchange.mutate().request(newRequest).response(response).build();
 
         return chain.filter(newExchange);

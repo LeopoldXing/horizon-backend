@@ -1,0 +1,10 @@
+package com.leopoldhsing.horizon.common.utils.constants;
+
+public class GatewayConstants {
+    /**
+     * request header key for userId when redirecting to other microservices from gateway service
+     */
+    public static final String USERID_HEADER_KEY = "uid";
+
+    private GatewayConstants() {}
+}
