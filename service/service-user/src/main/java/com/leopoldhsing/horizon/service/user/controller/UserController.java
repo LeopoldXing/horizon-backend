@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.service.user.controller;
 
+import com.leopoldhsing.horizon.common.utils.TokenUtil;
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto;
 import com.leopoldhsing.horizon.model.dto.GeneralResponseDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
@@ -10,8 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -28,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<GeneralResponseDto<UserSignUpResponseVo>> userSignUp(@RequestBody(required = false) UserSignUpVo userSignUpVo) {
+    public ResponseEntity<GeneralResponseDto<UserSignUpResponseVo>> userSignUp(@RequestBody UserSignUpVo userSignUpVo) {
         UserDto userDto = userService.userSignUp(userSignUpVo);
         DwollaCustomerDto dwollaCustomerDto = userDto.getDwollaCustomerDto();
 
@@ -44,7 +43,7 @@ public class UserController {
         responseVo.setDwollaCustomerId(dwollaCustomerDto == null ? "" : String.valueOf(dwollaCustomerDto.getId()));
 
         // generate token
-        String token = UUID.randomUUID().toString().replace("-", "");
+        String token = TokenUtil.generateToken();
         responseVo.setToken(token);
 
         System.out.println(responseVo);
