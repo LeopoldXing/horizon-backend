@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class UserDto {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -15,11 +16,13 @@ public class UserDto {
     private Date dateOfBirth;
     private String ssn;
     private DwollaCustomerDto dwollaCustomerDto;
+    private PlaidCustomerDto plaidCustomerDto;
 
     public UserDto() {
     }
 
-    public UserDto(String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, DwollaCustomerDto dwollaCustomerDto) {
+    public UserDto(Long id, String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, DwollaCustomerDto dwollaCustomerDto, PlaidCustomerDto plaidCustomerDto) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -30,22 +33,15 @@ public class UserDto {
         this.dateOfBirth = dateOfBirth;
         this.ssn = ssn;
         this.dwollaCustomerDto = dwollaCustomerDto;
+        this.plaidCustomerDto = plaidCustomerDto;
     }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", ssn='" + ssn + '\'' +
-                ", dwollaCustomerDto=" + dwollaCustomerDto +
-                '}';
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -128,18 +124,27 @@ public class UserDto {
         this.dwollaCustomerDto = dwollaCustomerDto;
     }
 
+    public PlaidCustomerDto getPlaidCustomerDto() {
+        return plaidCustomerDto;
+    }
+
+    public void setPlaidCustomerDto(PlaidCustomerDto plaidCustomerDto) {
+        this.plaidCustomerDto = plaidCustomerDto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         UserDto userDto = (UserDto) o;
-        return Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(email, userDto.email) && Objects.equals(address, userDto.address) && Objects.equals(city, userDto.city) && Objects.equals(state, userDto.state) && Objects.equals(postalCode, userDto.postalCode) && Objects.equals(dateOfBirth, userDto.dateOfBirth) && Objects.equals(ssn, userDto.ssn) && Objects.equals(dwollaCustomerDto, userDto.dwollaCustomerDto);
+        return Objects.equals(id, userDto.id) && Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(email, userDto.email) && Objects.equals(address, userDto.address) && Objects.equals(city, userDto.city) && Objects.equals(state, userDto.state) && Objects.equals(postalCode, userDto.postalCode) && Objects.equals(dateOfBirth, userDto.dateOfBirth) && Objects.equals(ssn, userDto.ssn) && Objects.equals(dwollaCustomerDto, userDto.dwollaCustomerDto) && Objects.equals(plaidCustomerDto, userDto.plaidCustomerDto);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(firstName);
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(firstName);
         result = 31 * result + Objects.hashCode(lastName);
         result = 31 * result + Objects.hashCode(email);
         result = 31 * result + Objects.hashCode(address);
@@ -149,6 +154,7 @@ public class UserDto {
         result = 31 * result + Objects.hashCode(dateOfBirth);
         result = 31 * result + Objects.hashCode(ssn);
         result = 31 * result + Objects.hashCode(dwollaCustomerDto);
+        result = 31 * result + Objects.hashCode(plaidCustomerDto);
         return result;
     }
 }

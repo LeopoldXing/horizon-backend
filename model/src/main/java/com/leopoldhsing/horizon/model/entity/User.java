@@ -21,6 +21,7 @@ public class User extends BaseEntity {
     private Date dateOfBirth;
     private String ssn;
     private Long dwollaCustomerId;
+    private Long plaidCustomerId;
 
     public User() {
     }
@@ -29,7 +30,7 @@ public class User extends BaseEntity {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
     }
 
-    public User(String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId) {
+    public User(String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId, Long plaidCustomerId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -40,9 +41,10 @@ public class User extends BaseEntity {
         this.dateOfBirth = dateOfBirth;
         this.ssn = ssn;
         this.dwollaCustomerId = dwollaCustomerId;
+        this.plaidCustomerId = plaidCustomerId;
     }
 
-    public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId) {
+    public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId, Long plaidCustomerId) {
         super(id, createdAt, updatedAt, createdBy, updatedBy);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,6 +56,7 @@ public class User extends BaseEntity {
         this.dateOfBirth = dateOfBirth;
         this.ssn = ssn;
         this.dwollaCustomerId = dwollaCustomerId;
+        this.plaidCustomerId = plaidCustomerId;
     }
 
     @Override
@@ -69,6 +72,7 @@ public class User extends BaseEntity {
                 ", dateOfBirth=" + dateOfBirth +
                 ", ssn='" + ssn + '\'' +
                 ", dwollaCustomerId=" + dwollaCustomerId +
+                ", plaidCustomerId=" + plaidCustomerId +
                 '}';
     }
 
@@ -152,6 +156,14 @@ public class User extends BaseEntity {
         this.dwollaCustomerId = dwollaCustomerId;
     }
 
+    public Long getPlaidCustomerId() {
+        return plaidCustomerId;
+    }
+
+    public void setPlaidCustomerId(Long plaidCustomerId) {
+        this.plaidCustomerId = plaidCustomerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -159,7 +171,7 @@ public class User extends BaseEntity {
         if (!super.equals(o)) return false;
 
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(address, user.address) && Objects.equals(city, user.city) && Objects.equals(state, user.state) && Objects.equals(postalCode, user.postalCode) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(ssn, user.ssn) && Objects.equals(dwollaCustomerId, user.dwollaCustomerId);
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(address, user.address) && Objects.equals(city, user.city) && Objects.equals(state, user.state) && Objects.equals(postalCode, user.postalCode) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(ssn, user.ssn) && Objects.equals(dwollaCustomerId, user.dwollaCustomerId) && Objects.equals(plaidCustomerId, user.plaidCustomerId);
     }
 
     @Override
@@ -175,6 +187,7 @@ public class User extends BaseEntity {
         result = 31 * result + Objects.hashCode(dateOfBirth);
         result = 31 * result + Objects.hashCode(ssn);
         result = 31 * result + Objects.hashCode(dwollaCustomerId);
+        result = 31 * result + Objects.hashCode(plaidCustomerId);
         return result;
     }
 }

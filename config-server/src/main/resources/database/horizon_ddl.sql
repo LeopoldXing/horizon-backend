@@ -41,6 +41,21 @@ CREATE TABLE `country_code`
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+-- horizon.plaid_customers definition
+DROP TABLE IF EXISTS `plaid_customers`;
+CREATE TABLE `plaid_customers`
+(
+    `id`               bigint NOT NULL AUTO_INCREMENT,
+    `shareable_url`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `phone_number`     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `created_at`       datetime                                                      DEFAULT NULL,
+    `created_by`       varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `last_modified_at` datetime                                                      DEFAULT NULL,
+    `last_modified_by` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 -- horizon.dwolla_customer definition
 DROP TABLE IF EXISTS `dwolla_customer`;
 CREATE TABLE `dwolla_customer`
@@ -71,6 +86,7 @@ CREATE TABLE `users`
     `postal_code`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `date_of_birth`      date                                                          DEFAULT NULL,
     `ssn`                varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT NULL,
+    `plaid_customer_id`  bigint                                                        DEFAULT NULL,
     `dwolla_customer_id` bigint                                                        DEFAULT NULL,
     `created_at`         datetime                                                      DEFAULT NULL,
     `created_by`         varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -78,8 +94,10 @@ CREATE TABLE `users`
     `last_modified_by`   varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY                  `users_dwolla_customer_FK` (`dwolla_customer_id`),
-    CONSTRAINT `users_dwolla_customer_FK` FOREIGN KEY (`dwolla_customer_id`) REFERENCES `dwolla_customer` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    KEY                  `users_plaid_customers_FK` (`plaid_customer_id`),
+    CONSTRAINT `users_dwolla_customer_FK` FOREIGN KEY (`dwolla_customer_id`) REFERENCES `dwolla_customer` (`id`),
+    CONSTRAINT `users_plaid_customers_FK` FOREIGN KEY (`plaid_customer_id`) REFERENCES `plaid_customers` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 -- horizon.banks definition

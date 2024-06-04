@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class BankDto {
 
+    private Long id;
     private String name;
     private String url;
     private String status;
@@ -13,7 +14,8 @@ public class BankDto {
     public BankDto() {
     }
 
-    public BankDto(String name, String url, String status, List<String> countryCodeList) {
+    public BankDto(Long id, String name, String url, String status, List<String> countryCodeList) {
+        this.id = id;
         this.name = name;
         this.url = url;
         this.status = status;
@@ -23,11 +25,20 @@ public class BankDto {
     @Override
     public String toString() {
         return "BankDto{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", status='" + status + '\'' +
                 ", countryCodeList=" + countryCodeList +
                 '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -68,12 +79,13 @@ public class BankDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         BankDto bankDto = (BankDto) o;
-        return Objects.equals(name, bankDto.name) && Objects.equals(url, bankDto.url) && Objects.equals(status, bankDto.status) && Objects.equals(countryCodeList, bankDto.countryCodeList);
+        return Objects.equals(id, bankDto.id) && Objects.equals(name, bankDto.name) && Objects.equals(url, bankDto.url) && Objects.equals(status, bankDto.status) && Objects.equals(countryCodeList, bankDto.countryCodeList);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(name);
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(url);
         result = 31 * result + Objects.hashCode(status);
         result = 31 * result + Objects.hashCode(countryCodeList);

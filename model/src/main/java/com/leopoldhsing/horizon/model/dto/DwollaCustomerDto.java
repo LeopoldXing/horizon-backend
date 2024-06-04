@@ -7,11 +7,16 @@ import java.util.Objects;
 
 public class DwollaCustomerDto {
 
+    private Long id;
     private String dwollaCustomerUrl;
     private DwollaCustomerType customerType;
     private DwollaCustomerStatus customerStatus;
 
-    public DwollaCustomerDto(String dwollaCustomerUrl, DwollaCustomerType customerType, DwollaCustomerStatus customerStatus) {
+    public DwollaCustomerDto() {
+    }
+
+    public DwollaCustomerDto(Long id, String dwollaCustomerUrl, DwollaCustomerType customerType, DwollaCustomerStatus customerStatus) {
+        this.id = id;
         this.dwollaCustomerUrl = dwollaCustomerUrl;
         this.customerType = customerType;
         this.customerStatus = customerStatus;
@@ -20,10 +25,19 @@ public class DwollaCustomerDto {
     @Override
     public String toString() {
         return "DwollaCustomerDto{" +
-                "dwollaCustomerUrl='" + dwollaCustomerUrl + '\'' +
+                "id=" + id +
+                ", dwollaCustomerUrl='" + dwollaCustomerUrl + '\'' +
                 ", customerType=" + customerType +
                 ", customerStatus=" + customerStatus +
                 '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDwollaCustomerUrl() {
@@ -56,12 +70,13 @@ public class DwollaCustomerDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         DwollaCustomerDto that = (DwollaCustomerDto) o;
-        return Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && customerType == that.customerType && customerStatus == that.customerStatus;
+        return Objects.equals(id, that.id) && Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && customerType == that.customerType && customerStatus == that.customerStatus;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(dwollaCustomerUrl);
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(dwollaCustomerUrl);
         result = 31 * result + Objects.hashCode(customerType);
         result = 31 * result + Objects.hashCode(customerStatus);
         return result;

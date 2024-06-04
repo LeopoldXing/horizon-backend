@@ -9,6 +9,7 @@ import java.util.Objects;
 
 public class TransactionDto {
 
+    private Long id;
     private String name;
     private BigDecimal amount;
     private String currency;
@@ -30,7 +31,8 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
-    public TransactionDto(String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, DwollaTransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
+    public TransactionDto(Long id, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, DwollaTransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
+        this.id = id;
         this.name = name;
         this.amount = amount;
         this.currency = currency;
@@ -53,7 +55,8 @@ public class TransactionDto {
     @Override
     public String toString() {
         return "TransactionDto{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
                 ", routingNumber='" + routingNumber + '\'' +
@@ -71,6 +74,14 @@ public class TransactionDto {
                 ", channel='" + channel + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -215,12 +226,13 @@ public class TransactionDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         TransactionDto that = (TransactionDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(date, that.date) && Objects.equals(dateTime, that.dateTime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDateTime, that.authorizedDateTime) && status == that.status && Objects.equals(senderBank, that.senderBank) && Objects.equals(category, that.category) && Objects.equals(receiverBank, that.receiverBank) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(date, that.date) && Objects.equals(dateTime, that.dateTime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDateTime, that.authorizedDateTime) && status == that.status && Objects.equals(senderBank, that.senderBank) && Objects.equals(category, that.category) && Objects.equals(receiverBank, that.receiverBank) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(name);
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(amount);
         result = 31 * result + Objects.hashCode(currency);
         result = 31 * result + Objects.hashCode(routingNumber);

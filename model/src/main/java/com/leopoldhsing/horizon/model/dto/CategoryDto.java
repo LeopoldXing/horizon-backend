@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class CategoryDto {
 
+    private Long id;
     private String categoryName;
     private String description;
     private String categoryCode;
@@ -11,7 +12,8 @@ public class CategoryDto {
     public CategoryDto() {
     }
 
-    public CategoryDto(String categoryName, String description, String categoryCode) {
+    public CategoryDto(Long id, String categoryName, String description, String categoryCode) {
+        this.id = id;
         this.categoryName = categoryName;
         this.description = description;
         this.categoryCode = categoryCode;
@@ -20,10 +22,19 @@ public class CategoryDto {
     @Override
     public String toString() {
         return "CategoryDto{" +
-                "categoryName='" + categoryName + '\'' +
+                "id=" + id +
+                ", categoryName='" + categoryName + '\'' +
                 ", description='" + description + '\'' +
                 ", categoryCode='" + categoryCode + '\'' +
                 '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCategoryName() {
@@ -56,12 +67,13 @@ public class CategoryDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         CategoryDto that = (CategoryDto) o;
-        return Objects.equals(categoryName, that.categoryName) && Objects.equals(description, that.description) && Objects.equals(categoryCode, that.categoryCode);
+        return Objects.equals(id, that.id) && Objects.equals(categoryName, that.categoryName) && Objects.equals(description, that.description) && Objects.equals(categoryCode, that.categoryCode);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(categoryName);
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(categoryName);
         result = 31 * result + Objects.hashCode(description);
         result = 31 * result + Objects.hashCode(categoryCode);
         return result;
