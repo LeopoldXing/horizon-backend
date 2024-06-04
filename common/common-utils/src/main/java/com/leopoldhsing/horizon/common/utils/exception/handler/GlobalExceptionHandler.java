@@ -1,6 +1,6 @@
 package com.leopoldhsing.horizon.common.utils.exception.handler;
 
-import com.leopoldhsing.horizon.common.utils.exception.PublicTokenInvalidException;
+import com.leopoldhsing.horizon.common.utils.exception.PlaidPublicTokenInvalidException;
 import com.leopoldhsing.horizon.common.utils.exception.ResourcesNotAccessible;
 import com.leopoldhsing.horizon.model.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
@@ -39,8 +39,8 @@ public class GlobalExceptionHandler {
      * @param request
      * @return
      */
-    @ExceptionHandler(PublicTokenInvalidException.class)
-    public ResponseEntity<ErrorResponseDto> handlePublicTokenInvalidException(PublicTokenInvalidException exception, WebRequest request) {
+    @ExceptionHandler(PlaidPublicTokenInvalidException.class)
+    public ResponseEntity<ErrorResponseDto> handlePublicTokenInvalidException(PlaidPublicTokenInvalidException exception, WebRequest request) {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 request.getDescription(false),
                 HttpStatus.EXPECTATION_FAILED,

@@ -4,5 +4,23 @@ server:
 spring:
   application:
     name: gateway
+  data:
+    redis:
+      host: localhost
+      port: 36379
+      password: 1234
+      database: 0
   config:
     import: "configserver:http://localhost:9000/"
+
+horizon:
+  url:
+    pattern:
+      inner-uri-patterns: /api/**
+      trusted-uri-patterns:
+        - /css/**
+        - /js/**
+        - /ts/**
+        - /img/**
+        - /fonts/**
+      login-path: http://localhost:3000

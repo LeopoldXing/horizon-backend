@@ -25,8 +25,9 @@
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.1</spring-cloud.version>
         <mysql.version>8.2.0</mysql.version>
-        <spring.jpa.version>3.2.4</spring.jpa.version>
+        <spring.jpa.version>3.2.6</spring.jpa.version>
         <spring.web.version>3.2.6</spring.web.version>
+        <redis.version>3.2.6</redis.version>
     </properties>
     <dependencies>
         <dependency>
@@ -86,6 +87,23 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>2.5.0</version>
+            </dependency>
+            <!--  redis  -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.lettuce</groupId>
+                        <artifactId>lettuce-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
