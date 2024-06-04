@@ -45,7 +45,7 @@ public class PlaidServiceImpl implements IPlaidService {
         } else throw new PlaidPublicTokenInvalidException(publicToken);
 
         // 4. store access token into redis
-        redisTemplate.opsForValue().set(RedisConstants.PLAID_ACCESS_TOKEN_KEY_PREFIX
+        redisTemplate.opsForValue().set(RedisConstants.PLAID_KEY_PREFIX
                 + RedisConstants.PLAID_ACCESS_TOKEN_KEY_SUFFIX
                 + RequestUtil.getUid(), accessToken);
 

@@ -152,7 +152,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
     private UserDto getUserDtoByToken(String token) {
         UserDto userDto = null;
         if (!StringUtils.hasLength(token)) {
-            String key = RedisConstants.USER_INFO_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token;
+            String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token;
             String userDtoJson = redisTemplate.opsForValue().get(key);
             if (!StringUtils.hasLength(userDtoJson)) {
                 try {
@@ -238,7 +238,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
      * @return
      */
     private Boolean tokenExistsInRedis(String token) {
-        String key = RedisConstants.USER_INFO_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token;
+        String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token;
         return redisTemplate.hasKey(key);
     }
 
