@@ -7,8 +7,8 @@ import com.leopoldhsing.horizon.gateway.config.AuthConfigurationProperties;
 import com.leopoldhsing.horizon.model.dto.ErrorResponseDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,6 +19,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -31,7 +32,7 @@ import java.util.List;
 
 @Order(2)
 @Component
-public class GlobalAuthenticationFilter implements GatewayFilter {
+public class GlobalAuthenticationFilter implements GlobalFilter {
 
     @Autowired
     private AuthConfigurationProperties configurationProperties;
@@ -44,7 +45,6 @@ public class GlobalAuthenticationFilter implements GatewayFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         AntPathMatcher antPathMatcher = new AntPathMatcher();
-
         // 1. get request
         ServerHttpRequest request = exchange.getRequest();
 
@@ -95,7 +95,7 @@ public class GlobalAuthenticationFilter implements GatewayFilter {
 
         // 2.4 requests that needed to be accessed after signing in
         List<String> requireAuthUriPatterns = configurationProperties.getRequireAuthUriPatterns();
-        if (!requireAuthUriPatterns.isEmpty()) {
+        if (!CollectionUtils.isEmpty(requireAuthUriPatterns)) {
             long requiredAuthUriCounts = requireAuthUriPatterns
                     .parallelStream()
                     .filter(pattern -> antPathMatcher.match(pattern, path))
@@ -139,11 +139,12 @@ public class GlobalAuthenticationFilter implements GatewayFilter {
             }
         }
 
-        return chain.filter(exchange);
+        return userIdPenetration(exchange, chain, 1L);
     }
 
     /**
      * get user info from redis
+     *
      * @param token
      * @return
      */
@@ -238,5 +239,25 @@ public class GlobalAuthenticationFilter implements GatewayFilter {
     private Boolean tokenExistsInRedis(String token) {
         String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_KEY_SUFFIX + token;
         return redisTemplate.hasKey(key);
+    }
+
+    /**
+     * pass userId to other microservices
+     *
+     * @param exchange
+     * @param chain
+     * @param userId
+     * @return
+     */
+    private Mono<Void> userIdPenetration(ServerWebExchange exchange, GatewayFilterChain chain, Long userId) {
+        // 1. get request and response
+        ServerHttpRequest request = exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
+
+        // 2. add userId to the request
+        ServerHttpRequest newRequest = request.mutate().header(RedisConstants.USER_ID_KEY, String.valueOf(userId)).build();
+        ServerWebExchange newExchange = exchange.mutate().request(newRequest).response(response).build();
+
+        return chain.filter(newExchange);
     }
 }

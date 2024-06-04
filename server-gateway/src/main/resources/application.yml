@@ -16,11 +16,15 @@ spring:
 horizon:
   url:
     pattern:
-      inner-uri-patterns: /api/**
+      inner-uri-patterns: /api/**/inner/**
       trusted-uri-patterns:
         - /css/**
         - /js/**
         - /ts/**
         - /img/**
         - /fonts/**
+        - /api/*/user/sign-in
+        - /api/*/user/sign-up
       login-path: http://localhost:3000
+      require-auth-uri-patterns:
+        - /api/**
