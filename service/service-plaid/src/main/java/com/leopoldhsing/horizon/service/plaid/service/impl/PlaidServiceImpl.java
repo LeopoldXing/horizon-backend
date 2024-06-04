@@ -1,5 +1,7 @@
 package com.leopoldhsing.horizon.service.plaid.service.impl;
 
+import com.leopoldhsing.horizon.common.utils.RequestUtil;
+import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
 import com.leopoldhsing.horizon.common.utils.exception.PlaidPublicTokenInvalidException;
 import com.leopoldhsing.horizon.service.plaid.config.PlaidConfigurationProperties;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidService;
@@ -7,6 +9,7 @@ import com.plaid.client.model.ItemPublicTokenExchangeRequest;
 import com.plaid.client.model.ItemPublicTokenExchangeResponse;
 import com.plaid.client.request.PlaidApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
 
@@ -20,6 +23,9 @@ public class PlaidServiceImpl implements IPlaidService {
 
     @Autowired
     private PlaidConfigurationProperties configurationProperties;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public Boolean exchangePublicToken(String publicToken) throws IOException {
@@ -38,7 +44,11 @@ public class PlaidServiceImpl implements IPlaidService {
             accessToken = response.body().getAccessToken();
         } else throw new PlaidPublicTokenInvalidException(publicToken);
 
-        System.out.println("accessToken -> " + accessToken);
+        // 4. store access token into redis
+        redisTemplate.opsForValue().set(RedisConstants.PLAID_ACCESS_TOKEN_KEY_PREFIX
+                + RedisConstants.PLAID_ACCESS_TOKEN_KEY_SUFFIX
+                + RequestUtil.getUid(), accessToken);
+
         return true;
     }
 

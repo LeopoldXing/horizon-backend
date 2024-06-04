@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/plaid")
@@ -21,11 +20,8 @@ public class PlaidController {
     private IPlaidService plaidService;
 
     @PostMapping("/exchange-public-token")
-    public ResponseEntity<GeneralResponseDto<String>> exchangePublicToken(@RequestBody Map<String, String> params) {
-        String publicToken = params.get("publicToken");
-        System.out.println("publicToken: " + publicToken);
+    public ResponseEntity<GeneralResponseDto<Boolean>> exchangePublicToken(@RequestBody String publicToken) {
         Boolean res = false;
-
         try {
             res = plaidService.exchangePublicToken(publicToken);
         } catch (IOException e) {
@@ -34,7 +30,7 @@ public class PlaidController {
 
         System.out.println(res);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new GeneralResponseDto<>(publicToken));
+        return ResponseEntity.status(HttpStatus.OK).body(new GeneralResponseDto<>(res));
     }
 
 }
