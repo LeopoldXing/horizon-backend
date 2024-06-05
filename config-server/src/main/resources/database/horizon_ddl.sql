@@ -142,7 +142,7 @@ CREATE TABLE `accounts`
     `id`                    bigint                                                        NOT NULL AUTO_INCREMENT,
     `name`                  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `official_name`         varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `ownerId`               bigint                                                        NOT NULL,
+    `owner_id`              bigint                                                        NOT NULL,
     `current_balance`       decimal(10, 2)                                                NOT NULL,
     `available_balance`     decimal(10, 2)                                                DEFAULT NULL,
     `limit_balance`         decimal(10, 2)                                                DEFAULT NULL,
@@ -160,9 +160,9 @@ CREATE TABLE `accounts`
     `last_modified_by`      varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY                     `accounts_banks_FK` (`institution_id`),
-    KEY                     `accounts_users_FK` (`ownerId`),
+    KEY                     `accounts_users_FK` (`owner_id`),
     CONSTRAINT `accounts_banks_FK` FOREIGN KEY (`institution_id`) REFERENCES `banks` (`id`),
-    CONSTRAINT `accounts_users_FK` FOREIGN KEY (`ownerId`) REFERENCES `users` (`id`)
+    CONSTRAINT `accounts_users_FK` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 

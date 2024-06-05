@@ -24,7 +24,7 @@ public class RequestUtil {
         HttpServletRequest request = RequestUtil.getRequestFromContext();
         if (!ObjectUtils.isEmpty(request)) {
             String header = request.getHeader(GatewayConstants.USERID_HEADER_KEY);
-            if (!StringUtils.hasLength(header)) {
+            if (StringUtils.hasLength(header)) {
                 uid = Long.parseLong(header);
             }
         }

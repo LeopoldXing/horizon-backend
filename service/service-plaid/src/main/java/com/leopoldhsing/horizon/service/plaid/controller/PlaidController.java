@@ -27,9 +27,6 @@ public class PlaidController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println(res);
-
         return ResponseEntity.status(HttpStatus.OK).body(new GeneralResponseDto<>(res));
     }
 

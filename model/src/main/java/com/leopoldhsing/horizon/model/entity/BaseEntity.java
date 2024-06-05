@@ -21,7 +21,7 @@ public class BaseEntity {
 
     @LastModifiedDate
     @Column(insertable = false)
-    private LocalDateTime updatedAt;
+    private LocalDateTime lastModifiedAt;
 
     @CreatedDate
     @Column(updatable = false)
@@ -29,17 +29,17 @@ public class BaseEntity {
 
     @LastModifiedBy
     @Column(insertable = false)
-    private String updatedBy;
+    private String lastModifiedBy;
 
     public BaseEntity() {
     }
 
-    public BaseEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
+    public BaseEntity(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy) {
         this.id = id;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.lastModifiedAt = lastModifiedAt;
         this.createdBy = createdBy;
-        this.updatedBy = updatedBy;
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override
@@ -47,9 +47,9 @@ public class BaseEntity {
         return "BaseEntity{" +
                 "id=" + id +
                 ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", lastModifiedAt=" + lastModifiedAt +
                 ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
+                ", lastModifiedBy='" + lastModifiedBy + '\'' +
                 '}';
     }
 
@@ -69,12 +69,12 @@ public class BaseEntity {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public LocalDateTime getLastModifiedAt() {
+        return lastModifiedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
+        this.lastModifiedAt = lastModifiedAt;
     }
 
     public String getCreatedBy() {
@@ -85,12 +85,12 @@ public class BaseEntity {
         this.createdBy = createdBy;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override
@@ -99,16 +99,16 @@ public class BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
 
         BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(createdBy, that.createdBy) && Objects.equals(updatedBy, that.updatedBy);
+        return Objects.equals(id, that.id) && Objects.equals(createdAt, that.createdAt) && Objects.equals(lastModifiedAt, that.lastModifiedAt) && Objects.equals(createdBy, that.createdBy) && Objects.equals(lastModifiedBy, that.lastModifiedBy);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hashCode(id);
         result = 31 * result + Objects.hashCode(createdAt);
-        result = 31 * result + Objects.hashCode(updatedAt);
+        result = 31 * result + Objects.hashCode(lastModifiedAt);
         result = 31 * result + Objects.hashCode(createdBy);
-        result = 31 * result + Objects.hashCode(updatedBy);
+        result = 31 * result + Objects.hashCode(lastModifiedBy);
         return result;
     }
 }

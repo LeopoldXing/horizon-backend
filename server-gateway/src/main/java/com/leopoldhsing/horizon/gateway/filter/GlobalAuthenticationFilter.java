@@ -94,7 +94,15 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
             return response.writeWith(Mono.just(wrap));
         }
 
-        // 2.4 requests that needed to be accessed after signing in
+        // 2.4 handle sign-up sign-in requests
+        String signInUriPattern = configurationProperties.getSignInUriPatterns();
+        String signUpUriPattern = configurationProperties.getSignUpUriPatterns();
+        if (antPathMatcher.match(signInUriPattern, path) || antPathMatcher.match(signUpUriPattern, path)) {
+            // sign-in and sign-up requests will be passed directly
+            return chain.filter(exchange);
+        }
+
+        // 2.5 requests that needed to be accessed after signing in
         List<String> requireAuthUriPatterns = configurationProperties.getRequireAuthUriPatterns();
         if (!CollectionUtils.isEmpty(requireAuthUriPatterns)) {
             long requiredAuthUriCounts = requireAuthUriPatterns
@@ -104,7 +112,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
             if (requiredAuthUriCounts > 0) {
                 // justify if currently in login state
                 String token = this.getTokenFromRequest(exchange);
-                if (StringUtils.hasLength(token) || !this.tokenExistsInRedis(token)) {
+                if (!StringUtils.hasLength(token) || !this.tokenExistsInRedis(token)) {
                     // currently not logged in || token is not valid
                     return redirectPage(exchange, configurationProperties.getLoginPath());
                 }
@@ -140,7 +148,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
             }
         }
 
-        return userIdPenetration(exchange, chain, 1L);
+        return userIdPenetration(exchange, chain, getUidByToken(token));
     }
 
     /**
@@ -238,8 +246,18 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
      * @return
      */
     private Boolean tokenExistsInRedis(String token) {
-        String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token;
+        String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token;
         return redisTemplate.hasKey(key);
+    }
+
+    private Long getUidByToken(String token) {
+        String key = RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token;
+        String uid = redisTemplate.opsForValue().get(key);
+        long res = 0L;
+        if (StringUtils.hasLength(uid)) {
+            res = Long.parseLong(uid);
+        }
+        return res;
     }
 
     /**

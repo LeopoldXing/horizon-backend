@@ -23,8 +23,8 @@ horizon:
         - /ts/**
         - /img/**
         - /fonts/**
-        - /api/*/user/sign-in
-        - /api/*/user/sign-up
-      login-path: http://localhost:3000
+      login-path: http://localhost:3000/sign-in
       require-auth-uri-patterns:
         - /api/**
+      sign-in-uri-patterns: /api/*/user/sign-in
+      sign-up-uri-patterns: /api/*/user/sign-up

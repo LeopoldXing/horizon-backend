@@ -2,7 +2,7 @@ package com.leopoldhsing.horizon.model.vo;
 
 import java.util.Objects;
 
-public class UserSignUpResponseVo {
+public class UserResponseVo {
     private String $id;
     private String userId;
     private String name;
@@ -19,10 +19,10 @@ public class UserSignUpResponseVo {
     private String dwollaCustomerId;
     private String token;
 
-    public UserSignUpResponseVo() {
+    public UserResponseVo() {
     }
 
-    public UserSignUpResponseVo(String $id, String userId, String name, String firstName, String lastName, String email, String address1, String city, String state, String postalCode, String dateOfBirth, String ssn, String dwollaCustomerUrl, String dwollaCustomerId, String token) {
+    public UserResponseVo(String $id, String userId, String name, String firstName, String lastName, String email, String address1, String city, String state, String postalCode, String dateOfBirth, String ssn, String dwollaCustomerUrl, String dwollaCustomerId, String token) {
         this.$id = $id;
         this.userId = userId;
         this.name = name;
@@ -186,7 +186,7 @@ public class UserSignUpResponseVo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserSignUpResponseVo that = (UserSignUpResponseVo) o;
+        UserResponseVo that = (UserResponseVo) o;
         return Objects.equals($id, that.$id) && Objects.equals(userId, that.userId) && Objects.equals(name, that.name) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(address1, that.address1) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(postalCode, that.postalCode) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(ssn, that.ssn) && Objects.equals(dwollaCustomerUrl, that.dwollaCustomerUrl) && Objects.equals(dwollaCustomerId, that.dwollaCustomerId) && Objects.equals(token, that.token);
     }
 

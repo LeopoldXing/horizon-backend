@@ -1,6 +1,5 @@
 package com.leopoldhsing.horizon.service.bank.service.impl;
 
-import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
 import com.leopoldhsing.horizon.model.dto.BankDto;
 import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.model.mapper.BankMapper;
