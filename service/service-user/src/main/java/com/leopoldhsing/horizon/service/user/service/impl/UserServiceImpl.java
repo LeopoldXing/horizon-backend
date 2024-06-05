@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.service.user.service.impl;
 
+import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.User;
 import com.leopoldhsing.horizon.model.mapper.UserMapper;
@@ -45,6 +46,14 @@ public class UserServiceImpl implements IUserService {
         userRepository.save(user);
 
         // 5. convert user -> userDto, return userDto
+        return UserMapper.mapToUserDto(user);
+    }
+
+    @Override
+    public UserDto getUserById(Long uid) {
+        User user = userRepository.findById(uid).orElseThrow(
+                () -> new ResourceNotFoundException("User", "uid", String.valueOf(uid))
+        );
         return UserMapper.mapToUserDto(user);
     }
 }

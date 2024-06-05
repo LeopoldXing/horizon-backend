@@ -7,4 +7,6 @@ public interface IUserService {
     UserDto userSignIn(String email, String password);
 
     UserDto userSignUp(UserSignUpVo userSignUpVo);
+
+    UserDto getUserById(Long uid);
 }

@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.service.user.controller;
 
+import com.leopoldhsing.horizon.common.utils.RequestUtil;
 import com.leopoldhsing.horizon.common.utils.TokenUtil;
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto;
 import com.leopoldhsing.horizon.model.dto.GeneralResponseDto;
@@ -49,5 +50,16 @@ public class UserController {
         System.out.println(responseVo);
 
         return ResponseEntity.ok(new GeneralResponseDto<>(responseVo));
+    }
+
+    @GetMapping
+    public ResponseEntity<GeneralResponseDto<UserDto>> getUser() {
+        // 1. get userId
+        Long uid = RequestUtil.getUid();
+
+        // 2. search user by id
+        UserDto userDto = userService.getUserById(uid);
+
+        return ResponseEntity.ok(new GeneralResponseDto<>(userDto));
     }
 }
