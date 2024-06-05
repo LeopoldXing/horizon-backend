@@ -31,9 +31,11 @@ public class BankServiceImpl implements IBankService {
         // 2. get unique bank ids then get all Bank information
         Set<Long> bankIdSet = new HashSet<>();
         accountList.forEach(account -> bankIdSet.add(account.getInstitutionId()));
-        List<BankDto> bankList = bankIdSet.stream().map(bankId -> BankMapper.mapToBankDto(bankRepository.findById(bankId)
-                .orElseThrow(() -> new ResourceNotFoundException("Bank", "bankId", String.valueOf(bankId)))
-        )).toList();
+        List<BankDto> bankList = bankIdSet
+                .stream()
+                .map(bankId -> BankMapper.mapToBankDto(bankRepository.findById(bankId).orElseThrow(
+                        () -> new ResourceNotFoundException("Bank", "bankId", String.valueOf(bankId)))
+                )).toList();
 
         return bankList;
     }

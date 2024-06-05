@@ -16,7 +16,7 @@ import java.util.List;
 public class BankController {
 
     @Autowired
-    private IBankService IBankService;
+    private IBankService bankService;
 
     @GetMapping("/list")
     public ResponseEntity<GeneralResponseDto<List<BankDto>>> getBanks() {
@@ -24,7 +24,7 @@ public class BankController {
         Long userId = RequestUtil.getUid();
 
         // 2. get bank list
-        List<BankDto> bankList = IBankService.getBankListByUserId(userId);
+        List<BankDto> bankList = bankService.getBankListByUserId(userId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new GeneralResponseDto<>(bankList));
