@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leopoldhsing.horizon.common.utils.TokenUtil;
 import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
+import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
+import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
+import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.User;
 import com.leopoldhsing.horizon.model.mapper.UserMapper;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,6 +33,12 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private PlaidFeignClient plaidFeignClient;
+
+    @Autowired
+    private AccountFeignClient accountFeignClient;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -73,7 +83,11 @@ public class UserServiceImpl implements IUserService {
             throw new RuntimeException(e);
         }
 
-        // 7. return result
+        // 7. get plaid accounts [RPC]
+        List<AccountDto> accountDtos = plaidFeignClient.getAccountsFromPlaidByUserId(userDto.getId());
+        accountFeignClient.saveAccountList(accountDtos);
+
+        // 8. return result
         Map<String, Object> res = new HashMap<>();
         res.put("token", token);
         res.put("user", userDto);

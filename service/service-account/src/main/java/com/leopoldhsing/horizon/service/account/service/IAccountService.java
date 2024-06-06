@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IAccountService {
     List<AccountDto> getAccountByUserId(Long uid);
+
+    void saveAccountList(List<AccountDto> accountDtoList);
 }

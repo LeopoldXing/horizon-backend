@@ -56,6 +56,7 @@ public class PlaidAccountServiceImpl implements IPlaidAccountService {
                     Account account = new Account();
                     account.setPlaidAccountId(accountBase.getAccountId());
                     account.setName(accountBase.getName());
+                    account.setOwnerId(userId);
                     account.setMask(accountBase.getMask());
                     account.setOfficialName(accountBase.getOfficialName());
                     account.setType(accountBase.getType().toString());

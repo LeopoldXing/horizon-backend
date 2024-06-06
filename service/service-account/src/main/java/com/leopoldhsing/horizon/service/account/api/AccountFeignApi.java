@@ -3,10 +3,7 @@ package com.leopoldhsing.horizon.service.account.api;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.service.account.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +18,11 @@ public class AccountFeignApi {
     public List<AccountDto> getAccountsByUserId(@PathVariable("uid") Long uid) {
         List<AccountDto> accountByUserId = accountService.getAccountByUserId(uid);
         return accountByUserId;
+    }
+
+    @PostMapping("/list")
+    public void saveAccountList(@RequestBody List<AccountDto> accountDtoList) {
+        accountService.saveAccountList(accountDtoList);
     }
 
 }
