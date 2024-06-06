@@ -22,6 +22,10 @@ spring:
           uri: lb://user
           predicates:
             - Path=/api/*/user/**
+        - id: service_account
+          uri: lb://account
+          predicates:
+            - Path=/api/*/account/**
 
 eureka:
   instance:
