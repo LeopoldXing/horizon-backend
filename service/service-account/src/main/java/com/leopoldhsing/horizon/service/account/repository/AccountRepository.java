@@ -1,4 +1,4 @@
-package com.leopoldhsing.horizon.service.bank.repository;
+package com.leopoldhsing.horizon.service.account.repository;
 
 import com.leopoldhsing.horizon.model.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;

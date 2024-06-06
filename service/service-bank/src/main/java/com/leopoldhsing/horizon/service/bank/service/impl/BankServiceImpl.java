@@ -1,9 +1,9 @@
 package com.leopoldhsing.horizon.service.bank.service.impl;
 
+import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
+import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.BankDto;
-import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.model.mapper.BankMapper;
-import com.leopoldhsing.horizon.service.bank.repository.AccountRepository;
 import com.leopoldhsing.horizon.service.bank.repository.BankRepository;
 import com.leopoldhsing.horizon.service.bank.service.IBankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +20,16 @@ public class BankServiceImpl implements IBankService {
     private BankRepository bankRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountFeignClient accountFeignClient;
 
     @Override
     public List<BankDto> getBankListByUserId(Long userId) {
-        // 1. get account list
-        List<Account> accountList = accountRepository.findAccountsByOwnerId(userId);
+        // 1. get account list [RPC]
+        List<AccountDto> accountList = accountFeignClient.getAccountsByUserId(userId);
 
         // 2. get unique bank ids then get all Bank information
         Set<Long> bankIdSet = new HashSet<>();
-        accountList.forEach(account -> bankIdSet.add(account.getInstitutionId()));
+        accountList.forEach(account -> bankIdSet.add(account.getInstitution().getId()));
         List<BankDto> bankList = bankRepository.findAllById(bankIdSet)
                 .parallelStream()
                 .map(BankMapper::mapToBankDto)

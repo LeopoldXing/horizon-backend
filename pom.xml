@@ -28,6 +28,7 @@
         <spring.jpa.version>3.2.6</spring.jpa.version>
         <spring.web.version>3.2.6</spring.web.version>
         <redis.version>3.2.6</redis.version>
+        <openfeign.version>4.1.1</openfeign.version>
     </properties>
     <dependencies>
         <dependency>
@@ -104,6 +105,12 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+            <!-- openfeign -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${openfeign.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
