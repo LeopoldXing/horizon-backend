@@ -12,79 +12,87 @@ import java.util.Objects;
 public class Account extends BaseEntity {
 
     private String name;
+    private String plaidAccountId;
     private String officialName;
     private Long ownerId;
     private BigDecimal currentBalance;
     private BigDecimal availableBalance;
     private BigDecimal limitBalance;
     private String isoCurrencyCode;
-    private Long institutionId;
+    private Long bankId;
+    private String institutionId;
     private String shareableId;
     private String fundingSourceUrl;
     private String mask;
     private String persistentAccountId;
     private String type;
-    private String subType;
+    private String subtype;
 
     public Account() {
     }
 
-    public Account(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public Account(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
     }
 
-    public Account(String name, String officialName, Long ownerId, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, Long institutionId, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subType) {
+    public Account(String name, String plaidAccountId, String officialName, Long ownerId, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, Long bankId, String institutionId, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subtype) {
         this.name = name;
+        this.plaidAccountId = plaidAccountId;
         this.officialName = officialName;
         this.ownerId = ownerId;
         this.currentBalance = currentBalance;
         this.availableBalance = availableBalance;
         this.limitBalance = limitBalance;
         this.isoCurrencyCode = isoCurrencyCode;
+        this.bankId = bankId;
         this.institutionId = institutionId;
         this.shareableId = shareableId;
         this.fundingSourceUrl = fundingSourceUrl;
         this.mask = mask;
         this.persistentAccountId = persistentAccountId;
         this.type = type;
-        this.subType = subType;
+        this.subtype = subtype;
     }
 
-    public Account(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String name, String officialName, Long ownerId, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, Long institutionId, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subType) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public Account(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String name, String plaidAccountId, String officialName, Long ownerId, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, Long bankId, String institutionId, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subtype) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
         this.name = name;
+        this.plaidAccountId = plaidAccountId;
         this.officialName = officialName;
         this.ownerId = ownerId;
         this.currentBalance = currentBalance;
         this.availableBalance = availableBalance;
         this.limitBalance = limitBalance;
         this.isoCurrencyCode = isoCurrencyCode;
+        this.bankId = bankId;
         this.institutionId = institutionId;
         this.shareableId = shareableId;
         this.fundingSourceUrl = fundingSourceUrl;
         this.mask = mask;
         this.persistentAccountId = persistentAccountId;
         this.type = type;
-        this.subType = subType;
+        this.subtype = subtype;
     }
 
     @Override
     public String toString() {
         return "Account{" +
                 "name='" + name + '\'' +
+                ", plaidAccountId='" + plaidAccountId + '\'' +
                 ", officialName='" + officialName + '\'' +
                 ", ownerId=" + ownerId +
                 ", currentBalance=" + currentBalance +
                 ", availableBalance=" + availableBalance +
                 ", limitBalance=" + limitBalance +
                 ", isoCurrencyCode='" + isoCurrencyCode + '\'' +
-                ", institutionId=" + institutionId +
+                ", bankId=" + bankId +
+                ", institutionId='" + institutionId + '\'' +
                 ", shareableId='" + shareableId + '\'' +
                 ", fundingSourceUrl='" + fundingSourceUrl + '\'' +
                 ", mask='" + mask + '\'' +
                 ", persistentAccountId='" + persistentAccountId + '\'' +
                 ", type='" + type + '\'' +
-                ", subType='" + subType + '\'' +
+                ", subtype='" + subtype + '\'' +
                 '}';
     }
 
@@ -94,6 +102,14 @@ public class Account extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPlaidAccountId() {
+        return plaidAccountId;
+    }
+
+    public void setPlaidAccountId(String plaidAccountId) {
+        this.plaidAccountId = plaidAccountId;
     }
 
     public String getOfficialName() {
@@ -144,11 +160,19 @@ public class Account extends BaseEntity {
         this.isoCurrencyCode = isoCurrencyCode;
     }
 
-    public Long getInstitutionId() {
+    public Long getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(Long bankId) {
+        this.bankId = bankId;
+    }
+
+    public String getInstitutionId() {
         return institutionId;
     }
 
-    public void setInstitutionId(Long institutionId) {
+    public void setInstitutionId(String institutionId) {
         this.institutionId = institutionId;
     }
 
@@ -192,12 +216,12 @@ public class Account extends BaseEntity {
         this.type = type;
     }
 
-    public String getSubType() {
-        return subType;
+    public String getSubtype() {
+        return subtype;
     }
 
-    public void setSubType(String subType) {
-        this.subType = subType;
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
     }
 
     @Override
@@ -207,26 +231,28 @@ public class Account extends BaseEntity {
         if (!super.equals(o)) return false;
 
         Account account = (Account) o;
-        return Objects.equals(name, account.name) && Objects.equals(officialName, account.officialName) && Objects.equals(ownerId, account.ownerId) && Objects.equals(currentBalance, account.currentBalance) && Objects.equals(availableBalance, account.availableBalance) && Objects.equals(limitBalance, account.limitBalance) && Objects.equals(isoCurrencyCode, account.isoCurrencyCode) && Objects.equals(institutionId, account.institutionId) && Objects.equals(shareableId, account.shareableId) && Objects.equals(fundingSourceUrl, account.fundingSourceUrl) && Objects.equals(mask, account.mask) && Objects.equals(persistentAccountId, account.persistentAccountId) && Objects.equals(type, account.type) && Objects.equals(subType, account.subType);
+        return Objects.equals(name, account.name) && Objects.equals(plaidAccountId, account.plaidAccountId) && Objects.equals(officialName, account.officialName) && Objects.equals(ownerId, account.ownerId) && Objects.equals(currentBalance, account.currentBalance) && Objects.equals(availableBalance, account.availableBalance) && Objects.equals(limitBalance, account.limitBalance) && Objects.equals(isoCurrencyCode, account.isoCurrencyCode) && Objects.equals(bankId, account.bankId) && Objects.equals(institutionId, account.institutionId) && Objects.equals(shareableId, account.shareableId) && Objects.equals(fundingSourceUrl, account.fundingSourceUrl) && Objects.equals(mask, account.mask) && Objects.equals(persistentAccountId, account.persistentAccountId) && Objects.equals(type, account.type) && Objects.equals(subtype, account.subtype);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + Objects.hashCode(name);
+        result = 31 * result + Objects.hashCode(plaidAccountId);
         result = 31 * result + Objects.hashCode(officialName);
         result = 31 * result + Objects.hashCode(ownerId);
         result = 31 * result + Objects.hashCode(currentBalance);
         result = 31 * result + Objects.hashCode(availableBalance);
         result = 31 * result + Objects.hashCode(limitBalance);
         result = 31 * result + Objects.hashCode(isoCurrencyCode);
+        result = 31 * result + Objects.hashCode(bankId);
         result = 31 * result + Objects.hashCode(institutionId);
         result = 31 * result + Objects.hashCode(shareableId);
         result = 31 * result + Objects.hashCode(fundingSourceUrl);
         result = 31 * result + Objects.hashCode(mask);
         result = 31 * result + Objects.hashCode(persistentAccountId);
         result = 31 * result + Objects.hashCode(type);
-        result = 31 * result + Objects.hashCode(subType);
+        result = 31 * result + Objects.hashCode(subtype);
         return result;
     }
 }

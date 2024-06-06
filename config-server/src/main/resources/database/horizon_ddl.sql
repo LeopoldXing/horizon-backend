@@ -105,6 +105,7 @@ DROP TABLE IF EXISTS `banks`;
 CREATE TABLE `banks`
 (
     `id`               bigint                                                        NOT NULL AUTO_INCREMENT,
+    `institution_id`   varchar(100) COLLATE utf8mb4_general_ci                       DEFAULT NULL,
     `name`             varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `url`              varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `status`           varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -140,6 +141,8 @@ DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts`
 (
     `id`                    bigint                                                        NOT NULL AUTO_INCREMENT,
+    `plaid_account_id`      varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `bank_id`               bigint                                                        DEFAULT NULL,
     `name`                  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `official_name`         varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `owner_id`              bigint                                                        NOT NULL,
@@ -147,7 +150,7 @@ CREATE TABLE `accounts`
     `available_balance`     decimal(10, 2)                                                DEFAULT NULL,
     `limit_balance`         decimal(10, 2)                                                DEFAULT NULL,
     `iso_currency_code`     varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
-    `institution_id`        bigint                                                        DEFAULT NULL,
+    `institution_id`        varchar(19) COLLATE utf8mb4_general_ci                        DEFAULT NULL,
     `shareable_id`          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `funding_source_url`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `mask`                  varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT NULL,
@@ -161,7 +164,8 @@ CREATE TABLE `accounts`
     PRIMARY KEY (`id`),
     KEY                     `accounts_banks_FK` (`institution_id`),
     KEY                     `accounts_users_FK` (`owner_id`),
-    CONSTRAINT `accounts_banks_FK` FOREIGN KEY (`institution_id`) REFERENCES `banks` (`id`),
+    KEY                     `accounts_banks2_FK` (`bank_id`),
+    CONSTRAINT `accounts_banks2_FK` FOREIGN KEY (`bank_id`) REFERENCES `banks` (`id`),
     CONSTRAINT `accounts_users_FK` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

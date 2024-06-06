@@ -6,6 +6,7 @@ import java.util.Objects;
 public class AccountDto {
 
     private Long id;
+    private String plaidAccountId;
     private String name;
     private String officialName;
     private UserDto owner;
@@ -24,8 +25,9 @@ public class AccountDto {
     public AccountDto() {
     }
 
-    public AccountDto(Long id, String name, String officialName, UserDto owner, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, BankDto institution, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subType) {
+    public AccountDto(Long id, String plaidAccountId, String name, String officialName, UserDto owner, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, BankDto institution, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subType) {
         this.id = id;
+        this.plaidAccountId = plaidAccountId;
         this.name = name;
         this.officialName = officialName;
         this.owner = owner;
@@ -46,6 +48,7 @@ public class AccountDto {
     public String toString() {
         return "AccountDto{" +
                 "id=" + id +
+                ", plaidAccountId='" + plaidAccountId + '\'' +
                 ", name='" + name + '\'' +
                 ", officialName='" + officialName + '\'' +
                 ", owner=" + owner +
@@ -69,6 +72,14 @@ public class AccountDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPlaidAccountId() {
+        return plaidAccountId;
+    }
+
+    public void setPlaidAccountId(String plaidAccountId) {
+        this.plaidAccountId = plaidAccountId;
     }
 
     public String getName() {
@@ -189,12 +200,13 @@ public class AccountDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         AccountDto that = (AccountDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(officialName, that.officialName) && Objects.equals(owner, that.owner) && Objects.equals(currentBalance, that.currentBalance) && Objects.equals(availableBalance, that.availableBalance) && Objects.equals(limitBalance, that.limitBalance) && Objects.equals(isoCurrencyCode, that.isoCurrencyCode) && Objects.equals(institution, that.institution) && Objects.equals(shareableId, that.shareableId) && Objects.equals(fundingSourceUrl, that.fundingSourceUrl) && Objects.equals(mask, that.mask) && Objects.equals(persistentAccountId, that.persistentAccountId) && Objects.equals(type, that.type) && Objects.equals(subType, that.subType);
+        return Objects.equals(id, that.id) && Objects.equals(plaidAccountId, that.plaidAccountId) && Objects.equals(name, that.name) && Objects.equals(officialName, that.officialName) && Objects.equals(owner, that.owner) && Objects.equals(currentBalance, that.currentBalance) && Objects.equals(availableBalance, that.availableBalance) && Objects.equals(limitBalance, that.limitBalance) && Objects.equals(isoCurrencyCode, that.isoCurrencyCode) && Objects.equals(institution, that.institution) && Objects.equals(shareableId, that.shareableId) && Objects.equals(fundingSourceUrl, that.fundingSourceUrl) && Objects.equals(mask, that.mask) && Objects.equals(persistentAccountId, that.persistentAccountId) && Objects.equals(type, that.type) && Objects.equals(subType, that.subType);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(plaidAccountId);
         result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(officialName);
         result = 31 * result + Objects.hashCode(owner);
