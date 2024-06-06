@@ -9,8 +9,8 @@ server:
   port: 9006
 
 plaid:
-  client-id:
-  secret:
+  client-id: 6650078958d6ed001ce3678b
+  secret: 36357754a0b0f02828a2247007735e
   env: sandbox
   products:
     - auth

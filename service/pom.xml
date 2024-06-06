@@ -13,6 +13,7 @@
         <module>service-user</module>
         <module>service-dwolla</module>
         <module>service-plaid</module>
+        <module>service-account</module>
     </modules>
 
     <packaging>pom</packaging>
