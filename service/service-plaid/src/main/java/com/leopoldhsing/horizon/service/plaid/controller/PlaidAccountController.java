@@ -3,6 +3,7 @@ package com.leopoldhsing.horizon.service.plaid.controller;
 import com.leopoldhsing.horizon.common.utils.RequestUtil;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.GeneralResponseDto;
+import com.leopoldhsing.horizon.model.mapper.AccountMapper;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class PlaidAccountController {
         Long userId = RequestUtil.getUid();
         List<AccountDto> res = null;
         try {
-            res = plaidAccountService.getAccountsFromPlaidByUserId(userId);
+            res = plaidAccountService.getAccountsFromPlaidByUserId(userId).stream().map(AccountMapper::mapToAccountDto).toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,6 +1,7 @@
 package com.leopoldhsing.horizon.service.account.api;
 
 import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.service.account.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,8 @@ public class AccountFeignApi {
     }
 
     @PostMapping("/list")
-    public void saveAccountList(@RequestBody List<AccountDto> accountDtoList) {
-        accountService.saveAccountList(accountDtoList);
+    public void saveAccountList(@RequestBody List<Account> accountList) {
+        accountService.saveAccountList(accountList);
     }
 
 }

@@ -57,4 +57,11 @@ public class UserController {
 
         return ResponseEntity.ok(new GeneralResponseDto<>(responseVo));
     }
+
+    @GetMapping("/init")
+    public ResponseEntity<GeneralResponseDto<Void>> initializeUser() {
+        Long userId = RequestUtil.getUid();
+        userService.initializeUser(userId);
+        return ResponseEntity.ok(new GeneralResponseDto<>());
+    }
 }

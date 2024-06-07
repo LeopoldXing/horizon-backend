@@ -1,6 +1,7 @@
 package com.leopoldhsing.horizon.feign.account;
 
 import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.entity.Account;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,5 +17,5 @@ public interface AccountFeignClient {
     List<AccountDto> getAccountsByUserId(@PathVariable("uid") Long uid);
 
     @PostMapping("/api/v1/inner/account/list")
-    void saveAccountList(@RequestBody List<AccountDto> accountDtoList);
+    void saveAccountList(@RequestBody List<Account> accountList);
 }

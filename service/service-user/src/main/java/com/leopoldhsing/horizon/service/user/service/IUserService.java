@@ -11,4 +11,6 @@ public interface IUserService {
     Map<String, Object> userSignUp(UserSignUpVo userSignUpVo);
 
     UserDto getUserById(Long uid);
+
+    void initializeUser(Long userId);
 }

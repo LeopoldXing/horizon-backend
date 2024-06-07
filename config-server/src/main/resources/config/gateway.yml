@@ -26,6 +26,10 @@ spring:
           uri: lb://account
           predicates:
             - Path=/api/*/account/**
+        - id: service_bank
+          uri: lb://bank
+          predicates:
+            - Path=/api/*/bank/**
 
 eureka:
   instance:

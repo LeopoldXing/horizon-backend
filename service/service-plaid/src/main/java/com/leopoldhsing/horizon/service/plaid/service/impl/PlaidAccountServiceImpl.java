@@ -2,9 +2,7 @@ package com.leopoldhsing.horizon.service.plaid.service.impl;
 
 import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
 import com.leopoldhsing.horizon.common.utils.exception.InvalidAccessTokenException;
-import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.entity.Account;
-import com.leopoldhsing.horizon.model.mapper.AccountMapper;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidAccountService;
 import com.plaid.client.model.AccountsBalanceGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
@@ -30,7 +28,7 @@ public class PlaidAccountServiceImpl implements IPlaidAccountService {
     private PlaidApi plaidClient;
 
     @Override
-    public List<AccountDto> getAccountsFromPlaidByUserId(Long userId) throws IOException {
+    public List<Account> getAccountsFromPlaidByUserId(Long userId) throws IOException {
         // 1. get access token
         String accessToken = redisTemplate
                 .opsForValue()
@@ -50,7 +48,7 @@ public class PlaidAccountServiceImpl implements IPlaidAccountService {
         // 4.1 get institutionId
         String institutionId = responseBody.getItem().getInstitutionId();
         // 4.2 get account list
-        List<AccountDto> accounts = responseBody.getAccounts()
+        List<Account> accounts = responseBody.getAccounts()
                 .parallelStream()
                 .map(accountBase -> {
                     Account account = new Account();
@@ -61,12 +59,12 @@ public class PlaidAccountServiceImpl implements IPlaidAccountService {
                     account.setOfficialName(accountBase.getOfficialName());
                     account.setType(accountBase.getType().toString());
                     account.setSubtype(Objects.requireNonNull(accountBase.getSubtype()).toString());
-                    account.setCurrentBalance(BigDecimal.valueOf(accountBase.getBalances().getCurrent()));
-                    account.setAvailableBalance(BigDecimal.valueOf(accountBase.getBalances().getAvailable()));
-                    account.setLimitBalance(BigDecimal.valueOf(accountBase.getBalances().getLimit()));
+                    account.setCurrentBalance(BigDecimal.valueOf(accountBase.getBalances().getCurrent() == null ? 0 : accountBase.getBalances().getCurrent()));
+                    account.setAvailableBalance(BigDecimal.valueOf(accountBase.getBalances().getAvailable() == null ? 0 : accountBase.getBalances().getAvailable()));
+                    account.setLimitBalance(BigDecimal.valueOf(accountBase.getBalances().getLimit() == null ? 0 : accountBase.getBalances().getLimit()));
                     account.setIsoCurrencyCode(accountBase.getBalances().getIsoCurrencyCode());
                     account.setInstitutionId(institutionId);
-                    return AccountMapper.mapToAccountDto(account);
+                    return account;
                 }).toList();
 
         // 5. return result;
