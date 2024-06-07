@@ -1,6 +1,6 @@
 package com.leopoldhsing.horizon.model.dto;
 
-import com.leopoldhsing.horizon.model.enumeration.DwollaTransactionStatus;
+import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ public class TransactionDto {
     private LocalDateTime dateTime;
     private LocalDate authorizedDate;
     private LocalDateTime authorizedDateTime;
-    private DwollaTransactionStatus status;
+    private TransactionStatus status;
     private BankDto senderBank;
     private CategoryDto category;
     private BankDto receiverBank;
@@ -32,7 +32,7 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
-    public TransactionDto(Long id, String name, BigDecimal amount, String currency, AccountDto accountDto, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, DwollaTransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
+    public TransactionDto(Long id, String name, BigDecimal amount, String currency, AccountDto accountDto, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, TransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -183,11 +183,11 @@ public class TransactionDto {
         this.authorizedDateTime = authorizedDateTime;
     }
 
-    public DwollaTransactionStatus getStatus() {
+    public TransactionStatus getStatus() {
         return status;
     }
 
-    public void setStatus(DwollaTransactionStatus status) {
+    public void setStatus(TransactionStatus status) {
         this.status = status;
     }
 

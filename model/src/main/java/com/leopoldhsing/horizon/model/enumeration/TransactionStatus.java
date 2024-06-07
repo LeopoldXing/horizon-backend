@@ -1,6 +1,6 @@
 package com.leopoldhsing.horizon.model.enumeration;
 
-public enum DwollaTransactionStatus {
+public enum TransactionStatus {
     PROCESSED(1),
     PENDING(2),
     CANCELLED(3),
@@ -8,7 +8,7 @@ public enum DwollaTransactionStatus {
 
     private final int statusCode;
 
-    DwollaTransactionStatus(int statusCode) {
+    TransactionStatus(int statusCode) {
         this.statusCode = statusCode;
     }
 

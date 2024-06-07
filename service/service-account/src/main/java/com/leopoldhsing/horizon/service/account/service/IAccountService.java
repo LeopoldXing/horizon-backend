@@ -9,4 +9,6 @@ public interface IAccountService {
     List<AccountDto> getAccountByUserId(Long uid);
 
     void saveAccountList(List<Account> accountList);
+
+    AccountDto getAccountById(Long accountId);
 }

@@ -15,7 +15,7 @@ public class AccountFeignApi {
     @Autowired
     private IAccountService accountService;
 
-    @GetMapping("/{uid}")
+    @GetMapping("/list/{uid}")
     public List<AccountDto> getAccountsByUserId(@PathVariable("uid") Long uid) {
         List<AccountDto> accountByUserId = accountService.getAccountByUserId(uid);
         return accountByUserId;
@@ -24,6 +24,12 @@ public class AccountFeignApi {
     @PostMapping("/list")
     public void saveAccountList(@RequestBody List<Account> accountList) {
         accountService.saveAccountList(accountList);
+    }
+
+    @GetMapping("/{accountId}")
+    public AccountDto getAccountById(@PathVariable("accountId") Long accountId) {
+        AccountDto accountDto = accountService.getAccountById(accountId);
+        return accountDto;
     }
 
 }

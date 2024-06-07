@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.service.account.service.impl;
 
+import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.model.mapper.AccountMapper;
@@ -26,6 +27,15 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public void saveAccountList(List<Account> accountList) {
         accountRepository.saveAll(accountList);
+    }
+
+    @Override
+    public AccountDto getAccountById(Long accountId) {
+        Account account = accountRepository.findById(accountId).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "accountId", String.valueOf(accountId))
+        );
+        AccountDto accountDto = AccountMapper.mapToAccountDto(account);
+        return accountDto;
     }
 
 }

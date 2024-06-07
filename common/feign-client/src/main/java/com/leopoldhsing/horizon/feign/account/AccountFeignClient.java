@@ -13,9 +13,12 @@ import java.util.List;
 @FeignClient("account")
 public interface AccountFeignClient {
 
-    @GetMapping("/api/v1/inner/account/{uid}")
+    @GetMapping("/api/v1/inner/account/list/{uid}")
     List<AccountDto> getAccountsByUserId(@PathVariable("uid") Long uid);
 
     @PostMapping("/api/v1/inner/account/list")
     void saveAccountList(@RequestBody List<Account> accountList);
+
+    @GetMapping("/api/v1/inner/account/{accountId}")
+    AccountDto getAccountById(@PathVariable("accountId") Long accountId);
 }
