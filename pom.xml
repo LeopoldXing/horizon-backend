@@ -19,7 +19,6 @@
         <module>service</module>
         <module>eureka-server</module>
         <module>server-gateway</module>
-        <module>service/service-transaction</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
