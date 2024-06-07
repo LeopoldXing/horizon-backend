@@ -167,7 +167,7 @@ CREATE TABLE `accounts`
     KEY                     `accounts_banks2_FK` (`bank_id`),
     CONSTRAINT `accounts_banks2_FK` FOREIGN KEY (`bank_id`) REFERENCES `banks` (`id`),
     CONSTRAINT `accounts_users_FK` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 -- horizon.transactions definition
@@ -178,6 +178,7 @@ CREATE TABLE `transactions`
     `name`                varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `amount`              decimal(10, 2)                                                NOT NULL,
     `currency`            varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `account_id`          bigint                                                        DEFAULT NULL,
     `routing_number`      varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `beneficiary_name`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `sender_id`           bigint                                                        DEFAULT NULL,
@@ -202,6 +203,8 @@ CREATE TABLE `transactions`
     KEY                   `transactions_users_FK` (`sender_id`),
     KEY                   `transactions_users_FK_1` (`receiver_id`),
     KEY                   `transactions_categories_FK` (`categoryId`),
+    KEY                   `transactions_accounts_FK` (`account_id`),
+    CONSTRAINT `transactions_accounts_FK` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
     CONSTRAINT `transactions_banks_FK` FOREIGN KEY (`sender_bank_id`) REFERENCES `banks` (`id`),
     CONSTRAINT `transactions_banks_FK_1` FOREIGN KEY (`receiver_bank_id`) REFERENCES `banks` (`id`),
     CONSTRAINT `transactions_categories_FK` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`),

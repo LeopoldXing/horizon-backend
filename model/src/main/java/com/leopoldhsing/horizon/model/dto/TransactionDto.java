@@ -13,6 +13,7 @@ public class TransactionDto {
     private String name;
     private BigDecimal amount;
     private String currency;
+    private AccountDto accountDto;
     private String routingNumber;
     private String beneficiaryName;
     private UserDto sender;
@@ -31,11 +32,12 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
-    public TransactionDto(Long id, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, DwollaTransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
+    public TransactionDto(Long id, String name, BigDecimal amount, String currency, AccountDto accountDto, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, DwollaTransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.currency = currency;
+        this.accountDto = accountDto;
         this.routingNumber = routingNumber;
         this.beneficiaryName = beneficiaryName;
         this.sender = sender;
@@ -59,6 +61,7 @@ public class TransactionDto {
                 ", name='" + name + '\'' +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
+                ", accountDto=" + accountDto +
                 ", routingNumber='" + routingNumber + '\'' +
                 ", beneficiaryName='" + beneficiaryName + '\'' +
                 ", sender=" + sender +
@@ -106,6 +109,14 @@ public class TransactionDto {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public AccountDto getAccountDto() {
+        return accountDto;
+    }
+
+    public void setAccountDto(AccountDto accountDto) {
+        this.accountDto = accountDto;
     }
 
     public String getRoutingNumber() {
@@ -226,7 +237,7 @@ public class TransactionDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         TransactionDto that = (TransactionDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(date, that.date) && Objects.equals(dateTime, that.dateTime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDateTime, that.authorizedDateTime) && status == that.status && Objects.equals(senderBank, that.senderBank) && Objects.equals(category, that.category) && Objects.equals(receiverBank, that.receiverBank) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(accountDto, that.accountDto) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(date, that.date) && Objects.equals(dateTime, that.dateTime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDateTime, that.authorizedDateTime) && status == that.status && Objects.equals(senderBank, that.senderBank) && Objects.equals(category, that.category) && Objects.equals(receiverBank, that.receiverBank) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
@@ -235,6 +246,7 @@ public class TransactionDto {
         result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(amount);
         result = 31 * result + Objects.hashCode(currency);
+        result = 31 * result + Objects.hashCode(accountDto);
         result = 31 * result + Objects.hashCode(routingNumber);
         result = 31 * result + Objects.hashCode(beneficiaryName);
         result = 31 * result + Objects.hashCode(sender);

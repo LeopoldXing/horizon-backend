@@ -1,6 +1,5 @@
 package com.leopoldhsing.horizon.service.plaid.api;
 
-import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/inner/plaid")
+@RequestMapping("/api/v1/inner/plaid/account")
 public class PlaidAccountApi {
 
     @Autowired

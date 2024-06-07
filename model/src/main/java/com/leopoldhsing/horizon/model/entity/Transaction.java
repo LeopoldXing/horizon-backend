@@ -15,6 +15,7 @@ public class Transaction extends BaseEntity {
     private String name;
     private BigDecimal amount;
     private String currency;
+    private Long accountId;
     private String routingNumber;
     private String beneficiaryName;
     private Long senderId;
@@ -33,14 +34,15 @@ public class Transaction extends BaseEntity {
     public Transaction() {
     }
 
-    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
     }
 
-    public Transaction(String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, String status, Long senderBankId, Long receiverBankId, Long categoryId, String channel, String email) {
+    public Transaction(String name, BigDecimal amount, String currency, Long accountId, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, String status, Long senderBankId, Long receiverBankId, Long categoryId, String channel, String email) {
         this.name = name;
         this.amount = amount;
         this.currency = currency;
+        this.accountId = accountId;
         this.routingNumber = routingNumber;
         this.beneficiaryName = beneficiaryName;
         this.senderId = senderId;
@@ -57,11 +59,12 @@ public class Transaction extends BaseEntity {
         this.email = email;
     }
 
-    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, String status, Long senderBankId, Long receiverBankId, Long categoryId, String channel, String email) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String name, BigDecimal amount, String currency, Long accountId, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, String status, Long senderBankId, Long receiverBankId, Long categoryId, String channel, String email) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
         this.name = name;
         this.amount = amount;
         this.currency = currency;
+        this.accountId = accountId;
         this.routingNumber = routingNumber;
         this.beneficiaryName = beneficiaryName;
         this.senderId = senderId;
@@ -84,6 +87,7 @@ public class Transaction extends BaseEntity {
                 "name='" + name + '\'' +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
+                ", accountId=" + accountId +
                 ", routingNumber='" + routingNumber + '\'' +
                 ", beneficiaryName='" + beneficiaryName + '\'' +
                 ", senderId=" + senderId +
@@ -123,6 +127,14 @@ public class Transaction extends BaseEntity {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public String getRoutingNumber() {
@@ -244,7 +256,7 @@ public class Transaction extends BaseEntity {
         if (!super.equals(o)) return false;
 
         Transaction that = (Transaction) o;
-        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(date, that.date) && Objects.equals(dateTime, that.dateTime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDateTime, that.authorizedDateTime) && Objects.equals(status, that.status) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId) && Objects.equals(categoryId, that.categoryId) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(accountId, that.accountId) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(date, that.date) && Objects.equals(dateTime, that.dateTime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDateTime, that.authorizedDateTime) && Objects.equals(status, that.status) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId) && Objects.equals(categoryId, that.categoryId) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
@@ -253,6 +265,7 @@ public class Transaction extends BaseEntity {
         result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(amount);
         result = 31 * result + Objects.hashCode(currency);
+        result = 31 * result + Objects.hashCode(accountId);
         result = 31 * result + Objects.hashCode(routingNumber);
         result = 31 * result + Objects.hashCode(beneficiaryName);
         result = 31 * result + Objects.hashCode(senderId);
