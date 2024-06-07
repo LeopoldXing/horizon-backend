@@ -5,20 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.leopoldhsing.horizon</groupId>
-        <artifactId>service</artifactId>
+        <artifactId>horizon-backend</artifactId>
         <version>0.0.1</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>bank</artifactId>
+    <artifactId>transaction</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencies>
-    </dependencies>
 
     <build>
         <plugins>

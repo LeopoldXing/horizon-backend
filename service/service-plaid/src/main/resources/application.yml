@@ -10,7 +10,7 @@ server:
 
 plaid:
   client-id: 6650078958d6ed001ce3678b
-  secret: 36357754a0b0f02828a2247007735e
+  secret: 3284df443e512d1dc2c452444a33aa
   env: sandbox
   products:
     - auth
