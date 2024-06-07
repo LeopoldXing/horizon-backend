@@ -7,6 +7,8 @@ import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
+import com.leopoldhsing.horizon.feign.transaction.TransactionFeignClient;
+import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.model.entity.User;
@@ -14,6 +16,7 @@ import com.leopoldhsing.horizon.model.mapper.UserMapper;
 import com.leopoldhsing.horizon.model.vo.UserSignUpVo;
 import com.leopoldhsing.horizon.service.user.repository.UserRepository;
 import com.leopoldhsing.horizon.service.user.service.IUserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -39,6 +42,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private AccountFeignClient accountFeignClient;
+
+    @Autowired
+    private TransactionFeignClient transactionFeignClient;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -98,6 +104,7 @@ public class UserServiceImpl implements IUserService {
         return UserMapper.mapToUserDto(user);
     }
 
+    @Transactional
     @Override
     public void initializeUser(Long userId) {
         // 1. get userDto
@@ -109,5 +116,12 @@ public class UserServiceImpl implements IUserService {
         // 2. get and save plaid accounts [RPC]
         List<Account> accountList = plaidFeignClient.getAccountsFromPlaidByUserId(userDto.getId());
         accountFeignClient.saveAccountList(accountList);
+
+        // 3. get and save plaid transaction [RPC]
+        accountList.forEach(account -> {
+            Long accountId = account.getId();
+            List<TransactionDto> transactionDtoList = plaidFeignClient.getTransactionsFromPlaidByAccountId(accountId);
+            transactionFeignClient.saveTransactionList(transactionDtoList);
+        });
     }
 }

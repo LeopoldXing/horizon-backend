@@ -61,4 +61,13 @@ public class TransactionServiceImpl implements ITransactionService {
         // 5. return result
         return transactionDtoList;
     }
+
+    @Override
+    public void saveTransactionList(List<TransactionDto> transactionDtoList) {
+        transactionRepository.saveAll(transactionDtoList
+                .stream()
+                .map(TransactionMapper::mapToTransaction)
+                .toList()
+        );
+    }
 }

@@ -8,4 +8,5 @@ public interface ITransactionService {
 
     List<TransactionDto> getTransactionListByAccountId(Long accountId);
 
+    void saveTransactionList(List<TransactionDto> transactionDtoList);
 }
