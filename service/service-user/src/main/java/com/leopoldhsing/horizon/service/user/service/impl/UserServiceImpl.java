@@ -179,4 +179,11 @@ public class UserServiceImpl implements IUserService {
         // 3. return result
         return totalBalance;
     }
+
+    @Override
+    public void userSignOut(String token) {
+        redisTemplate.delete(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token);
+        redisTemplate.delete(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token);
+        plaidFeignClient.deleteAccessToken();
+    }
 }

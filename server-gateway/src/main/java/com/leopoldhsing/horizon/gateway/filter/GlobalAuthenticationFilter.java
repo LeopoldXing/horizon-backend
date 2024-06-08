@@ -148,7 +148,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
             }
         }
 
-        return userIdPenetration(exchange, chain, getUidByToken(token));
+        return userIdPenetration(exchange, chain, getUidByToken(token), token);
     }
 
     /**
@@ -268,7 +268,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
      * @param userId
      * @return
      */
-    private Mono<Void> userIdPenetration(ServerWebExchange exchange, GatewayFilterChain chain, Long userId) {
+    private Mono<Void> userIdPenetration(ServerWebExchange exchange, GatewayFilterChain chain, Long userId, String token) {
         // 1. get request and response
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
@@ -277,6 +277,10 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
         ServerHttpRequest newRequest = request.mutate().header(GatewayConstants.USERID_HEADER_KEY, String.valueOf(userId)).build();
         ServerWebExchange newExchange = exchange.mutate().request(newRequest).response(response).build();
 
-        return chain.filter(newExchange);
+        // 3. add token into the request
+        ServerHttpRequest finalRequest = newRequest.mutate().header(GatewayConstants.TOKEN_HEADER_KEY, token).build();
+        ServerWebExchange finalExchange = newExchange.mutate().request(finalRequest).response(response).build();
+
+        return chain.filter(finalExchange);
     }
 }

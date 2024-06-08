@@ -6,5 +6,7 @@ public class GatewayConstants {
      */
     public static final String USERID_HEADER_KEY = "uid";
 
+    public static final String TOKEN_HEADER_KEY = "token";
+
     private GatewayConstants() {}
 }

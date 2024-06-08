@@ -17,4 +17,6 @@ public interface IUserService {
     int countUserBankQuantity(Long userId);
 
     double getUserTotalBalance(Long userId);
+
+    void userSignOut(String token);
 }

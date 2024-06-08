@@ -1,6 +1,7 @@
 package com.leopoldhsing.horizon.service.user.controller;
 
 import com.leopoldhsing.horizon.common.utils.Md5Util;
+import com.leopoldhsing.horizon.common.utils.constants.GatewayConstants;
 import com.leopoldhsing.horizon.model.dto.GeneralResponseDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.mapper.UserMapper;
@@ -11,10 +12,7 @@ import com.leopoldhsing.horizon.model.vo.UserSignUpVo;
 import com.leopoldhsing.horizon.service.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -53,5 +51,11 @@ public class UserAuthenticationController {
         responseVo.setToken(token);
 
         return ResponseEntity.ok(new GeneralResponseDto<>(responseVo));
+    }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<GeneralResponseDto<Boolean>> userSignOut(@RequestHeader(GatewayConstants.TOKEN_HEADER_KEY) String token) {
+        userService.userSignOut(token);
+        return ResponseEntity.ok(new GeneralResponseDto<>(true));
     }
 }

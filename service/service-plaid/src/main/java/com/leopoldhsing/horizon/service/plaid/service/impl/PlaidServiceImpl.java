@@ -52,4 +52,9 @@ public class PlaidServiceImpl implements IPlaidService {
         return true;
     }
 
+    @Override
+    public void deleteAccessToken() {
+        redisTemplate.delete(RedisConstants.PLAID_KEY_PREFIX + RedisConstants.PLAID_ACCESS_TOKEN_KEY_SUFFIX + RequestUtil.getUid());
+    }
+
 }
