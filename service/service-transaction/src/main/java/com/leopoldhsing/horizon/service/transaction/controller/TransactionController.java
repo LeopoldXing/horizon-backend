@@ -3,14 +3,12 @@ package com.leopoldhsing.horizon.service.transaction.controller;
 import com.leopoldhsing.horizon.model.dto.GeneralResponseDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
+import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
 import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +31,14 @@ public class TransactionController {
                 .map(transactionMapper::mapToTransactionResponseVo).toList();
 
         return ResponseEntity.ok(new GeneralResponseDto<>(responseVoList));
+    }
+
+    @PostMapping
+    public ResponseEntity<GeneralResponseDto<TransactionResponseVo>> createTransaction(@RequestBody TransactionVo transactionVo) {
+        TransactionDto transactionDto = transactionService.createTransaction(transactionVo);
+        TransactionResponseVo responseVo = transactionMapper.mapToTransactionResponseVo(transactionDto);
+
+        return ResponseEntity.ok(new GeneralResponseDto<>(responseVo));
     }
 
 }

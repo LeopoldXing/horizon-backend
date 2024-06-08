@@ -11,6 +11,7 @@ import com.leopoldhsing.horizon.model.dto.BankDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.Transaction;
+import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
 import com.leopoldhsing.horizon.service.transaction.repository.TransactionRepository;
 import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
@@ -96,5 +97,10 @@ public class TransactionServiceImpl implements ITransactionService {
                 .map(transactionMapper::mapToTransaction)
                 .toList()
         );
+    }
+
+    @Override
+    public TransactionDto createTransaction(TransactionVo transactionVo) {
+        return null;
     }
 }

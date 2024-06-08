@@ -114,7 +114,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
                 String token = this.getTokenFromRequest(exchange);
                 if (!StringUtils.hasLength(token) || !this.tokenExistsInRedis(token)) {
                     // currently not logged in || token is not valid
-                    return redirectPage(exchange, configurationProperties.getLoginPath());
+                    /*return redirectPage(exchange, configurationProperties.getLoginPath());*/
                 }
             }
         }
@@ -144,7 +144,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
                 }*/
             } else {
                 // can not find user information according to the token
-                return redirectPage(exchange, configurationProperties.getLoginPath());
+                /*return redirectPage(exchange, configurationProperties.getLoginPath());*/
             }
         }
 
