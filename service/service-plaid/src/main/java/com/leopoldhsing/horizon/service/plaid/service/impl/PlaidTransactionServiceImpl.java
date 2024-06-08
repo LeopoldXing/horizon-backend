@@ -36,9 +36,9 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
     private AccountFeignClient accountFeignClient;
 
     @Override
-    public List<TransactionDto> getTransactionsByAccountId(Long accountId) throws IOException {
+    public List<TransactionDto> getTransactionsByPlaidAccountId(String plaidAccountId) throws IOException {
         // 1. get accountDto [RPC]
-        AccountDto accountDto = accountFeignClient.getAccountById(accountId);
+        AccountDto accountDto = accountFeignClient.getAccountByPlaidAccountId(plaidAccountId);
 
         // 2. Set cursor to empty to receive all historical transactions
         String cursor = null;
@@ -79,7 +79,7 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
         added.sort(Comparator.comparing(Transaction::getDate));
         List<Transaction> transactionList = added
                 .stream()
-                .filter(transaction -> accountDto.getPlaidAccountId().equals(transaction.getAccountId()))
+                .filter(transaction -> plaidAccountId.equals(transaction.getAccountId()))
                 .toList();
 
         // 6. convert plaid transaction -> transactionDto

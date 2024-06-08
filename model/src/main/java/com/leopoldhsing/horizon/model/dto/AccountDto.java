@@ -20,12 +20,12 @@ public class AccountDto {
     private String mask;
     private String persistentAccountId;
     private String type;
-    private String subType;
+    private String subtype;
 
     public AccountDto() {
     }
 
-    public AccountDto(Long id, String plaidAccountId, String name, String officialName, UserDto owner, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, BankDto institution, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subType) {
+    public AccountDto(Long id, String plaidAccountId, String name, String officialName, UserDto owner, BigDecimal currentBalance, BigDecimal availableBalance, BigDecimal limitBalance, String isoCurrencyCode, BankDto institution, String shareableId, String fundingSourceUrl, String mask, String persistentAccountId, String type, String subtype) {
         this.id = id;
         this.plaidAccountId = plaidAccountId;
         this.name = name;
@@ -41,7 +41,7 @@ public class AccountDto {
         this.mask = mask;
         this.persistentAccountId = persistentAccountId;
         this.type = type;
-        this.subType = subType;
+        this.subtype = subtype;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class AccountDto {
                 ", mask='" + mask + '\'' +
                 ", persistentAccountId='" + persistentAccountId + '\'' +
                 ", type='" + type + '\'' +
-                ", subType='" + subType + '\'' +
+                ", subType='" + subtype + '\'' +
                 '}';
     }
 
@@ -186,12 +186,12 @@ public class AccountDto {
         this.type = type;
     }
 
-    public String getSubType() {
-        return subType;
+    public String getSubtype() {
+        return subtype;
     }
 
-    public void setSubType(String subType) {
-        this.subType = subType;
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
     }
 
     @Override
@@ -200,7 +200,7 @@ public class AccountDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         AccountDto that = (AccountDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(plaidAccountId, that.plaidAccountId) && Objects.equals(name, that.name) && Objects.equals(officialName, that.officialName) && Objects.equals(owner, that.owner) && Objects.equals(currentBalance, that.currentBalance) && Objects.equals(availableBalance, that.availableBalance) && Objects.equals(limitBalance, that.limitBalance) && Objects.equals(isoCurrencyCode, that.isoCurrencyCode) && Objects.equals(institution, that.institution) && Objects.equals(shareableId, that.shareableId) && Objects.equals(fundingSourceUrl, that.fundingSourceUrl) && Objects.equals(mask, that.mask) && Objects.equals(persistentAccountId, that.persistentAccountId) && Objects.equals(type, that.type) && Objects.equals(subType, that.subType);
+        return Objects.equals(id, that.id) && Objects.equals(plaidAccountId, that.plaidAccountId) && Objects.equals(name, that.name) && Objects.equals(officialName, that.officialName) && Objects.equals(owner, that.owner) && Objects.equals(currentBalance, that.currentBalance) && Objects.equals(availableBalance, that.availableBalance) && Objects.equals(limitBalance, that.limitBalance) && Objects.equals(isoCurrencyCode, that.isoCurrencyCode) && Objects.equals(institution, that.institution) && Objects.equals(shareableId, that.shareableId) && Objects.equals(fundingSourceUrl, that.fundingSourceUrl) && Objects.equals(mask, that.mask) && Objects.equals(persistentAccountId, that.persistentAccountId) && Objects.equals(type, that.type) && Objects.equals(subtype, that.subtype);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class AccountDto {
         result = 31 * result + Objects.hashCode(mask);
         result = 31 * result + Objects.hashCode(persistentAccountId);
         result = 31 * result + Objects.hashCode(type);
-        result = 31 * result + Objects.hashCode(subType);
+        result = 31 * result + Objects.hashCode(subtype);
         return result;
     }
 }

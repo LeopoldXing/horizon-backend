@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IPlaidTransactionService {
 
-    List<TransactionDto> getTransactionsByAccountId(Long accountId) throws IOException;
+    List<TransactionDto> getTransactionsByPlaidAccountId(String plaidAccountId) throws IOException;
 
 }

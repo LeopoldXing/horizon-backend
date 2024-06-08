@@ -15,6 +15,10 @@ public class BankDto {
     public BankDto() {
     }
 
+    public BankDto(String institutionId) {
+        this.institutionId = institutionId;
+    }
+
     public BankDto(Long id, String institutionId, String name, String url, String status, List<String> countryCodeList) {
         this.id = id;
         this.institutionId = institutionId;

@@ -24,7 +24,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.6</version>
                 <configuration>
-                    <mainClass>com.leopoldhsing.horizon.service.bank.BankApplication</mainClass>
+                    <mainClass>com.leopoldhsing.horizon.service.transaction.TransactionApplication</mainClass>
                     <image>
                         <name>docker.io/dbroccoli/${project.artifactId}:${version}</name>
                     </image>

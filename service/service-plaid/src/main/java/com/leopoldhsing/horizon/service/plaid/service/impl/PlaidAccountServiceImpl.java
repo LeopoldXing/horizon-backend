@@ -2,7 +2,11 @@ package com.leopoldhsing.horizon.service.plaid.service.impl;
 
 import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
 import com.leopoldhsing.horizon.common.utils.exception.InvalidAccessTokenException;
-import com.leopoldhsing.horizon.model.entity.Account;
+import com.leopoldhsing.horizon.feign.bank.BankFeignClient;
+import com.leopoldhsing.horizon.feign.user.UserFeignClient;
+import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.dto.BankDto;
+import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidAccountService;
 import com.plaid.client.model.AccountsBalanceGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
@@ -27,8 +31,14 @@ public class PlaidAccountServiceImpl implements IPlaidAccountService {
     @Autowired
     private PlaidApi plaidClient;
 
+    @Autowired
+    private UserFeignClient userFeignClient;
+
+    @Autowired
+    private BankFeignClient bankFeignClient;
+
     @Override
-    public List<Account> getAccountsFromPlaidByUserId(Long userId) throws IOException {
+    public List<AccountDto> getAccountsFromPlaidByUserId(Long userId) throws IOException {
         // 1. get access token
         String accessToken = redisTemplate
                 .opsForValue()
@@ -47,27 +57,33 @@ public class PlaidAccountServiceImpl implements IPlaidAccountService {
         // 4. parse result
         // 4.1 get institutionId
         String institutionId = responseBody.getItem().getInstitutionId();
-        // 4.2 get account list
-        List<Account> accounts = responseBody.getAccounts()
-                .parallelStream()
+        // 4.2 get account owner dto [RPC]
+        UserDto userDto = userFeignClient.getUser(userId);
+        // 4.3 get account list
+        List<AccountDto> accountDtoList = responseBody.getAccounts()
+                .stream()
                 .map(accountBase -> {
-                    Account account = new Account();
-                    account.setPlaidAccountId(accountBase.getAccountId());
-                    account.setName(accountBase.getName());
-                    account.setOwnerId(userId);
-                    account.setMask(accountBase.getMask());
-                    account.setOfficialName(accountBase.getOfficialName());
-                    account.setType(accountBase.getType().toString());
-                    account.setSubtype(Objects.requireNonNull(accountBase.getSubtype()).toString());
-                    account.setCurrentBalance(BigDecimal.valueOf(accountBase.getBalances().getCurrent() == null ? 0 : accountBase.getBalances().getCurrent()));
-                    account.setAvailableBalance(BigDecimal.valueOf(accountBase.getBalances().getAvailable() == null ? 0 : accountBase.getBalances().getAvailable()));
-                    account.setLimitBalance(BigDecimal.valueOf(accountBase.getBalances().getLimit() == null ? 0 : accountBase.getBalances().getLimit()));
-                    account.setIsoCurrencyCode(accountBase.getBalances().getIsoCurrencyCode());
-                    account.setInstitutionId(institutionId);
-                    return account;
+                    // get institution info
+                    bankFeignClient.alignBankInformation(new BankDto(institutionId));
+                    BankDto bankDto = bankFeignClient.getBankByInstitutionId(institutionId);
+                    // construct accountdto
+                    AccountDto accountDto = new AccountDto();
+                    accountDto.setPlaidAccountId(accountBase.getAccountId());
+                    accountDto.setName(accountBase.getName());
+                    accountDto.setOwner(userDto);
+                    accountDto.setMask(accountBase.getMask());
+                    accountDto.setOfficialName(accountBase.getOfficialName());
+                    accountDto.setType(accountBase.getType().toString());
+                    accountDto.setSubtype(Objects.requireNonNull(accountBase.getSubtype()).toString());
+                    accountDto.setCurrentBalance(BigDecimal.valueOf(accountBase.getBalances().getCurrent() == null ? 0 : accountBase.getBalances().getCurrent()));
+                    accountDto.setAvailableBalance(BigDecimal.valueOf(accountBase.getBalances().getAvailable() == null ? 0 : accountBase.getBalances().getAvailable()));
+                    accountDto.setLimitBalance(BigDecimal.valueOf(accountBase.getBalances().getLimit() == null ? 0 : accountBase.getBalances().getLimit()));
+                    accountDto.setIsoCurrencyCode(accountBase.getBalances().getIsoCurrencyCode());
+                    accountDto.setInstitution(bankDto);
+                    return accountDto;
                 }).toList();
 
         // 5. return result;
-        return accounts;
+        return accountDtoList;
     }
 }

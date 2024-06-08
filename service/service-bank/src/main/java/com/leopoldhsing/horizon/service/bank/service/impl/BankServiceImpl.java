@@ -1,17 +1,17 @@
 package com.leopoldhsing.horizon.service.bank.service.impl;
 
+import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.BankDto;
+import com.leopoldhsing.horizon.model.entity.Bank;
 import com.leopoldhsing.horizon.model.mapper.BankMapper;
 import com.leopoldhsing.horizon.service.bank.repository.BankRepository;
 import com.leopoldhsing.horizon.service.bank.service.IBankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BankServiceImpl implements IBankService {
@@ -36,5 +36,33 @@ public class BankServiceImpl implements IBankService {
                 .toList();
 
         return bankList;
+    }
+
+    @Override
+    public BankDto getBankByInstitutionId(String institutionId) {
+        Bank bank = bankRepository.findBankByInstitutionId(institutionId).orElseThrow(
+                () -> new ResourceNotFoundException("Bank", "institutionId", institutionId)
+        );
+        return BankMapper.mapToBankDto(bank);
+    }
+
+    @Override
+    public void alignBankInformation(BankDto bankDto) {
+        Optional<Bank> optionalBank = bankRepository.findBankByInstitutionId(bankDto.getInstitutionId());
+        if (optionalBank.isEmpty()) {
+            bankDto.setName(new Random(10000).toString());
+            bankDto.setUrl("http://www.google.com/?random=" + new Random(100));
+            bankDto.setStatus("normal");
+            bankRepository.save(BankMapper.mapToBank(bankDto));
+        }
+    }
+
+    @Override
+    public BankDto getBankById(Long id) {
+        Bank bank = bankRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Bank", "id", String.valueOf(id))
+        );
+        BankDto bankDto = BankMapper.mapToBankDto(bank);
+        return bankDto;
     }
 }

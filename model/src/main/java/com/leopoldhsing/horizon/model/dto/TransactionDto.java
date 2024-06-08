@@ -19,9 +19,9 @@ public class TransactionDto {
     private UserDto sender;
     private UserDto receiver;
     private LocalDate date;
-    private LocalDateTime dateTime;
+    private LocalDateTime datetime;
     private LocalDate authorizedDate;
-    private LocalDateTime authorizedDateTime;
+    private LocalDateTime authorizedDatetime;
     private TransactionStatus status;
     private BankDto senderBank;
     private CategoryDto category;
@@ -32,7 +32,7 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
-    public TransactionDto(Long id, String name, BigDecimal amount, String currency, AccountDto accountDto, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime dateTime, LocalDate authorizedDate, LocalDateTime authorizedDateTime, TransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
+    public TransactionDto(Long id, String name, BigDecimal amount, String currency, AccountDto accountDto, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, TransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -43,9 +43,9 @@ public class TransactionDto {
         this.sender = sender;
         this.receiver = receiver;
         this.date = date;
-        this.dateTime = dateTime;
+        this.datetime = datetime;
         this.authorizedDate = authorizedDate;
-        this.authorizedDateTime = authorizedDateTime;
+        this.authorizedDatetime = authorizedDatetime;
         this.status = status;
         this.senderBank = senderBank;
         this.category = category;
@@ -67,9 +67,9 @@ public class TransactionDto {
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 ", date=" + date +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + datetime +
                 ", authorizedDate=" + authorizedDate +
-                ", authorizedDateTime=" + authorizedDateTime +
+                ", authorizedDateTime=" + authorizedDatetime +
                 ", status=" + status +
                 ", senderBank=" + senderBank +
                 ", category=" + category +
@@ -159,12 +159,12 @@ public class TransactionDto {
         this.date = date;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getDatetime() {
+        return datetime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDatetime(LocalDateTime datetime) {
+        this.datetime = datetime;
     }
 
     public LocalDate getAuthorizedDate() {
@@ -175,12 +175,12 @@ public class TransactionDto {
         this.authorizedDate = authorizedDate;
     }
 
-    public LocalDateTime getAuthorizedDateTime() {
-        return authorizedDateTime;
+    public LocalDateTime getAuthorizedDatetime() {
+        return authorizedDatetime;
     }
 
-    public void setAuthorizedDateTime(LocalDateTime authorizedDateTime) {
-        this.authorizedDateTime = authorizedDateTime;
+    public void setAuthorizedDatetime(LocalDateTime authorizedDatetime) {
+        this.authorizedDatetime = authorizedDatetime;
     }
 
     public TransactionStatus getStatus() {
@@ -237,7 +237,7 @@ public class TransactionDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         TransactionDto that = (TransactionDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(accountDto, that.accountDto) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(date, that.date) && Objects.equals(dateTime, that.dateTime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDateTime, that.authorizedDateTime) && status == that.status && Objects.equals(senderBank, that.senderBank) && Objects.equals(category, that.category) && Objects.equals(receiverBank, that.receiverBank) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(accountDto, that.accountDto) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && status == that.status && Objects.equals(senderBank, that.senderBank) && Objects.equals(category, that.category) && Objects.equals(receiverBank, that.receiverBank) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
@@ -252,9 +252,9 @@ public class TransactionDto {
         result = 31 * result + Objects.hashCode(sender);
         result = 31 * result + Objects.hashCode(receiver);
         result = 31 * result + Objects.hashCode(date);
-        result = 31 * result + Objects.hashCode(dateTime);
+        result = 31 * result + Objects.hashCode(datetime);
         result = 31 * result + Objects.hashCode(authorizedDate);
-        result = 31 * result + Objects.hashCode(authorizedDateTime);
+        result = 31 * result + Objects.hashCode(authorizedDatetime);
         result = 31 * result + Objects.hashCode(status);
         result = 31 * result + Objects.hashCode(senderBank);
         result = 31 * result + Objects.hashCode(category);

@@ -8,9 +8,9 @@ import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
 import com.leopoldhsing.horizon.feign.transaction.TransactionFeignClient;
+import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
-import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.model.entity.User;
 import com.leopoldhsing.horizon.model.mapper.UserMapper;
 import com.leopoldhsing.horizon.model.vo.UserSignUpVo;
@@ -101,7 +101,8 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(uid).orElseThrow(
                 () -> new ResourceNotFoundException("User", "uid", String.valueOf(uid))
         );
-        return UserMapper.mapToUserDto(user);
+        UserDto userDto = UserMapper.mapToUserDto(user);
+        return userDto;
     }
 
     @Transactional
@@ -114,13 +115,14 @@ public class UserServiceImpl implements IUserService {
         UserDto userDto = UserMapper.mapToUserDto(user);
 
         // 2. get and save plaid accounts [RPC]
-        List<Account> accountList = plaidFeignClient.getAccountsFromPlaidByUserId(userDto.getId());
-        accountFeignClient.saveAccountList(accountList);
+        List<AccountDto> accountDtoList = plaidFeignClient.getAccountsFromPlaidByUserId(userDto.getId());
+        // 2.1 check and insert bank information
+        accountDtoList = accountFeignClient.saveAccountList(accountDtoList);
 
         // 3. get and save plaid transaction [RPC]
-        accountList.forEach(account -> {
-            Long accountId = account.getId();
-            List<TransactionDto> transactionDtoList = plaidFeignClient.getTransactionsFromPlaidByAccountId(accountId);
+        accountDtoList.forEach(account -> {
+            String plaidAccountId = account.getPlaidAccountId();
+            List<TransactionDto> transactionDtoList = plaidFeignClient.getTransactionsFromPlaidByPlaidAccountId(plaidAccountId);
             transactionFeignClient.saveTransactionList(transactionDtoList);
         });
     }

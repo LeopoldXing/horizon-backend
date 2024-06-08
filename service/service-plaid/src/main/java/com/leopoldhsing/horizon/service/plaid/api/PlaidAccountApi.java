@@ -1,6 +1,6 @@
 package com.leopoldhsing.horizon.service.plaid.api;
 
-import com.leopoldhsing.horizon.model.entity.Account;
+import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +19,14 @@ public class PlaidAccountApi {
     private IPlaidAccountService plaidAccountService;
 
     @GetMapping("/list/{uid}")
-    public List<Account> getAccountsFromPlaidByUserId(@PathVariable Long uid) {
-        List<Account> accounts = null;
+    public List<AccountDto> getAccountsFromPlaidByUserId(@PathVariable Long uid) {
+        List<AccountDto> accountDtoList = null;
         try {
-            accounts = plaidAccountService.getAccountsFromPlaidByUserId(uid);
+            accountDtoList = plaidAccountService.getAccountsFromPlaidByUserId(uid);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return accounts;
+        return accountDtoList;
     }
 
 }

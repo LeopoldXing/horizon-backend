@@ -1,7 +1,6 @@
 package com.leopoldhsing.horizon.feign.account;
 
 import com.leopoldhsing.horizon.model.dto.AccountDto;
-import com.leopoldhsing.horizon.model.entity.Account;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +16,11 @@ public interface AccountFeignClient {
     List<AccountDto> getAccountsByUserId(@PathVariable("uid") Long uid);
 
     @PostMapping("/api/v1/inner/account/list")
-    void saveAccountList(@RequestBody List<Account> accountList);
+    List<AccountDto> saveAccountList(@RequestBody List<AccountDto> accountList);
 
     @GetMapping("/api/v1/inner/account/{accountId}")
     AccountDto getAccountById(@PathVariable("accountId") Long accountId);
+
+    @GetMapping("/api/v1/inner/account/plaid/{plaidAccountId}")
+    AccountDto getAccountByPlaidAccountId(@PathVariable String plaidAccountId);
 }

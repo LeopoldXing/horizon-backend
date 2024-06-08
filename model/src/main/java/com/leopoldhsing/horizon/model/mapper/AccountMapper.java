@@ -9,6 +9,8 @@ public class AccountMapper {
     public static Account mapToAccount(AccountDto accountDto) {
         Account account = new Account();
         BeanUtils.copyProperties(accountDto, account);
+        account.setOwnerId(accountDto.getOwner() == null ? null : accountDto.getOwner().getId());
+        account.setInstitutionId(accountDto.getInstitution() == null ? null : accountDto.getInstitution().getInstitutionId());
         return account;
     }
 

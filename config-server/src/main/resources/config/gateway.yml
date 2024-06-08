@@ -6,6 +6,10 @@ spring:
           enabled: false
           lower-case-service-id: true
       routes:
+        - id: service_transaction
+          uri: lb://transaction
+          predicates:
+            - Path=/api/*/transaction/**
         - id: service_bank
           uri: lb://bank
           predicates:
