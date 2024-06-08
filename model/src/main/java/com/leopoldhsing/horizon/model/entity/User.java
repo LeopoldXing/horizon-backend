@@ -14,6 +14,7 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     private String address;
     private String city;
     private String state;
@@ -26,14 +27,20 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public User(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
     }
 
-    public User(String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId, Long plaidCustomerId) {
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String firstName, String lastName, String email, String password, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId, Long plaidCustomerId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.address = address;
         this.city = city;
         this.state = state;
@@ -44,11 +51,12 @@ public class User extends BaseEntity {
         this.plaidCustomerId = plaidCustomerId;
     }
 
-    public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String firstName, String lastName, String email, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId, Long plaidCustomerId) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public User(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String firstName, String lastName, String email, String password, String address, String city, String state, String postalCode, Date dateOfBirth, String ssn, Long dwollaCustomerId, Long plaidCustomerId) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.address = address;
         this.city = city;
         this.state = state;
@@ -65,6 +73,7 @@ public class User extends BaseEntity {
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
@@ -98,6 +107,14 @@ public class User extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAddress() {
@@ -171,7 +188,7 @@ public class User extends BaseEntity {
         if (!super.equals(o)) return false;
 
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(address, user.address) && Objects.equals(city, user.city) && Objects.equals(state, user.state) && Objects.equals(postalCode, user.postalCode) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(ssn, user.ssn) && Objects.equals(dwollaCustomerId, user.dwollaCustomerId) && Objects.equals(plaidCustomerId, user.plaidCustomerId);
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(address, user.address) && Objects.equals(city, user.city) && Objects.equals(state, user.state) && Objects.equals(postalCode, user.postalCode) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(ssn, user.ssn) && Objects.equals(dwollaCustomerId, user.dwollaCustomerId) && Objects.equals(plaidCustomerId, user.plaidCustomerId);
     }
 
     @Override
@@ -180,6 +197,7 @@ public class User extends BaseEntity {
         result = 31 * result + Objects.hashCode(firstName);
         result = 31 * result + Objects.hashCode(lastName);
         result = 31 * result + Objects.hashCode(email);
+        result = 31 * result + Objects.hashCode(password);
         result = 31 * result + Objects.hashCode(address);
         result = 31 * result + Objects.hashCode(city);
         result = 31 * result + Objects.hashCode(state);

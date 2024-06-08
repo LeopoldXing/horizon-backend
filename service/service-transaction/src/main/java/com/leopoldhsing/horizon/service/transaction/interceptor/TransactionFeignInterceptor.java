@@ -6,7 +6,7 @@ import feign.RequestTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransactionInterceptor implements RequestInterceptor {
+public class TransactionFeignInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         long uid = RequestUtil.getUid();

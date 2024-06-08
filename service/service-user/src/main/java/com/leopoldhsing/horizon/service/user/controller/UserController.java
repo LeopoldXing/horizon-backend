@@ -7,6 +7,7 @@ import com.leopoldhsing.horizon.model.mapper.UserMapper;
 import com.leopoldhsing.horizon.model.vo.UserResponseVo;
 import com.leopoldhsing.horizon.service.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping
+    @GetMapping("/info")
     public ResponseEntity<GeneralResponseDto<UserResponseVo>> getUser() {
         // 1. get userId
         Long uid = RequestUtil.getUid();
@@ -28,7 +29,7 @@ public class UserController {
         // 3. construct responseVo
         UserResponseVo responseVo = UserMapper.mapToUserResponseVo(userDto);
 
-        return ResponseEntity.ok(new GeneralResponseDto<>(responseVo));
+        return ResponseEntity.status(HttpStatus.OK).body(new GeneralResponseDto<>(responseVo));
     }
 
     @GetMapping("/init")

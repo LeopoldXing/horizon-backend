@@ -6,7 +6,7 @@ import com.leopoldhsing.horizon.model.vo.UserSignUpVo;
 import java.util.Map;
 
 public interface IUserService {
-    UserDto userSignIn(String email, String password);
+    Map<String, Object> userSignIn(String email, String password);
 
     Map<String, Object> userSignUp(UserSignUpVo userSignUpVo);
 

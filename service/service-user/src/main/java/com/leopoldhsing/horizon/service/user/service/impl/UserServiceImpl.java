@@ -2,9 +2,12 @@ package com.leopoldhsing.horizon.service.user.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leopoldhsing.horizon.common.utils.Md5Util;
 import com.leopoldhsing.horizon.common.utils.TokenUtil;
 import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
+import com.leopoldhsing.horizon.common.utils.exception.InvalidPasswordException;
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
+import com.leopoldhsing.horizon.common.utils.exception.UnRegisteredEmailException;
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
 import com.leopoldhsing.horizon.feign.transaction.TransactionFeignClient;
@@ -48,8 +51,31 @@ public class UserServiceImpl implements IUserService {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public UserDto userSignIn(String email, String password) {
-        return new UserDto();
+    public Map<String, Object> userSignIn(String email, String password) {
+        Long count = userRepository.countUsersByEmail(email);
+        if (count <= 0) {
+            throw new UnRegisteredEmailException(email);
+        }
+        User user = userRepository.findByEmailAndPassword(email, Md5Util.encrypt(password)).orElseThrow(
+                () -> new InvalidPasswordException(email, password)
+        );
+
+        Map<String, Object> res = new HashMap<>();
+        UserDto userDto = UserMapper.mapToUserDto(user);
+        res.put("user", userDto);
+        String token = TokenUtil.generateToken();
+        redisTemplate
+                .opsForValue()
+                .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token, String.valueOf(user.getId()));
+        try {
+            redisTemplate
+                    .opsForValue()
+                    .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token, objectMapper.writeValueAsString(userDto));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        res.put("token", token);
+        return res;
     }
 
     @Override
