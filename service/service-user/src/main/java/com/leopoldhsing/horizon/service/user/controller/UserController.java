@@ -45,4 +45,11 @@ public class UserController {
 
         return ResponseEntity.ok(new GeneralResponseDto<>(number));
     }
+
+    @GetMapping("/total-balance")
+    public ResponseEntity<GeneralResponseDto<Double>> getTotalBalance() {
+        Long userId = RequestUtil.getUid();
+        double totalBalance = userService.getUserTotalBalance(userId);
+        return ResponseEntity.ok(new GeneralResponseDto<>(totalBalance));
+    }
 }

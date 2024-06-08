@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -136,5 +137,20 @@ public class UserServiceImpl implements IUserService {
 
         // 3. return set size
         return bankIdSet.size();
+    }
+
+    @Override
+    public double getUserTotalBalance(Long userId) {
+        // 1. get all account under this user
+        List<AccountDto> accountDtoList = accountFeignClient.getAccountsByUserId(userId);
+
+        // 2. count
+        double totalBalance = accountDtoList
+                .stream()
+                .reduce(BigDecimal.valueOf(0), (subTotal, nextAccount) -> subTotal.add(nextAccount.getAvailableBalance()), BigDecimal::add)
+                .doubleValue();
+
+        // 3. return result
+        return totalBalance;
     }
 }

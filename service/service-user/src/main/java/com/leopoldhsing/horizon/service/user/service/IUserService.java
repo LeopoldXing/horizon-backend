@@ -15,4 +15,6 @@ public interface IUserService {
     void initializeUser(Long userId);
 
     int countUserBankQuantity(Long userId);
+
+    double getUserTotalBalance(Long userId);
 }
