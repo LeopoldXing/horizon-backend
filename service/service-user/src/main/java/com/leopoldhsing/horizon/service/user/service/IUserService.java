@@ -13,4 +13,6 @@ public interface IUserService {
     UserDto getUserById(Long uid);
 
     void initializeUser(Long userId);
+
+    int countUserBankQuantity(Long userId);
 }

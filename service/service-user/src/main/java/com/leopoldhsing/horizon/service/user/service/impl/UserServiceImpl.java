@@ -24,9 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -125,5 +123,18 @@ public class UserServiceImpl implements IUserService {
             List<TransactionDto> transactionDtoList = plaidFeignClient.getTransactionsFromPlaidByPlaidAccountId(plaidAccountId);
             transactionFeignClient.saveTransactionList(transactionDtoList);
         });
+    }
+
+    @Override
+    public int countUserBankQuantity(Long userId) {
+        // 1. get all account under this user
+        List<AccountDto> accountDtoList = accountFeignClient.getAccountsByUserId(userId);
+
+        // 2. add all account's institution number into a set
+        Set<Long> bankIdSet = new HashSet<>();
+        accountDtoList.forEach(account -> bankIdSet.add(account.getInstitution().getId()));
+
+        // 3. return set size
+        return bankIdSet.size();
     }
 }

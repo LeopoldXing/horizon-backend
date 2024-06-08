@@ -1,8 +1,6 @@
 package com.leopoldhsing.horizon.service.account.service.impl;
 
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
-import com.leopoldhsing.horizon.feign.bank.BankFeignClient;
-import com.leopoldhsing.horizon.feign.user.UserFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.entity.Account;
 import com.leopoldhsing.horizon.model.mapper.AccountMapper;
@@ -19,12 +17,6 @@ public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    private BankFeignClient bankFeignClient;
-
-    @Autowired
-    private UserFeignClient userFeignClient;
 
     @Autowired
     private AccountMapper2 accountMapper2;
