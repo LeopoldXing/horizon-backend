@@ -28,7 +28,8 @@ public class TransactionController {
 
         List<TransactionResponseVo> responseVoList = transactionDtoList
                 .stream()
-                .map(transactionMapper::mapToTransactionResponseVo).toList();
+                .map(transactionMapper::mapToTransactionResponseVo)
+                .toList();
 
         return ResponseEntity.ok(new GeneralResponseDto<>(responseVoList));
     }
