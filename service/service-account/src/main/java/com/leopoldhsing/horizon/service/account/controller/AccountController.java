@@ -9,6 +9,7 @@ import com.leopoldhsing.horizon.service.account.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +31,11 @@ public class AccountController {
         List<AccountDto> dtoList = accountService.getAccountByUserId(userId);
         List<AccountResponseVo> res = dtoList.stream().map(accountMapper::mapToAccountResponseVo).toList();
         return ResponseEntity.ok(new GeneralResponseDto<>(res));
+    }
+
+    @GetMapping("/{accountId}")
+    public ResponseEntity<GeneralResponseDto<AccountResponseVo>> getAccountById(@PathVariable("accountId") Long accountId) {
+        AccountDto accountDto = accountService.getAccountById(accountId);
+        return ResponseEntity.ok(new GeneralResponseDto<>(accountMapper.mapToAccountResponseVo(accountDto)));
     }
 }
