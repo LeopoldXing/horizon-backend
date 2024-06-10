@@ -7,10 +7,12 @@ import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.entity.Transaction;
 import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
+import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Component
@@ -33,6 +35,17 @@ public class TransactionMapper2 {
         transaction.setReceiverId(transactionDto.getReceiver() == null ? null : transactionDto.getReceiver().getId());
         transaction.setSenderBankId(transactionDto.getSenderBank() == null ? null : transactionDto.getSenderBank().getId());
         transaction.setReceiverBankId(transactionDto.getReceiverBank() == null ? null : transactionDto.getReceiverBank().getId());
+        return transaction;
+    }
+
+    public Transaction mapToTransaction(TransactionVo transactionVo) {
+        Transaction transaction = new Transaction();
+        BeanUtils.copyProperties(transactionVo, transaction);
+        transaction.setAmount(new BigDecimal(transactionVo.getAmount()));
+        transaction.setSenderId(Long.parseLong(transactionVo.getSenderId()));
+        transaction.setReceiverId(Long.parseLong(transactionVo.getReceiverId()));
+        transaction.setSenderBankId(Long.parseLong(transactionVo.getSenderBankId()));
+        transaction.setReceiverBankId(Long.parseLong(transactionVo.getReceiverBankId()));
         return transaction;
     }
 

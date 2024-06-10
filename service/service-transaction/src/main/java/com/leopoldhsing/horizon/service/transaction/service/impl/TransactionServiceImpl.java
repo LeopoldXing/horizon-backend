@@ -4,7 +4,6 @@ import com.leopoldhsing.horizon.common.utils.RequestUtil;
 import com.leopoldhsing.horizon.common.utils.exception.ActionNotAuthorizedException;
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.bank.BankFeignClient;
-import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
 import com.leopoldhsing.horizon.feign.user.UserFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.BankDto;
@@ -15,6 +14,7 @@ import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
 import com.leopoldhsing.horizon.service.transaction.repository.TransactionRepository;
 import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -99,8 +99,12 @@ public class TransactionServiceImpl implements ITransactionService {
         );
     }
 
+    @Transactional
     @Override
     public TransactionDto createTransaction(TransactionVo transactionVo) {
+        Transaction transaction = transactionMapper.mapToTransaction(transactionVo);
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
         return null;
     }
 }
