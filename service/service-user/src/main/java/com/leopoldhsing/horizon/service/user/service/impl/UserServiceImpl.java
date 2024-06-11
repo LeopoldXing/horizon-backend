@@ -66,11 +66,13 @@ public class UserServiceImpl implements IUserService {
         String token = TokenUtil.generateToken();
         redisTemplate
                 .opsForValue()
-                .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token, String.valueOf(user.getId()));
+                .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token,
+                        String.valueOf(user.getId()));
         try {
             redisTemplate
                     .opsForValue()
-                    .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token, objectMapper.writeValueAsString(userDto));
+                    .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token,
+                            objectMapper.writeValueAsString(userDto));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -88,7 +90,7 @@ public class UserServiceImpl implements IUserService {
         try {
             user.setDateOfBirth(sdf.parse(userSignUpVo.getDateOfBirth()));
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         // 2. create dwolla customer and get the dwollaCustomerId [RPC]
@@ -105,11 +107,13 @@ public class UserServiceImpl implements IUserService {
         String token = TokenUtil.generateToken();
         redisTemplate
                 .opsForValue()
-                .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token, String.valueOf(user.getId()));
+                .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_ID_KEY_SUFFIX + token,
+                        String.valueOf(user.getId()));
         try {
             redisTemplate
                     .opsForValue()
-                    .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token, objectMapper.writeValueAsString(userDto));
+                    .set(RedisConstants.USER_KEY_PREFIX + RedisConstants.USER_INFO_KEY_SUFFIX + token,
+                            objectMapper.writeValueAsString(userDto));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -173,7 +177,9 @@ public class UserServiceImpl implements IUserService {
         // 2. count
         double totalBalance = accountDtoList
                 .stream()
-                .reduce(BigDecimal.valueOf(0), (subTotal, nextAccount) -> subTotal.add(nextAccount.getAvailableBalance()), BigDecimal::add)
+                .reduce(BigDecimal.valueOf(0),
+                        (subTotal, nextAccount) -> subTotal.add(nextAccount.getAvailableBalance()),
+                        BigDecimal::add)
                 .doubleValue();
 
         // 3. return result
