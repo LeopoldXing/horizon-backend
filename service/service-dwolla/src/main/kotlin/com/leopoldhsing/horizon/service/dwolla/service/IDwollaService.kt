@@ -5,6 +5,9 @@ import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo
 
 interface IDwollaService {
 
-    fun createDwollaCustomer(dwollaCustomerVo: DwollaCustomerCreationVo): DwollaCustomerDto
+    fun createVerifiedPersonalCustomer(dwollaCustomerVo: DwollaCustomerCreationVo): DwollaCustomerDto
+    fun createVerifiedBusinessCustomer(dwollaCustomerVo: DwollaCustomerCreationVo): DwollaCustomerDto
+    fun createUnverifiedCustomer(dwollaCustomerVo: DwollaCustomerCreationVo): DwollaCustomerDto
+    fun createReceiveOnlyCustomer(dwollaCustomerVo: DwollaCustomerCreationVo): DwollaCustomerDto
 
 }

@@ -4,7 +4,7 @@ public enum DwollaCustomerStatus {
     /**
      * Customers of type unverified or receive-only always have this status.
      */
-    UNVERIFIED(1),
+    UNVERIFIED("UNVERIFIED"),
 
     /**
      * Verified Customers of type personal or business can have this status. The initial verification attempt failed
@@ -12,45 +12,39 @@ public enum DwollaCustomerStatus {
      * You can make one additional attempt by changing some or all the attributes of the existing Customer with a POST request.
      * If the additional attempt fails, the resulting status will be either document or suspended.
      */
-    RETRY(2),
+    RETRY("RETRY"),
 
     /**
      * Verified Customers of type personal or business can have this status.
      * Dwolla requires additional documentation to identify the Customer in the document status. Read about Documents.
      */
-    DOCUMENT(3),
+    DOCUMENT("DOCUMENT"),
 
     /**
      * Verified Customers of type personal or business can have this status. The Customer is currently verified.
      */
-    VERIFIED(4),
+    VERIFIED("VERIFIED"),
 
     /**
      * All Customer types can have a status of suspended. The Customer is suspended and may neither send nor receive funds.
      * Contact Dwolla support for more information.
      */
-    SUSPENDED(5),
+    SUSPENDED("SUSPENDED"),
 
     /**
      * All Customer types can have a status of deactivated. A deactivated Customer may neither send nor receive funds.
      * A deactivated Customer can be reactivated which moves the Customer to the status they were in prior to being deactivated.
      */
-    DEACTIVATE(6);
+    DEACTIVATE("DEACTIVATE");
 
-    private final int statusCode;
+    private final String value;
 
-    DwollaCustomerStatus(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
+    DwollaCustomerStatus(String value) {
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return "DwollaCustomerStatus{" +
-                "statusCode=" + statusCode +
-                '}';
+        return value;
     }
 }

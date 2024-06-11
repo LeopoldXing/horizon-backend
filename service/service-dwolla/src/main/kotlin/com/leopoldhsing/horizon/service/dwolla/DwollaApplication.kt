@@ -13,10 +13,6 @@ import org.springframework.context.annotation.Bean
 @SpringBootApplication
 class DwollaApplication @Autowired constructor(private val configurationProperties: DwollaConfigurationProperties) {
 
-    fun main(args: Array<String>) {
-        runApplication<DwollaApplication>(*args)
-    }
-
     @Bean
     fun createDwollaInstance(): Dwolla {
         val environment = when {
@@ -29,4 +25,8 @@ class DwollaApplication @Autowired constructor(private val configurationProperti
             environment = environment
         )
     }
+}
+
+fun main(args: Array<String>) {
+    runApplication<DwollaApplication>(*args)
 }

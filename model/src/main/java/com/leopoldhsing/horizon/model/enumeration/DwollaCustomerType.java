@@ -10,7 +10,7 @@ public enum DwollaCustomerType {
      * and last four digits of their social security number. For more information about verifying this Customer type in our Customer verification guide.
      * With a per-transaction default send limit of $10,000, this Customer type is able to interact with Dwolla and your application seamlessly.
      */
-    PERSONAL_VERIFIED_CUSTOMER(1),
+    PERSONAL_VERIFIED_CUSTOMER("PERSONAL_VERIFIED_CUSTOMER"),
 
     /**
      * Business Verified Customers are unique in their sign-up flow, as they need multiple parties to be verified. These will include:
@@ -32,7 +32,7 @@ public enum DwollaCustomerType {
      * For a full series of steps that goes in depth on business verified Customers, take a look at our Customer verification guide.
      * This guide also goes into detail on the identity verification process for controllers and beneficial owners.
      */
-    BUSINESS_VERIFIED_CUSTOMER(2),
+    BUSINESS_VERIFIED_CUSTOMER("BUSINESS_VERIFIED_CUSTOMER"),
 
     /**
      * An unverified Customer type requires a minimal amount of information : firstName, lastName email, and optionally businessName for businesses.
@@ -42,29 +42,23 @@ public enum DwollaCustomerType {
      * you may want to explore upgrading them to a verified Customer type or contacting sales for more information about customizing the send limit.
      * As this Customer is not CIP verified, they will only be able to transact with verified Customers or your Dwolla Master Account.
      */
-    UNVERIFIED_CUSTOMER(3),
+    UNVERIFIED_CUSTOMER("UNVERIFIED_CUSTOMER"),
 
     /**
      * Receive-only Users are restricted to payouts only funds flow.
      * This user type maintains limited functionality in the API and is only eligible to receive transfers to an attached bank account.
      * This user type can only interact with verified Customers and a Dwolla Master Account.
      */
-    RECEIVE_ONLY_CUSTOMER(4);
+    RECEIVE_ONLY_CUSTOMER("RECEIVE_ONLY_CUSTOMER");
 
-    private final int customerTypeCode;
+    private final String value;
 
-    DwollaCustomerType(int customerTypeCode) {
-        this.customerTypeCode = customerTypeCode;
-    }
-
-    public int getCustomerTypeCode() {
-        return customerTypeCode;
+    DwollaCustomerType(String value) {
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return "DwollaCustomerType{" +
-                "customerTypeCode=" + customerTypeCode +
-                '}';
+        return this.value;
     }
 }

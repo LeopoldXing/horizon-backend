@@ -9,13 +9,17 @@ import com.leopoldhsing.horizon.common.utils.exception.InvalidPasswordException;
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
 import com.leopoldhsing.horizon.common.utils.exception.UnRegisteredEmailException;
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
+import com.leopoldhsing.horizon.feign.dwolla.DwollaFeignClient;
 import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
 import com.leopoldhsing.horizon.feign.transaction.TransactionFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.User;
+import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType;
 import com.leopoldhsing.horizon.model.mapper.UserMapper;
+import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo;
 import com.leopoldhsing.horizon.model.vo.UserSignUpVo;
 import com.leopoldhsing.horizon.service.user.repository.UserRepository;
 import com.leopoldhsing.horizon.service.user.service.IUserService;
@@ -47,6 +51,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private TransactionFeignClient transactionFeignClient;
+
+    @Autowired
+    private DwollaFeignClient dwollaFeignClient;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -94,8 +101,15 @@ public class UserServiceImpl implements IUserService {
         }
 
         // 2. create dwolla customer and get the dwollaCustomerId [RPC]
+        DwollaCustomerCreationVo dwollaCustomerCreationVo = new DwollaCustomerCreationVo();
+        BeanUtils.copyProperties(userSignUpVo, dwollaCustomerCreationVo);
+        dwollaCustomerCreationVo.setType(DwollaCustomerType.PERSONAL_VERIFIED_CUSTOMER.toString());
+        dwollaCustomerCreationVo.setAddress1(userSignUpVo.getAddress());
+        DwollaCustomerDto dwollaCustomerDto = dwollaFeignClient.createDwollaCustomer(dwollaCustomerCreationVo,
+                DwollaCustomerType.PERSONAL_VERIFIED_CUSTOMER);
 
         // 3. set dwollaCustomerId into the user object
+        user.setDwollaCustomerId(dwollaCustomerDto.getId());
 
         // 4. store the new user into the database
         userRepository.save(user);
