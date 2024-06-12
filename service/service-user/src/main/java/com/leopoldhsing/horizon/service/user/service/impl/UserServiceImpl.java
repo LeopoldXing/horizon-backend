@@ -12,15 +12,12 @@ import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.dwolla.DwollaFeignClient;
 import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
 import com.leopoldhsing.horizon.feign.transaction.TransactionFeignClient;
-import com.leopoldhsing.horizon.model.dto.AccountDto;
-import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto;
-import com.leopoldhsing.horizon.model.dto.TransactionDto;
-import com.leopoldhsing.horizon.model.dto.UserDto;
+import com.leopoldhsing.horizon.model.dto.*;
 import com.leopoldhsing.horizon.model.entity.User;
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType;
-import com.leopoldhsing.horizon.model.mapper.UserMapper;
 import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo;
 import com.leopoldhsing.horizon.model.vo.UserSignUpVo;
+import com.leopoldhsing.horizon.service.user.mapper.UserMapper2;
 import com.leopoldhsing.horizon.service.user.repository.UserRepository;
 import com.leopoldhsing.horizon.service.user.service.IUserService;
 import jakarta.transaction.Transactional;
@@ -55,7 +52,10 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private DwollaFeignClient dwollaFeignClient;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private UserMapper2 userMapper;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Map<String, Object> userSignIn(String email, String password) {
@@ -68,7 +68,7 @@ public class UserServiceImpl implements IUserService {
         );
 
         Map<String, Object> res = new HashMap<>();
-        UserDto userDto = UserMapper.mapToUserDto(user);
+        UserDto userDto = userMapper.mapToUserDto(user);
         res.put("user", userDto);
         String token = TokenUtil.generateToken();
         redisTemplate
@@ -115,7 +115,7 @@ public class UserServiceImpl implements IUserService {
         userRepository.save(user);
 
         // 5. convert user -> userDto
-        UserDto userDto = UserMapper.mapToUserDto(user);
+        UserDto userDto = userMapper.mapToUserDto(user);
 
         // 6. generate token and store token into redis
         String token = TokenUtil.generateToken();
@@ -144,7 +144,7 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(uid).orElseThrow(
                 () -> new ResourceNotFoundException("User", "uid", String.valueOf(uid))
         );
-        UserDto userDto = UserMapper.mapToUserDto(user);
+        UserDto userDto = userMapper.mapToUserDto(user);
         return userDto;
     }
 
@@ -155,12 +155,13 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", "id", String.valueOf(userId))
         );
-        UserDto userDto = UserMapper.mapToUserDto(user);
+        UserDto userDto = userMapper.mapToUserDto(user);
 
         // 2. get and save plaid accounts [RPC]
         List<AccountDto> accountDtoList = plaidFeignClient.getAccountsFromPlaidByUserId(userDto.getId());
         // 2.1 check and insert bank information
-        accountDtoList = accountFeignClient.saveAccountList(accountDtoList);
+        accountDtoList = accountFeignClient.alignAccountInfo(new AccountAlignmentDto(accountDtoList, userDto));
+        /*accountDtoList = accountFeignClient.saveAccountList(accountDtoList);*/
 
         // 3. get and save plaid transaction [RPC]
         accountDtoList.forEach(account -> {

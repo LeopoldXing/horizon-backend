@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.feign.account;
 
+import com.leopoldhsing.horizon.model.dto.AccountAlignmentDto;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,4 +24,7 @@ public interface AccountFeignClient {
 
     @GetMapping("/api/v1/inner/account/plaid/{plaidAccountId}")
     AccountDto getAccountByPlaidAccountId(@PathVariable String plaidAccountId);
+
+    @PostMapping("/api/v1/inner/account/align")
+    List<AccountDto> alignAccountInfo(@RequestBody AccountAlignmentDto accountAlignmentDto);
 }

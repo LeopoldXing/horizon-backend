@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.service.dwolla.api
 
+import com.leopoldhsing.horizon.model.dto.AccountDto
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType
 import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo
@@ -22,5 +23,17 @@ class DwollaFeignApi @Autowired constructor(
             DwollaCustomerType.RECEIVE_ONLY_CUSTOMER -> dwollaService.createReceiveOnlyCustomer(vo)
         }
         return dwollaCustomerDto
+    }
+
+    @PostMapping("/funding-source/{dwollaCustomerId}")
+    fun createFundingSource(
+        @PathVariable dwollaCustomerId: String,
+        @RequestHeader processorToken: String,
+        @RequestBody accountDto: AccountDto
+    ): String = dwollaService.createFundingSource(dwollaCustomerId, accountDto, processorToken)
+
+    @GetMapping("/customer/{dwollaCustomerId}")
+    fun getDwollaCustomerById(@PathVariable dwollaCustomerId: Long): DwollaCustomerDto {
+        return dwollaService.getDwollaCustomerById(dwollaCustomerId)
     }
 }

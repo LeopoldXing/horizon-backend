@@ -1,11 +1,10 @@
 package com.leopoldhsing.horizon.feign.plaid;
 
 import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.dto.ProcessorTokenCreationDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,4 +19,7 @@ public interface PlaidFeignClient {
 
     @DeleteMapping("/api/v1/inner/plaid/access-token")
     void deleteAccessToken();
+
+    @PostMapping("/api/v1/inner/plaid/processor-token")
+    String getProcessorToken(@RequestBody ProcessorTokenCreationDto processorTokenCreationDto);
 }

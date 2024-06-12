@@ -1,9 +1,12 @@
 package com.leopoldhsing.horizon.service.dwolla.service.impl
 
 import com.dwolla.Dwolla
-import com.dwolla.api.customers.CustomerStatus
 import com.dwolla.api.shared.DateOfBirth
+import com.dwolla.http.JsonBody
 import com.dwolla.shared.USState
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException
+import com.leopoldhsing.horizon.model.dto.AccountDto
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto
 import com.leopoldhsing.horizon.model.entity.DwollaCustomer
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerStatus
@@ -19,7 +22,8 @@ import org.springframework.stereotype.Service
 class DwollaServiceImpl @Autowired constructor(
     private val dwollaRepository: DwollaCustomerRepository,
     private val dwollaInstance: Dwolla,
-    private val dwollaCustomerMapper: DwollaCustomerMapper
+    private val dwollaCustomerMapper: DwollaCustomerMapper,
+    private val objectMapper: ObjectMapper
 ) : IDwollaService {
 
     /**
@@ -75,5 +79,30 @@ class DwollaServiceImpl @Autowired constructor(
      */
     override fun createReceiveOnlyCustomer(vo: DwollaCustomerCreationVo): DwollaCustomerDto {
         return DwollaCustomerDto()
+    }
+
+    override fun createFundingSource(dwollaCustomerId: String, accountDto: AccountDto, processorToken: String): String {
+        val fundingSourceName = "${accountDto.name} (${accountDto.officialName})"
+
+        // 1. create dwolla auth link
+        val authResponse = dwollaInstance.post("on-demand-authorizations")
+        val responseDataInMap = objectMapper.readValue(authResponse.body, Map::class.java)
+        val authLink = responseDataInMap["_links"]
+
+        // 2. create funding source
+        val urlResponse = dwollaInstance.post(
+            "customers/${dwollaCustomerId}/funding-sources",
+            JsonBody("name" to fundingSourceName, "plaidToken" to processorToken)
+        )
+
+        val url = urlResponse.headers.get("Location")
+        return url.toString()
+    }
+
+    override fun getDwollaCustomerById(dwollaCustomerId: Long): DwollaCustomerDto {
+        val dwollaCustomer: DwollaCustomer = dwollaRepository.findById(dwollaCustomerId)
+            .orElseThrow { throw ResourceNotFoundException("DwollaCustomer", "dwollaCustomerId", dwollaCustomerId.toString()) }
+
+        return dwollaCustomerMapper.mapToDwollaCustomerDto(dwollaCustomer)
     }
 }
