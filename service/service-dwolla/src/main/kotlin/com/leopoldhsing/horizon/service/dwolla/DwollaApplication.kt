@@ -2,6 +2,7 @@ package com.leopoldhsing.horizon.service.dwolla
 
 import com.dwolla.Dwolla
 import com.dwolla.DwollaEnvironment
+import com.leopoldhsing.horizon.common.utils.exception.DwollaConfigurationException
 import com.leopoldhsing.horizon.service.dwolla.config.DwollaConfigurationProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -15,8 +16,9 @@ class DwollaApplication @Autowired constructor(private val configurationProperti
 
     @Bean
     fun createDwollaInstance(): Dwolla {
+        if (configurationProperties.env.isEmpty()) throw DwollaConfigurationException()
         val environment = when {
-            (configurationProperties.env == "SANDBOX") -> DwollaEnvironment.SANDBOX
+            (configurationProperties.env.lowercase() == "sandbox") -> DwollaEnvironment.SANDBOX
             else -> DwollaEnvironment.PRODUCTION
         }
         return Dwolla(

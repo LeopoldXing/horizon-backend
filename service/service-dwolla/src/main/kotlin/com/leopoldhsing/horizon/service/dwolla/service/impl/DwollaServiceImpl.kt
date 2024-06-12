@@ -1,6 +1,7 @@
 package com.leopoldhsing.horizon.service.dwolla.service.impl
 
 import com.dwolla.Dwolla
+import com.dwolla.api.customers.CustomerStatus
 import com.dwolla.api.shared.DateOfBirth
 import com.dwolla.shared.USState
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto
@@ -47,8 +48,8 @@ class DwollaServiceImpl @Autowired constructor(
         )
 
         // 3. save verifiedPersonalCustomer into database
-//        val dwollaCustomerUrl = verifiedPersonalCustomer._links.get()
-        println(verifiedPersonalCustomer._links)
+        val dwollaCustomerUrl = verifiedPersonalCustomer._links["self"]!!.href
+        dwollaCustomer.dwollaCustomerUrl = dwollaCustomerUrl
         dwollaRepository.save(dwollaCustomer)
 
         // 4. return DwollaCustomerDto
