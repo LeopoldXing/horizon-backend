@@ -96,6 +96,7 @@ public class AccountServiceImpl implements IAccountService {
                                 accountRepository.save(account);
                             }
                             accountDto.setId(account.getId());
+                            accountDto.setShareableId(Base64Util.encode(String.valueOf(account.getId()).getBytes(StandardCharsets.UTF_8)));
                         }, () -> {
                             // account doesn't exist, create funding source then store in the database
                             // 2. create funding source
