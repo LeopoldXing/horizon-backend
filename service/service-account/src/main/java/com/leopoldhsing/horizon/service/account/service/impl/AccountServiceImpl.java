@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.service.account.service.impl;
 
+import com.leopoldhsing.horizon.common.utils.Base64Util;
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException;
 import com.leopoldhsing.horizon.feign.dwolla.DwollaFeignClient;
 import com.leopoldhsing.horizon.feign.plaid.PlaidFeignClient;
@@ -18,8 +19,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements IAccountService {
@@ -53,7 +54,10 @@ public class AccountServiceImpl implements IAccountService {
                 .peek(accountDto -> {
                     Account account = accountMapper2.mapToAccount(accountDto);
                     Account saved = accountRepository.save(account);
+                    saved.setShareableId(Base64Util.encode(String.valueOf(saved.getId()).getBytes(StandardCharsets.UTF_8)));
+                    accountRepository.save(saved);
                     accountDto.setId(saved.getId());
+                    accountDto.setShareableId(saved.getShareableId());
                 }).toList();
         return savedAccountDtoList;
     }
@@ -80,55 +84,36 @@ public class AccountServiceImpl implements IAccountService {
         if (CollectionUtils.isEmpty(accountDtoList)) return accountDtoList;
         // 1. get processorToken [RPC]
         String processorToken = plaidFeignClient.getProcessorToken(new ProcessorTokenCreationDto(userDto, accountDtoList.get(0)));
-        for (AccountDto accountDto : accountDtoList) {
-            Optional<Account> optionalAccount = accountRepository.findAccountByPlaidAccountId(accountDto.getPlaidAccountId());
-            if (optionalAccount.isEmpty()) {
-                // account doesn't exist, create funding source then store in the database
-                // 2. create funding source
-                String fundingSourceUrl = this.createFundingSource(userDto, accountDto, processorToken);
+        accountDtoList = accountDtoList
+                .stream()
+                .peek(accountDto -> accountRepository.findAccountByPlaidAccountId(accountDto.getPlaidAccountId())
+                        .ifPresentOrElse(account -> {
+                            // account exits, check if it has a funding source url
+                            String fundingSourceUrl = account.getFundingSourceUrl();
+                            if (!StringUtils.hasLength(fundingSourceUrl)) {
+                                String url = this.createFundingSource(userDto, accountDto, processorToken);
+                                account.setFundingSourceUrl(url);
+                                accountRepository.save(account);
+                            }
+                            accountDto.setId(account.getId());
+                        }, () -> {
+                            // account doesn't exist, create funding source then store in the database
+                            // 2. create funding source
+                            String fundingSourceUrl = this.createFundingSource(userDto, accountDto, processorToken);
 
-                // 3. add funding source url into account object
-                accountDto.setFundingSourceUrl(fundingSourceUrl);
+                            // 3. add funding source url into account object
+                            accountDto.setFundingSourceUrl(fundingSourceUrl);
 
-                // 4. save to database
-                Account savedAccount = accountRepository.save(accountMapper2.mapToAccount(accountDto));
-                accountDto.setId(savedAccount.getId());
-            } else {
-                // account exits, check if it has a funding source url
-                Account account = optionalAccount.get();
-                String fundingSourceUrl = account.getFundingSourceUrl();
-                if (!StringUtils.hasLength(fundingSourceUrl)) {
-                    String url = this.createFundingSource(userDto, accountDto, processorToken);
-                    account.setFundingSourceUrl(url);
-                    accountRepository.save(account);
-                }
-                accountDto.setId(account.getId());
-            }
-        }
+                            // 4. save to database
+                            Account savedAccount = accountRepository.save(accountMapper2.mapToAccount(accountDto));
+                            savedAccount.setShareableId(Base64Util.encode(String.valueOf(savedAccount.getId()).getBytes(StandardCharsets.UTF_8)));
+                            accountRepository.save(savedAccount);
+                            accountDto.setId(savedAccount.getId());
+                            accountDto.setShareableId(savedAccount.getShareableId());
+                            accountDto.setId(savedAccount.getId());
+                        })
+                ).toList();
 
-                            /*.ifPresentOrElse(
-                                    account -> {
-                                        // account exits, check if it has a funding source url
-                                        String fundingSourceUrl = account.getFundingSourceUrl();
-                                        if (!StringUtils.hasLength(fundingSourceUrl)) {
-                                            String url = this.createFundingSource(userDto, accountDto, processorToken);
-                                            account.setFundingSourceUrl(url);
-                                            accountRepository.save(account);
-                                        }
-                                        accountDto.setId(account.getId());
-                                    }, () -> {
-                                        // account doesn't exist, create funding source then store in the database
-                                        // 2. create funding source
-                                        String fundingSourceUrl = this.createFundingSource(userDto, accountDto, processorToken);
-
-                                        // 3. add funding source url into account object
-                                        accountDto.setFundingSourceUrl(fundingSourceUrl);
-
-                                        // 4. save to database
-                                        Account savedAccount = accountRepository.save(accountMapper2.mapToAccount(accountDto));
-                                        accountDto.setId(savedAccount.getId());
-                                    }
-                            )*/
         return accountDtoList;
     }
 

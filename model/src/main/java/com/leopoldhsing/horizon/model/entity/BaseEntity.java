@@ -7,12 +7,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @MappedSuperclass
 public class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate
@@ -30,6 +30,13 @@ public class BaseEntity {
     @LastModifiedBy
     @Column(insertable = false)
     private String lastModifiedBy;
+
+    @PrePersist
+    public void generateId() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        }
+    }
 
     public BaseEntity() {
     }
