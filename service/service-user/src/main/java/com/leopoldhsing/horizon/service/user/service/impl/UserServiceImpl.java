@@ -25,6 +25,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -161,9 +162,8 @@ public class UserServiceImpl implements IUserService {
         List<AccountDto> accountDtoList = plaidFeignClient.getAccountsFromPlaidByUserId(userDto.getId());
         // 2.1 check and insert bank information
         accountDtoList = accountFeignClient.alignAccountInfo(new AccountAlignmentDto(accountDtoList, userDto));
-        /*accountDtoList = accountFeignClient.saveAccountList(accountDtoList);*/
 
-        // 3. get and save plaid transaction [RPC]
+        // 4. get and save plaid transaction [RPC]
         accountDtoList.forEach(account -> {
             String plaidAccountId = account.getPlaidAccountId();
             List<TransactionDto> transactionDtoList = plaidFeignClient.getTransactionsFromPlaidByPlaidAccountId(plaidAccountId);

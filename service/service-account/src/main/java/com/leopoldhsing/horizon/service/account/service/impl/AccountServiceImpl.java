@@ -82,8 +82,6 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public List<AccountDto> alignAccountInfo(List<AccountDto> accountDtoList, UserDto userDto) {
         if (CollectionUtils.isEmpty(accountDtoList)) return accountDtoList;
-        // 1. get processorToken [RPC]
-        String processorToken = plaidFeignClient.getProcessorToken(new ProcessorTokenCreationDto(userDto, accountDtoList.get(0)));
         accountDtoList = accountDtoList
                 .stream()
                 .peek(accountDto -> accountRepository.findAccountByPlaidAccountId(accountDto.getPlaidAccountId())
@@ -91,7 +89,13 @@ public class AccountServiceImpl implements IAccountService {
                             // account exits, check if it has a funding source url
                             String fundingSourceUrl = account.getFundingSourceUrl();
                             if (!StringUtils.hasLength(fundingSourceUrl)) {
+                                // 1. get processorToken [RPC]
+                                String processorToken = plaidFeignClient.getProcessorToken(new ProcessorTokenCreationDto(userDto, accountDto));
+
+                                // 2. create funding source
                                 String url = this.createFundingSource(userDto, accountDto, processorToken);
+
+                                // 3. set funding source url into the object, then persist the update into database
                                 account.setFundingSourceUrl(url);
                                 accountRepository.save(account);
                             }
@@ -99,6 +103,9 @@ public class AccountServiceImpl implements IAccountService {
                             accountDto.setShareableId(Base64Util.encode(String.valueOf(account.getId()).getBytes(StandardCharsets.UTF_8)));
                         }, () -> {
                             // account doesn't exist, create funding source then store in the database
+                            // 1. get processorToken [RPC]
+                            String processorToken = plaidFeignClient.getProcessorToken(new ProcessorTokenCreationDto(userDto, accountDto));
+
                             // 2. create funding source
                             String fundingSourceUrl = this.createFundingSource(userDto, accountDto, processorToken);
 

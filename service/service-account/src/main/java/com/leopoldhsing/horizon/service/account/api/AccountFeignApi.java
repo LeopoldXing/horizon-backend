@@ -2,6 +2,7 @@ package com.leopoldhsing.horizon.service.account.api;
 
 import com.leopoldhsing.horizon.model.dto.AccountAlignmentDto;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.dto.CreateFundingSourceDto;
 import com.leopoldhsing.horizon.service.account.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,12 @@ public class AccountFeignApi {
     @PostMapping("/align")
     public List<AccountDto> alignAccountInfo(@RequestBody AccountAlignmentDto accountAlignmentDto) {
         return accountService.alignAccountInfo(accountAlignmentDto.getAccountDtoList(), accountAlignmentDto.getUserDto());
+    }
+
+    @GetMapping("/funding-source")
+    public String createFundingSource(@RequestBody CreateFundingSourceDto createFundingSourceDto) {
+        return accountService.createFundingSource(createFundingSourceDto.getUserDto(),
+                createFundingSourceDto.getAccountDto(), createFundingSourceDto.getProcessorToken());
     }
 
 }

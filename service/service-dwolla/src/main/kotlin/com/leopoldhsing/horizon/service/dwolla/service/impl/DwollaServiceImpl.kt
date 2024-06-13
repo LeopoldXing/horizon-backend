@@ -15,10 +15,9 @@ import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo
 import com.leopoldhsing.horizon.service.dwolla.mapper.DwollaCustomerMapper
 import com.leopoldhsing.horizon.service.dwolla.repository.DwollaCustomerRepository
 import com.leopoldhsing.horizon.service.dwolla.service.IDwollaService
-import org.bouncycastle.util.Arrays
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.util.CollectionUtils
+import org.springframework.util.ObjectUtils
 
 @Service
 class DwollaServiceImpl @Autowired constructor(
@@ -84,7 +83,7 @@ class DwollaServiceImpl @Autowired constructor(
     }
 
     override fun createFundingSource(dwollaCustomerId: String, accountDto: AccountDto, processorToken: String): String {
-        val fundingSourceName = "${accountDto.officialName} ${accountDto.plaidAccountId.substring(0, 5)}"
+        val fundingSourceName = "${accountDto.name} ${accountDto.plaidAccountId.substring(0, 5)}"
 
         // 1. create dwolla auth link
         val authResponse = dwollaClient.post("on-demand-authorizations")
@@ -94,16 +93,21 @@ class DwollaServiceImpl @Autowired constructor(
         // 2. check is the funding source already exist
         val existingFundingSourcesResponse = dwollaClient.fundingSources.listByCustomer(dwollaCustomerId, false)
         val existingFundingSourceList = existingFundingSourcesResponse._embedded.fundingSources
-        /*val existingFundingSource = existingFundingSourceList.find { it.name == fundingSourceName }*/
-        if(!Arrays.isNullOrEmpty(existingFundingSourceList)) {
+        val existingFundingSource = existingFundingSourceList.find { it.name == fundingSourceName }
+        if (!ObjectUtils.isEmpty(existingFundingSource)) {
             // funding source already exists
             return existingFundingSourceList[0]._links["self"]!!.href
         }
 
         // 3. create funding source
         val urlResponse = dwollaClient.post(
-            "customers/${dwollaCustomerId}/funding-sources",
-            JsonBody("name" to fundingSourceName, "plaidToken" to processorToken)
+            "/customers/${dwollaCustomerId}/funding-sources",
+            JsonBody(
+                "name" to fundingSourceName,
+                "plaidToken" to processorToken,
+                Pair("_links", authLink),
+                Pair("accountNumber", accountDto.id.toString())
+            )
         )
 
         val url = urlResponse.headers.get("Location")
