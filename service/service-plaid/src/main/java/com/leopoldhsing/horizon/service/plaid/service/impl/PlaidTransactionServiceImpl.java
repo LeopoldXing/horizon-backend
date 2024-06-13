@@ -2,8 +2,6 @@ package com.leopoldhsing.horizon.service.plaid.service.impl;
 
 import com.leopoldhsing.horizon.common.utils.RequestUtil;
 import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
-import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
-import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidTransactionService;
@@ -32,24 +30,18 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
     @Autowired
     private PlaidApi plaidClient;
 
-    @Autowired
-    private AccountFeignClient accountFeignClient;
-
     @Override
     public List<TransactionDto> getTransactionsByPlaidAccountId(String plaidAccountId) throws IOException {
-        // 1. get accountDto [RPC]
-        AccountDto accountDto = accountFeignClient.getAccountByPlaidAccountId(plaidAccountId);
-
-        // 2. Set cursor to empty to receive all historical transactions
+        // 1. Set cursor to empty to receive all historical transactions
         String cursor = null;
 
-        // 3. get access token
+        // 2. get access token
         long userId = RequestUtil.getUid();
         String accessToken = redisTemplate
                 .opsForValue()
                 .get(RedisConstants.PLAID_KEY_PREFIX + RedisConstants.PLAID_ACCESS_TOKEN_KEY_SUFFIX + userId);
 
-        // 4. New transaction updates since "cursor"
+        // 3. New transaction updates since "cursor"
         List<Transaction> added = new ArrayList<>();
         List<Transaction> modified = new ArrayList<>();
         List<RemovedTransaction> removed = new ArrayList<>();
@@ -75,14 +67,14 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
             cursor = responseBody.getNextCursor();
         }
 
-        // 5. processing transaction list: sort (oldest -> latest) and filter by accountId
+        // 4. processing transaction list: sort (oldest -> latest) and filter by accountId
         added.sort(Comparator.comparing(Transaction::getDate));
         List<Transaction> transactionList = added
                 .stream()
                 .filter(transaction -> plaidAccountId.equals(transaction.getAccountId()))
                 .toList();
 
-        // 6. convert plaid transaction -> transactionDto
+        // 5. convert plaid transaction -> transactionDto
         List<TransactionDto> res = transactionList
                 .stream()
                 .map(transaction -> {
@@ -94,11 +86,10 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
                     dto.setName(transaction.getName());
                     dto.setChannel("online");
                     dto.setStatus(transaction.getPending() ? TransactionStatus.PENDING : TransactionStatus.PROCESSED);
-                    dto.setAccountDto(accountDto);
                     return dto;
                 }).toList();
 
-        // 7. return results
+        // 6. return results
         return res;
     }
 

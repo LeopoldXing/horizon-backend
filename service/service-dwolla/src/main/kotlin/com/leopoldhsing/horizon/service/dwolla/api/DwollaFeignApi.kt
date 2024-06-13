@@ -2,6 +2,7 @@ package com.leopoldhsing.horizon.service.dwolla.api
 
 import com.leopoldhsing.horizon.model.dto.AccountDto
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto
+import com.leopoldhsing.horizon.model.dto.TransactionDto
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType
 import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo
 import com.leopoldhsing.horizon.service.dwolla.service.IDwollaService
@@ -35,5 +36,10 @@ class DwollaFeignApi @Autowired constructor(
     @GetMapping("/customer/{dwollaCustomerId}")
     fun getDwollaCustomerById(@PathVariable dwollaCustomerId: Long): DwollaCustomerDto {
         return dwollaService.getDwollaCustomerById(dwollaCustomerId)
+    }
+
+    @PostMapping("/transfer")
+    fun createTransfer(@RequestBody transactionDto: TransactionDto?): TransactionDto{
+        return dwollaService.createTransfer(transactionDto)
     }
 }

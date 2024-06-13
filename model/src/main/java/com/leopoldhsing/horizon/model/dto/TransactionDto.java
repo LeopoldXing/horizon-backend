@@ -13,43 +13,41 @@ public class TransactionDto {
     private String name;
     private BigDecimal amount;
     private String currency;
-    private AccountDto accountDto;
     private String routingNumber;
     private String beneficiaryName;
     private UserDto sender;
     private UserDto receiver;
+    private AccountDto senderAccount;
+    private AccountDto receiverAccount;
     private LocalDate date;
     private LocalDateTime datetime;
     private LocalDate authorizedDate;
     private LocalDateTime authorizedDatetime;
     private TransactionStatus status;
-    private BankDto senderBank;
     private CategoryDto category;
-    private BankDto receiverBank;
     private String channel;
     private String email;
 
     public TransactionDto() {
     }
 
-    public TransactionDto(Long id, String name, BigDecimal amount, String currency, AccountDto accountDto, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, TransactionStatus status, BankDto senderBank, CategoryDto category, BankDto receiverBank, String channel, String email) {
+    public TransactionDto(Long id, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, AccountDto senderAccount, AccountDto receiverAccount, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, TransactionStatus status, CategoryDto category, String channel, String email) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.currency = currency;
-        this.accountDto = accountDto;
         this.routingNumber = routingNumber;
         this.beneficiaryName = beneficiaryName;
         this.sender = sender;
         this.receiver = receiver;
+        this.senderAccount = senderAccount;
+        this.receiverAccount = receiverAccount;
         this.date = date;
         this.datetime = datetime;
         this.authorizedDate = authorizedDate;
         this.authorizedDatetime = authorizedDatetime;
         this.status = status;
-        this.senderBank = senderBank;
         this.category = category;
-        this.receiverBank = receiverBank;
         this.channel = channel;
         this.email = email;
     }
@@ -61,19 +59,18 @@ public class TransactionDto {
                 ", name='" + name + '\'' +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
-                ", accountDto=" + accountDto +
                 ", routingNumber='" + routingNumber + '\'' +
                 ", beneficiaryName='" + beneficiaryName + '\'' +
                 ", sender=" + sender +
                 ", receiver=" + receiver +
+                ", senderAccount=" + senderAccount +
+                ", receiverAccount=" + receiverAccount +
                 ", date=" + date +
-                ", dateTime=" + datetime +
+                ", datetime=" + datetime +
                 ", authorizedDate=" + authorizedDate +
-                ", authorizedDateTime=" + authorizedDatetime +
+                ", authorizedDatetime=" + authorizedDatetime +
                 ", status=" + status +
-                ", senderBank=" + senderBank +
                 ", category=" + category +
-                ", receiverBank=" + receiverBank +
                 ", channel='" + channel + '\'' +
                 ", email='" + email + '\'' +
                 '}';
@@ -111,14 +108,6 @@ public class TransactionDto {
         this.currency = currency;
     }
 
-    public AccountDto getAccountDto() {
-        return accountDto;
-    }
-
-    public void setAccountDto(AccountDto accountDto) {
-        this.accountDto = accountDto;
-    }
-
     public String getRoutingNumber() {
         return routingNumber;
     }
@@ -149,6 +138,22 @@ public class TransactionDto {
 
     public void setReceiver(UserDto receiver) {
         this.receiver = receiver;
+    }
+
+    public AccountDto getSenderAccount() {
+        return senderAccount;
+    }
+
+    public void setSenderAccount(AccountDto senderAccount) {
+        this.senderAccount = senderAccount;
+    }
+
+    public AccountDto getReceiverAccount() {
+        return receiverAccount;
+    }
+
+    public void setReceiverAccount(AccountDto receiverAccount) {
+        this.receiverAccount = receiverAccount;
     }
 
     public LocalDate getDate() {
@@ -191,28 +196,12 @@ public class TransactionDto {
         this.status = status;
     }
 
-    public BankDto getSenderBank() {
-        return senderBank;
-    }
-
-    public void setSenderBank(BankDto senderBank) {
-        this.senderBank = senderBank;
-    }
-
     public CategoryDto getCategory() {
         return category;
     }
 
     public void setCategory(CategoryDto category) {
         this.category = category;
-    }
-
-    public BankDto getReceiverBank() {
-        return receiverBank;
-    }
-
-    public void setReceiverBank(BankDto receiverBank) {
-        this.receiverBank = receiverBank;
     }
 
     public String getChannel() {
@@ -237,7 +226,7 @@ public class TransactionDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         TransactionDto that = (TransactionDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(accountDto, that.accountDto) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && status == that.status && Objects.equals(senderBank, that.senderBank) && Objects.equals(category, that.category) && Objects.equals(receiverBank, that.receiverBank) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(senderAccount, that.senderAccount) && Objects.equals(receiverAccount, that.receiverAccount) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && status == that.status && Objects.equals(category, that.category) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
@@ -246,19 +235,18 @@ public class TransactionDto {
         result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(amount);
         result = 31 * result + Objects.hashCode(currency);
-        result = 31 * result + Objects.hashCode(accountDto);
         result = 31 * result + Objects.hashCode(routingNumber);
         result = 31 * result + Objects.hashCode(beneficiaryName);
         result = 31 * result + Objects.hashCode(sender);
         result = 31 * result + Objects.hashCode(receiver);
+        result = 31 * result + Objects.hashCode(senderAccount);
+        result = 31 * result + Objects.hashCode(receiverAccount);
         result = 31 * result + Objects.hashCode(date);
         result = 31 * result + Objects.hashCode(datetime);
         result = 31 * result + Objects.hashCode(authorizedDate);
         result = 31 * result + Objects.hashCode(authorizedDatetime);
         result = 31 * result + Objects.hashCode(status);
-        result = 31 * result + Objects.hashCode(senderBank);
         result = 31 * result + Objects.hashCode(category);
-        result = 31 * result + Objects.hashCode(receiverBank);
         result = 31 * result + Objects.hashCode(channel);
         result = 31 * result + Objects.hashCode(email);
         return result;

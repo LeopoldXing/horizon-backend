@@ -23,7 +23,9 @@ public class TransactionController {
     private TransactionMapper2 transactionMapper;
 
     @GetMapping("/account/{accountId}")
-    public ResponseEntity<GeneralResponseDto<List<TransactionResponseVo>>> getTransactionListByAccountId(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<GeneralResponseDto<List<TransactionResponseVo>>> getTransactionListByAccountId(
+            @PathVariable("accountId") Long accountId
+    ) {
         List<TransactionDto> transactionDtoList = transactionService.getTransactionListByAccountId(accountId);
 
         List<TransactionResponseVo> responseVoList = transactionDtoList

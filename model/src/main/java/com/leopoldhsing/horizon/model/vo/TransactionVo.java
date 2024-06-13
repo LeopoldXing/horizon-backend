@@ -13,11 +13,12 @@ public class TransactionVo {
     private String email;
     private String sourceFundingSourceUrl;
     private String destinationFundingSourceUrl;
+    private String shareableId;
 
     public TransactionVo() {
     }
 
-    public TransactionVo(String name, String amount, String senderId, String receiverId, String senderBankId, String receiverBankId, String email, String sourceFundingSourceUrl, String destinationFundingSourceUrl) {
+    public TransactionVo(String name, String amount, String senderId, String receiverId, String senderBankId, String receiverBankId, String email, String sourceFundingSourceUrl, String destinationFundingSourceUrl, String shareableId) {
         this.name = name;
         this.amount = amount;
         this.senderId = senderId;
@@ -27,6 +28,7 @@ public class TransactionVo {
         this.email = email;
         this.sourceFundingSourceUrl = sourceFundingSourceUrl;
         this.destinationFundingSourceUrl = destinationFundingSourceUrl;
+        this.shareableId = shareableId;
     }
 
     public String getName() {
@@ -101,13 +103,21 @@ public class TransactionVo {
         this.destinationFundingSourceUrl = destinationFundingSourceUrl;
     }
 
+    public String getShareableId() {
+        return shareableId;
+    }
+
+    public void setShareableId(String shareableId) {
+        this.shareableId = shareableId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         TransactionVo that = (TransactionVo) o;
-        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId) && Objects.equals(email, that.email) && Objects.equals(sourceFundingSourceUrl, that.sourceFundingSourceUrl) && Objects.equals(destinationFundingSourceUrl, that.destinationFundingSourceUrl);
+        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId) && Objects.equals(email, that.email) && Objects.equals(sourceFundingSourceUrl, that.sourceFundingSourceUrl) && Objects.equals(destinationFundingSourceUrl, that.destinationFundingSourceUrl) && Objects.equals(shareableId, that.shareableId);
     }
 
     @Override
@@ -121,6 +131,7 @@ public class TransactionVo {
         result = 31 * result + Objects.hashCode(email);
         result = 31 * result + Objects.hashCode(sourceFundingSourceUrl);
         result = 31 * result + Objects.hashCode(destinationFundingSourceUrl);
+        result = 31 * result + Objects.hashCode(shareableId);
         return result;
     }
 }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException
 import com.leopoldhsing.horizon.model.dto.AccountDto
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto
+import com.leopoldhsing.horizon.model.dto.TransactionDto
 import com.leopoldhsing.horizon.model.entity.DwollaCustomer
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerStatus
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType
@@ -119,5 +120,9 @@ class DwollaServiceImpl @Autowired constructor(
             .orElseThrow { throw ResourceNotFoundException("DwollaCustomer", "dwollaCustomerId", dwollaCustomerId.toString()) }
 
         return dwollaCustomerMapper.mapToDwollaCustomerDto(dwollaCustomer)
+    }
+
+    override fun createTransfer(transactionDto: TransactionDto?): TransactionDto {
+        return TransactionDto()
     }
 }

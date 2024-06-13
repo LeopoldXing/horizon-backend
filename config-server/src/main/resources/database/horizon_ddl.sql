@@ -80,7 +80,7 @@ CREATE TABLE `users`
     `email`              varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `first_name`         varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `last_name`          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `password`           varchar(255) COLLATE utf8mb4_general_ci                       DEFAULT NULL,
+    `password`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `address`            varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `city`               varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `state`              varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE `users`
     KEY                  `users_plaid_customers_FK` (`plaid_customer_id`),
     CONSTRAINT `users_dwolla_customer_FK` FOREIGN KEY (`dwolla_customer_id`) REFERENCES `dwolla_customer` (`id`),
     CONSTRAINT `users_plaid_customers_FK` FOREIGN KEY (`plaid_customer_id`) REFERENCES `plaid_customers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 -- horizon.banks definition
@@ -106,7 +106,7 @@ DROP TABLE IF EXISTS `banks`;
 CREATE TABLE `banks`
 (
     `id`               bigint                                                        NOT NULL AUTO_INCREMENT,
-    `institution_id`   varchar(100) COLLATE utf8mb4_general_ci                       DEFAULT NULL,
+    `institution_id`   varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `name`             varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `url`              varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `status`           varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE `accounts`
     KEY                     `accounts_banks2_FK` (`bank_id`),
     CONSTRAINT `accounts_banks2_FK` FOREIGN KEY (`bank_id`) REFERENCES `banks` (`id`),
     CONSTRAINT `accounts_users_FK` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 -- horizon.transactions definition
@@ -179,7 +179,6 @@ CREATE TABLE `transactions`
     `name`                varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `amount`              decimal(10, 2)                                                NOT NULL,
     `currency`            varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `account_id`          bigint                                                        DEFAULT NULL,
     `routing_number`      varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `beneficiary_name`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `sender_id`           bigint                                                        DEFAULT NULL,
@@ -189,8 +188,8 @@ CREATE TABLE `transactions`
     `authorized_date`     date                                                          DEFAULT NULL,
     `authorized_datetime` datetime                                                      DEFAULT NULL,
     `status`              varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `sender_bank_id`      bigint                                                        DEFAULT NULL,
-    `receiver_bank_id`    bigint                                                        DEFAULT NULL,
+    `sender_account_id`   bigint                                                        DEFAULT NULL,
+    `receiver_account_id` bigint                                                        DEFAULT NULL,
     `category_id`         bigint                                                        DEFAULT NULL,
     `channel`             varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     `email`               varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -199,15 +198,13 @@ CREATE TABLE `transactions`
     `last_modified_at`    datetime                                                      DEFAULT NULL,
     `last_modified_by`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY                   `transactions_banks_FK` (`sender_bank_id`),
-    KEY                   `transactions_banks_FK_1` (`receiver_bank_id`),
+    KEY                   `transactions_banks_FK` (`sender_account_id`),
+    KEY                   `transactions_banks_FK_1` (`receiver_account_id`),
     KEY                   `transactions_users_FK` (`sender_id`),
     KEY                   `transactions_users_FK_1` (`receiver_id`),
     KEY                   `transactions_categories_FK` (`category_id`),
-    KEY                   `transactions_accounts_FK` (`account_id`),
-    CONSTRAINT `transactions_accounts_FK` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
-    CONSTRAINT `transactions_banks_FK` FOREIGN KEY (`sender_bank_id`) REFERENCES `banks` (`id`),
-    CONSTRAINT `transactions_banks_FK_1` FOREIGN KEY (`receiver_bank_id`) REFERENCES `banks` (`id`),
+    CONSTRAINT `transactions_accounts_FK` FOREIGN KEY (`sender_account_id`) REFERENCES `accounts` (`id`),
+    CONSTRAINT `transactions_accounts_FK_1` FOREIGN KEY (`receiver_account_id`) REFERENCES `accounts` (`id`),
     CONSTRAINT `transactions_categories_FK` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
     CONSTRAINT `transactions_users_FK` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
     CONSTRAINT `transactions_users_FK_1` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)

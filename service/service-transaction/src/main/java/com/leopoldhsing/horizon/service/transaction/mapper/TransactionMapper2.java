@@ -1,9 +1,10 @@
 package com.leopoldhsing.horizon.service.transaction.mapper;
 
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
-import com.leopoldhsing.horizon.feign.bank.BankFeignClient;
 import com.leopoldhsing.horizon.feign.user.UserFeignClient;
+import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
+import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.Transaction;
 import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
@@ -24,17 +25,13 @@ public class TransactionMapper2 {
     @Autowired
     private UserFeignClient userFeignClient;
 
-    @Autowired
-    private BankFeignClient bankFeignClient;
-
     public Transaction mapToTransaction(TransactionDto transactionDto) {
         Transaction transaction = new Transaction();
         BeanUtils.copyProperties(transactionDto, transaction);
-        transaction.setAccountId(transactionDto.getAccountDto() == null ? null : transactionDto.getAccountDto().getId());
         transaction.setSenderId(transactionDto.getSender() == null ? null : transactionDto.getSender().getId());
         transaction.setReceiverId(transactionDto.getReceiver() == null ? null : transactionDto.getReceiver().getId());
-        transaction.setSenderBankId(transactionDto.getSenderBank() == null ? null : transactionDto.getSenderBank().getId());
-        transaction.setReceiverBankId(transactionDto.getReceiverBank() == null ? null : transactionDto.getReceiverBank().getId());
+        transaction.setSenderAccountId(transactionDto.getSenderAccount() == null ? null : transactionDto.getSenderAccount().getId());
+        transaction.setReceiverAccountId(transactionDto.getReceiverAccount() == null ? null : transactionDto.getReceiverAccount().getId());
         return transaction;
     }
 
@@ -44,19 +41,38 @@ public class TransactionMapper2 {
         transaction.setAmount(new BigDecimal(transactionVo.getAmount()));
         transaction.setSenderId(Long.parseLong(transactionVo.getSenderId()));
         transaction.setReceiverId(Long.parseLong(transactionVo.getReceiverId()));
-        transaction.setSenderBankId(Long.parseLong(transactionVo.getSenderBankId()));
-        transaction.setReceiverBankId(Long.parseLong(transactionVo.getReceiverBankId()));
+        transaction.setSenderAccountId(Long.parseLong(transactionVo.getSenderBankId()));
+        transaction.setReceiverAccountId(Long.parseLong(transactionVo.getReceiverBankId()));
         return transaction;
     }
 
     public TransactionDto mapToTransactionDto(Transaction transaction) {
         TransactionDto transactionDto = new TransactionDto();
         BeanUtils.copyProperties(transaction, transactionDto);
-        transactionDto.setAccountDto(accountFeignClient.getAccountById(transaction.getAccountId()));
         transactionDto.setSender(userFeignClient.getUser(transaction.getSenderId()));
         transactionDto.setReceiver(userFeignClient.getUser(transaction.getReceiverId()));
-        transactionDto.setReceiverBank(bankFeignClient.getBankById(transaction.getReceiverBankId()));
-        transactionDto.setSenderBank(bankFeignClient.getBankById(transaction.getSenderBankId()));
+        transactionDto.setReceiverAccount(accountFeignClient.getAccountById(transaction.getReceiverAccountId()));
+        transactionDto.setSenderAccount(accountFeignClient.getAccountById(transaction.getSenderAccountId()));
+        return transactionDto;
+    }
+
+    public TransactionDto mapToTransactionDto(Transaction transaction, AccountDto senderAccount, AccountDto receiverAccount) {
+        TransactionDto transactionDto = new TransactionDto();
+        BeanUtils.copyProperties(transaction, transactionDto);
+        transactionDto.setSender(userFeignClient.getUser(transaction.getSenderId()));
+        transactionDto.setReceiver(userFeignClient.getUser(transaction.getReceiverId()));
+        transactionDto.setReceiverAccount(senderAccount);
+        transactionDto.setSenderAccount(receiverAccount);
+        return transactionDto;
+    }
+
+    public TransactionDto mapToTransactionDto(Transaction transaction, AccountDto senderAccount, AccountDto receiverAccount, UserDto sender) {
+        TransactionDto transactionDto = new TransactionDto();
+        BeanUtils.copyProperties(transaction, transactionDto);
+        transactionDto.setSender(sender);
+        transactionDto.setReceiver(userFeignClient.getUser(transaction.getReceiverId()));
+        transactionDto.setReceiverAccount(receiverAccount);
+        transactionDto.setSenderAccount(senderAccount);
         return transactionDto;
     }
 
@@ -70,7 +86,6 @@ public class TransactionMapper2 {
         transactionResponseVo.setId(String.valueOf(transaction.getId()));
         transactionResponseVo.set$id(String.valueOf(transaction.getId()));
         transactionResponseVo.setPaymentChannel(transaction.getChannel());
-        transactionResponseVo.setAccountId(String.valueOf(transaction.getAccountId()));
         transactionResponseVo.setDate(String.valueOf(transaction.getDate()));
         transactionResponseVo.setAmount(transaction.getAmount().doubleValue());
         transactionResponseVo.setPending(Objects.equals(transaction.getStatus(), TransactionStatus.PENDING.toString()));

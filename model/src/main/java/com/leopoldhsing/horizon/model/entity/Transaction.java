@@ -15,7 +15,6 @@ public class Transaction extends BaseEntity {
     private String name;
     private BigDecimal amount;
     private String currency;
-    private Long accountId;
     private String routingNumber;
     private String beneficiaryName;
     private Long senderId;
@@ -25,8 +24,8 @@ public class Transaction extends BaseEntity {
     private LocalDate authorizedDate;
     private LocalDateTime authorizedDatetime;
     private String status;
-    private Long senderBankId;
-    private Long receiverBankId;
+    private Long senderAccountId;
+    private Long receiverAccountId;
     private Long categoryId;
     private String channel;
     private String email;
@@ -38,11 +37,10 @@ public class Transaction extends BaseEntity {
         super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
     }
 
-    public Transaction(String name, BigDecimal amount, String currency, Long accountId, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderBankId, Long receiverBankId, Long categoryId, String channel, String email) {
+    public Transaction(String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderAccountId, Long receiverAccountId, Long categoryId, String channel, String email) {
         this.name = name;
         this.amount = amount;
         this.currency = currency;
-        this.accountId = accountId;
         this.routingNumber = routingNumber;
         this.beneficiaryName = beneficiaryName;
         this.senderId = senderId;
@@ -52,19 +50,18 @@ public class Transaction extends BaseEntity {
         this.authorizedDate = authorizedDate;
         this.authorizedDatetime = authorizedDatetime;
         this.status = status;
-        this.senderBankId = senderBankId;
-        this.receiverBankId = receiverBankId;
+        this.senderAccountId = senderAccountId;
+        this.receiverAccountId = receiverAccountId;
         this.categoryId = categoryId;
         this.channel = channel;
         this.email = email;
     }
 
-    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String name, BigDecimal amount, String currency, Long accountId, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderBankId, Long receiverBankId, Long categoryId, String channel, String email) {
+    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderAccountId, Long receiverAccountId, Long categoryId, String channel, String email) {
         super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
         this.name = name;
         this.amount = amount;
         this.currency = currency;
-        this.accountId = accountId;
         this.routingNumber = routingNumber;
         this.beneficiaryName = beneficiaryName;
         this.senderId = senderId;
@@ -74,8 +71,8 @@ public class Transaction extends BaseEntity {
         this.authorizedDate = authorizedDate;
         this.authorizedDatetime = authorizedDatetime;
         this.status = status;
-        this.senderBankId = senderBankId;
-        this.receiverBankId = receiverBankId;
+        this.senderAccountId = senderAccountId;
+        this.receiverAccountId = receiverAccountId;
         this.categoryId = categoryId;
         this.channel = channel;
         this.email = email;
@@ -87,18 +84,17 @@ public class Transaction extends BaseEntity {
                 "name='" + name + '\'' +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
-                ", accountId=" + accountId +
                 ", routingNumber='" + routingNumber + '\'' +
                 ", beneficiaryName='" + beneficiaryName + '\'' +
                 ", senderId=" + senderId +
                 ", receiverId=" + receiverId +
                 ", date=" + date +
-                ", dateTime=" + datetime +
+                ", datetime=" + datetime +
                 ", authorizedDate=" + authorizedDate +
-                ", authorizedDateTime=" + authorizedDatetime +
+                ", authorizedDatetime=" + authorizedDatetime +
                 ", status='" + status + '\'' +
-                ", senderBankId=" + senderBankId +
-                ", receiverBankId=" + receiverBankId +
+                ", senderAccountId=" + senderAccountId +
+                ", receiverAccountId=" + receiverAccountId +
                 ", categoryId=" + categoryId +
                 ", channel='" + channel + '\'' +
                 ", email='" + email + '\'' +
@@ -127,14 +123,6 @@ public class Transaction extends BaseEntity {
 
     public void setCurrency(String currency) {
         this.currency = currency;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
     }
 
     public String getRoutingNumber() {
@@ -181,8 +169,8 @@ public class Transaction extends BaseEntity {
         return datetime;
     }
 
-    public void setDatetime(LocalDateTime dateTime) {
-        this.datetime = dateTime;
+    public void setDatetime(LocalDateTime datetime) {
+        this.datetime = datetime;
     }
 
     public LocalDate getAuthorizedDate() {
@@ -197,8 +185,8 @@ public class Transaction extends BaseEntity {
         return authorizedDatetime;
     }
 
-    public void setAuthorizedDatetime(LocalDateTime authorizedDateTime) {
-        this.authorizedDatetime = authorizedDateTime;
+    public void setAuthorizedDatetime(LocalDateTime authorizedDatetime) {
+        this.authorizedDatetime = authorizedDatetime;
     }
 
     public String getStatus() {
@@ -209,20 +197,20 @@ public class Transaction extends BaseEntity {
         this.status = status;
     }
 
-    public Long getSenderBankId() {
-        return senderBankId;
+    public Long getSenderAccountId() {
+        return senderAccountId;
     }
 
-    public void setSenderBankId(Long senderBankId) {
-        this.senderBankId = senderBankId;
+    public void setSenderAccountId(Long senderAccountId) {
+        this.senderAccountId = senderAccountId;
     }
 
-    public Long getReceiverBankId() {
-        return receiverBankId;
+    public Long getReceiverAccountId() {
+        return receiverAccountId;
     }
 
-    public void setReceiverBankId(Long receiverBankId) {
-        this.receiverBankId = receiverBankId;
+    public void setReceiverAccountId(Long receiverAccountId) {
+        this.receiverAccountId = receiverAccountId;
     }
 
     public Long getCategoryId() {
@@ -256,7 +244,7 @@ public class Transaction extends BaseEntity {
         if (!super.equals(o)) return false;
 
         Transaction that = (Transaction) o;
-        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(accountId, that.accountId) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && Objects.equals(status, that.status) && Objects.equals(senderBankId, that.senderBankId) && Objects.equals(receiverBankId, that.receiverBankId) && Objects.equals(categoryId, that.categoryId) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && Objects.equals(status, that.status) && Objects.equals(senderAccountId, that.senderAccountId) && Objects.equals(receiverAccountId, that.receiverAccountId) && Objects.equals(categoryId, that.categoryId) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
@@ -265,7 +253,6 @@ public class Transaction extends BaseEntity {
         result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(amount);
         result = 31 * result + Objects.hashCode(currency);
-        result = 31 * result + Objects.hashCode(accountId);
         result = 31 * result + Objects.hashCode(routingNumber);
         result = 31 * result + Objects.hashCode(beneficiaryName);
         result = 31 * result + Objects.hashCode(senderId);
@@ -275,8 +262,8 @@ public class Transaction extends BaseEntity {
         result = 31 * result + Objects.hashCode(authorizedDate);
         result = 31 * result + Objects.hashCode(authorizedDatetime);
         result = 31 * result + Objects.hashCode(status);
-        result = 31 * result + Objects.hashCode(senderBankId);
-        result = 31 * result + Objects.hashCode(receiverBankId);
+        result = 31 * result + Objects.hashCode(senderAccountId);
+        result = 31 * result + Objects.hashCode(receiverAccountId);
         result = 31 * result + Objects.hashCode(categoryId);
         result = 31 * result + Objects.hashCode(channel);
         result = 31 * result + Objects.hashCode(email);

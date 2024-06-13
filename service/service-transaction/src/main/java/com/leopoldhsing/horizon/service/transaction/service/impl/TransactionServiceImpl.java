@@ -1,14 +1,12 @@
 package com.leopoldhsing.horizon.service.transaction.service.impl;
 
+import com.leopoldhsing.horizon.common.utils.Base64Util;
 import com.leopoldhsing.horizon.common.utils.RequestUtil;
 import com.leopoldhsing.horizon.common.utils.exception.ActionNotAuthorizedException;
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
-import com.leopoldhsing.horizon.feign.bank.BankFeignClient;
-import com.leopoldhsing.horizon.feign.user.UserFeignClient;
+import com.leopoldhsing.horizon.feign.dwolla.DwollaFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
-import com.leopoldhsing.horizon.model.dto.BankDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
-import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.Transaction;
 import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
@@ -27,16 +25,12 @@ public class TransactionServiceImpl implements ITransactionService {
     private AccountFeignClient accountFeignClient;
 
     @Autowired
-    private UserFeignClient userFeignClient;
-
-    @Autowired
-    private BankFeignClient bankFeignClient;
-
-    @Autowired
     private TransactionRepository transactionRepository;
 
     @Autowired
     private TransactionMapper2 transactionMapper;
+    @Autowired
+    private DwollaFeignClient dwollaFeignClient;
 
     @Override
     public List<TransactionDto> getTransactionListByAccountId(Long accountId) {
@@ -55,39 +49,11 @@ public class TransactionServiceImpl implements ITransactionService {
         // 3. get transaction list
         List<Transaction> transactionList = transactionRepository.findAllByAccountId(accountId);
 
-        // 4. construct transactionDto
-        // 4.1 get accountDto
-        AccountDto accountDto = accountDtoList
-                .stream()
-                .filter(account -> accountId.equals(account.getId()))
-                .toList().get(0);
-        // 4.2 convert transaction -> transactionDto
-        List<TransactionDto> transactionDtoList = transactionList
-                .stream()
-                .map(transaction -> {
-                    TransactionDto transactionDto = transactionMapper.mapToTransactionDto(transaction);
-                    transactionDto.setAccountDto(accountDto);
-                    if (transaction.getSenderId() != null) {
-                        UserDto sender = userFeignClient.getUser(transaction.getSenderId());
-                        transactionDto.setSender(sender);
-                    }
-                    if (transaction.getReceiverId() != null) {
-                        UserDto receiver = userFeignClient.getUser(transaction.getReceiverId());
-                        transactionDto.setReceiver(receiver);
-                    }
-                    if (transaction.getReceiverBankId() != null) {
-                        BankDto receiverBank = bankFeignClient.getBankById(transaction.getReceiverBankId());
-                        transactionDto.setReceiverBank(receiverBank);
-                    }
-                    if (transaction.getSenderBankId() != null) {
-                        BankDto senderBank = bankFeignClient.getBankById(transaction.getSenderBankId());
-                        transactionDto.setSenderBank(senderBank);
-                    }
-                    return transactionDto;
-                }).toList();
-
         // 5. return result
-        return transactionDtoList;
+        return transactionList
+                .stream()
+                .map(transaction -> transactionMapper.mapToTransactionDto(transaction))
+                .toList();
     }
 
     @Override
@@ -102,9 +68,21 @@ public class TransactionServiceImpl implements ITransactionService {
     @Transactional
     @Override
     public TransactionDto createTransaction(TransactionVo transactionVo) {
+        // 1. decrypt receiverId
+        Long receiverAccountId = Long.parseLong(new String(Base64Util.decode(transactionVo.getShareableId())));
+
+        // 2. create transaction object
         Transaction transaction = transactionMapper.mapToTransaction(transactionVo);
+        transaction.setReceiverAccountId(receiverAccountId);
+        TransactionDto transactionDto = transactionMapper.mapToTransactionDto(transaction);
+
+        // 3. create dwolla transfer
+        TransactionDto transfer = dwollaFeignClient.createTransfer(transactionDto);
+
+        // 4. store transaction into the database
         Transaction savedTransaction = transactionRepository.save(transaction);
 
-        return null;
+        // 5. return result
+        return transactionDto;
     }
 }
