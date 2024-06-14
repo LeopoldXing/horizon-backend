@@ -2,6 +2,7 @@ package com.leopoldhsing.horizon.service.transaction.controller;
 
 import com.leopoldhsing.horizon.model.dto.GeneralResponseDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
+import com.leopoldhsing.horizon.model.vo.TransactionCreationVo;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
 import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
@@ -37,8 +38,8 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<GeneralResponseDto<TransactionResponseVo>> createTransaction(@RequestBody TransactionVo transactionVo) {
-        TransactionDto transactionDto = transactionService.createTransaction(transactionVo);
+    public ResponseEntity<GeneralResponseDto<TransactionResponseVo>> createTransaction(@RequestBody TransactionCreationVo transactionCreationVo) {
+        TransactionDto transactionDto = transactionService.createTransaction(transactionCreationVo);
         TransactionResponseVo responseVo = transactionMapper.mapToTransactionResponseVo(transactionDto);
 
         return ResponseEntity.ok(new GeneralResponseDto<>(responseVo));

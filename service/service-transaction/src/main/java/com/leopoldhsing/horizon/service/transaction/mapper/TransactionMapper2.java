@@ -7,8 +7,8 @@ import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
 import com.leopoldhsing.horizon.model.entity.Transaction;
 import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
+import com.leopoldhsing.horizon.model.vo.TransactionCreationVo;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
-import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,24 +35,38 @@ public class TransactionMapper2 {
         return transaction;
     }
 
-    public Transaction mapToTransaction(TransactionVo transactionVo) {
+    public Transaction mapToTransaction(TransactionCreationVo transactionCreationVo) {
         Transaction transaction = new Transaction();
-        BeanUtils.copyProperties(transactionVo, transaction);
-        transaction.setAmount(new BigDecimal(transactionVo.getAmount()));
-        transaction.setSenderId(Long.parseLong(transactionVo.getSenderId()));
-        transaction.setReceiverId(Long.parseLong(transactionVo.getReceiverId()));
-        transaction.setSenderAccountId(Long.parseLong(transactionVo.getSenderBankId()));
-        transaction.setReceiverAccountId(Long.parseLong(transactionVo.getReceiverBankId()));
+        BeanUtils.copyProperties(transactionCreationVo, transaction);
+        transaction.setAmount(new BigDecimal(transactionCreationVo.getAmount()));
+        transaction.setSenderAccountId(Long.parseLong(transactionCreationVo.getSenderAccountId()));
         return transaction;
     }
 
     public TransactionDto mapToTransactionDto(Transaction transaction) {
         TransactionDto transactionDto = new TransactionDto();
         BeanUtils.copyProperties(transaction, transactionDto);
-        transactionDto.setSender(userFeignClient.getUser(transaction.getSenderId()));
-        transactionDto.setReceiver(userFeignClient.getUser(transaction.getReceiverId()));
-        transactionDto.setReceiverAccount(accountFeignClient.getAccountById(transaction.getReceiverAccountId()));
-        transactionDto.setSenderAccount(accountFeignClient.getAccountById(transaction.getSenderAccountId()));
+        if (transaction.getSenderId() != null) {
+            transactionDto.setSender(userFeignClient.getUser(transaction.getSenderId()));
+        } else {
+            transactionDto.setSender(new UserDto());
+        }
+        if (transaction.getReceiverId() != null) {
+            transactionDto.setReceiver(userFeignClient.getUser(transaction.getReceiverId()));
+        } else {
+            transactionDto.setReceiver(new UserDto());
+        }
+        if (transaction.getSenderAccountId() != null) {
+            transactionDto.setSenderAccount(accountFeignClient.getAccountById(transaction.getSenderAccountId()));
+        } else {
+            transactionDto.setSenderAccount(new AccountDto());
+        }
+        if (transaction.getReceiverAccountId() != null) {
+            transactionDto.setReceiverAccount(accountFeignClient.getAccountById(transaction.getReceiverAccountId()));
+        } else {
+            transactionDto.setReceiverAccount(new AccountDto());
+        }
+
         return transactionDto;
     }
 

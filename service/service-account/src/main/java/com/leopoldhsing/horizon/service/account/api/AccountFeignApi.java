@@ -50,4 +50,9 @@ public class AccountFeignApi {
                 createFundingSourceDto.getAccountDto(), createFundingSourceDto.getProcessorToken());
     }
 
+    @GetMapping("/user/{accountId}")
+    public Long getOwnerIdByAccountId(@PathVariable("accountId") Long accountId) {
+        return accountService.getOwnerIdByAccountId(accountId);
+    }
+
 }

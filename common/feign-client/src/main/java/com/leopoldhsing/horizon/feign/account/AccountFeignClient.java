@@ -31,4 +31,7 @@ public interface AccountFeignClient {
 
     @GetMapping("/api/v1/inner/account/funding-source")
     String createFundingSource(@RequestBody CreateFundingSourceDto createFundingSourceDto);
+
+    @GetMapping("/api/v1/inner/account/user/{accountId}")
+    Long getOwnerIdByAccountId(@PathVariable("accountId") Long accountId);
 }

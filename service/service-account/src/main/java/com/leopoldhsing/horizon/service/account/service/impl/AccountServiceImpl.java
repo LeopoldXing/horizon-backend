@@ -147,4 +147,13 @@ public class AccountServiceImpl implements IAccountService {
         return fundingSourceUrl;
     }
 
+    @Override
+    public Long getOwnerIdByAccountId(Long accountId) {
+        Account account = accountRepository.findById(accountId).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "accountId", String.valueOf(accountId))
+        );
+
+        return account.getOwnerId();
+    }
+
 }

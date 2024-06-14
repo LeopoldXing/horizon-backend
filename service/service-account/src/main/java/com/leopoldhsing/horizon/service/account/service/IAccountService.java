@@ -17,4 +17,6 @@ public interface IAccountService {
     List<AccountDto> alignAccountInfo(List<AccountDto> accountDtoList, UserDto userDto);
 
     String createFundingSource(UserDto userDto, AccountDto accountDto, String processorToken);
+
+    Long getOwnerIdByAccountId(Long accountId);
 }

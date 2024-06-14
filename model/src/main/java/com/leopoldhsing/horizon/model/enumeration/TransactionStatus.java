@@ -1,25 +1,19 @@
 package com.leopoldhsing.horizon.model.enumeration;
 
 public enum TransactionStatus {
-    PROCESSED(1),
-    PENDING(2),
-    CANCELLED(3),
-    FAILED(4);
+    PROCESSED("PROCESSED"),
+    PENDING("PENDING"),
+    CANCELLED("CANCELLED"),
+    FAILED("FAILED");
 
-    private final int statusCode;
+    private final String value;
 
-    TransactionStatus(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
+    TransactionStatus(String value) {
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return "DwollaTransactionStatus{" +
-                "statusCode=" + statusCode +
-                '}';
+        return this.value;
     }
 }

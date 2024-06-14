@@ -2,7 +2,7 @@ package com.leopoldhsing.horizon.feign.dwolla;
 
 import com.leopoldhsing.horizon.model.dto.AccountDto;
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto;
-import com.leopoldhsing.horizon.model.dto.TransactionDto;
+import com.leopoldhsing.horizon.model.dto.TransferCreationDto;
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType;
 import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -23,5 +23,5 @@ public interface DwollaFeignClient {
     DwollaCustomerDto getDwollaCustomerById(@PathVariable Long dwollaCustomerId);
 
     @PostMapping("/api/v1/inner/dwolla/transfer")
-    TransactionDto createTransfer(@RequestBody TransactionDto transactionDto);
+    String createTransfer(@RequestBody TransferCreationDto transferCreationDto);
 }
