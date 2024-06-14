@@ -5,5 +5,3 @@ spring:
     active: dev
   config:
     import: "configserver:http://localhost:9000/"
-server:
-  port: 9007

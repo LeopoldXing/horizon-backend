@@ -1,0 +1,89 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true
+      routes:
+        - id: service_transaction
+          uri: lb://transaction
+          predicates:
+            - Path=/api/*/transaction/**
+        - id: service_bank
+          uri: lb://bank
+          predicates:
+            - Path=/api/*/bank/**
+        - id: service_dwolla
+          uri: lb://dwolla
+          predicates:
+            - Path=/api/*/dwolla/**
+        - id: service_plaid
+          uri: lb://plaid
+          predicates:
+            - Path=/api/*/plaid/**
+        - id: service_user
+          uri: lb://user
+          predicates:
+            - Path=/api/*/user/**
+        - id: service_account
+          uri: lb://account
+          predicates:
+            - Path=/api/*/account/**
+        - id: service_bank
+          uri: lb://bank
+          predicates:
+            - Path=/api/*/bank/**
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: 1234
+      database: 0
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka:8080/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "gateway"
+    description: "Horizon gateway server"
+    version: "0.0.1"
+
+horizon:
+  url:
+    pattern:
+      inner-uri-patterns: /api/**/inner/**
+      trusted-uri-patterns:
+        - /css/**
+        - /js/**
+        - /ts/**
+        - /img/**
+        - /fonts/**
+      login-path: http://horizon.leopoldhsing.com:3000/sign-in
+      require-auth-uri-patterns:
+        - /api/**
+      sign-in-uri-patterns: /api/*/user/sign-in
+      sign-up-uri-patterns: /api/*/user/sign-up
+

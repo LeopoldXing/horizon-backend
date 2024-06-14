@@ -15,10 +15,10 @@ services:
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping","-h", "localhost" ]
       timeout: 10s
-      retries: 10
-      interval: 10s
+      retries: 20
+      interval: 2s
       start_period: 3s
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 1234
     extends:
       service: horizon-base-config

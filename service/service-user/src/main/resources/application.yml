@@ -5,11 +5,3 @@ spring:
     active: dev
   config:
     import: "configserver:http://localhost:9000/"
-  data:
-    redis:
-      host: localhost
-      port: 36379
-      database: 0
-      password: 1234
-server:
-  port: 9001

@@ -5,17 +5,3 @@ spring:
     active: dev
   config:
     import: "configserver:http://localhost:9000/"
-server:
-  port: 9006
-
-plaid:
-  client-id: 6650078958d6ed001ce3678b
-  secret: 3284df443e512d1dc2c452444a33aa
-  env: sandbox
-  products:
-    - auth
-    - transactions
-    - identity
-  country-codes:
-    - US
-    - CA

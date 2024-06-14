@@ -26,7 +26,7 @@
                 <configuration>
                     <mainClass>com.leopoldhsing.horizon.service.account.AccountApplication</mainClass>
                     <image>
-                        <name>docker.io/dbroccoli/${project.artifactId}:${version}</name>
+                        <name>docker.io/dbroccoli/horizon/${project.artifactId}:${version}</name>
                     </image>
                 </configuration>
                 <executions>

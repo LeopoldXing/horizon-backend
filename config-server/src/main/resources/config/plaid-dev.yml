@@ -1,3 +1,6 @@
+server:
+  port: 9006
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -51,3 +54,16 @@ info:
     name: "plaid"
     description: "Horizon plaid microservice application"
     version: "0.0.1"
+
+plaid:
+  client-id: 6650078958d6ed001ce3678b
+  secret: 3284df443e512d1dc2c452444a33aa
+  env: sandbox
+  products:
+    - auth
+    - transactions
+    - identity
+  country-codes:
+    - US
+    - CA
+

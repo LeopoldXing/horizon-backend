@@ -1,6 +1,3 @@
-server:
-  port: 9002
-
 spring:
   application:
     name: eureka
@@ -17,18 +14,3 @@ eureka:
     register-with-eureka: false
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
-  endpoint:
-    health:
-      probes:
-        enabled: true

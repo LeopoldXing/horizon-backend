@@ -1,4 +1,38 @@
 services:
+  redis:
+    container_name: horizon-redis
+    image: redis:7.0.14
+    environment:
+      - REDIS_PASSWORD=1234
+    command: [ "redis-server", "--requirepass", "1234" ]
+    ports:
+      - 36379:6379
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  account-db:
+    container_name: horizon-account-db
+    image: mysql:8.2.0
+    ports:
+      - 10004:3306
+    environment:
+      MYSQL_DATABASE: accounts
+    extends:
+      file: common-test.yml
+      service: horizon-db-config
+
+  transaction-db:
+    container_name: horizon-transaction-db
+    image: mysql:8.2.0
+    ports:
+      - 10005:3306
+    environment:
+      MYSQL_DATABASE: transactions
+    extends:
+      file: common-test.yml
+      service: horizon-db-config
+
   bank-db:
     container_name: horizon-bank-db
     image: mysql:8.2.0
@@ -45,27 +79,104 @@ services:
 
   configserver:
     container_name: horizon-config-server
-    image: dbroccoli/config-server:0.0.1
+    image: dbroccoli/config-server:latest
     ports:
       - 9000:8080
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
       timeout: 10s
-      retries: 10
-      interval: 10s
+      retries: 20
+      interval: 2s
       start_period: 3s
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8080/
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      redis:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  eureka-server:
+    container_name: horizon-eureka-server
+    image: dbroccoli/horizon/eureka-server:latest
+    ports:
+      - 9002:8080
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      timeout: 10s
+      retries: 20
+      interval: 2s
+      start_period: 3s
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: eureka:http://eureka:8080/
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  gateway:
+    container_name: horizon-gateway
+    image: dbroccoli/horizon/gateway:latest
+    ports:
+      - 9005:8080
+    environment:
+      SPRING_APPLICATION_NAME: "gateway"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  account:
+    container_name: horizon-account
+    image: dbroccoli/horizon/account:latest
+    ports:
+      - 9007:8080
+    environment:
+      SPRING_APPLICATION_NAME: "account"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://account-db:3306/accounts"
+    depends_on:
+      account-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-base-config
+
+  transaction:
+    container_name: horizon-transaction
+    image: dbroccoli/horizon/transaction:latest
+    ports:
+      - 9008:8080
+    environment:
+      SPRING_APPLICATION_NAME: "transaction"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://transaction-db:3306/transactions"
+    depends_on:
+      transaction-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
     extends:
       file: common-test.yml
       service: horizon-base-config
 
   bank:
     container_name: horizon-bank
-    image: dbroccoli/bank:0.0.1
+    image: dbroccoli/horizon/bank:latest
     ports:
       - 9001:8080
     environment:
@@ -76,13 +187,15 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     extends:
       file: common-test.yml
       service: horizon-base-config
 
   user:
     container_name: horizon-user
-    image: dbroccoli/user:0.0.1
+    image: dbroccoli/horizon/user:latest
     ports:
       - 9002:8080
     environment:
@@ -93,13 +206,15 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     extends:
       file: common-test.yml
       service: horizon-base-config
 
   dwolla:
     container_name: horizon-dwolla
-    image: dbroccoli/dwolla:0.0.1
+    image: dbroccoli/horizon/dwolla:latest
     ports:
       - 9003:8080
     environment:
@@ -110,13 +225,15 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     extends:
       file: common-test.yml
       service: horizon-base-config
 
   plaid:
     container_name: horizon-plaid
-    image: dbroccoli/plaid:0.0.1
+    image: dbroccoli/horizon/plaid:latest
     ports:
       - 9004:8080
     environment:
@@ -126,6 +243,8 @@ services:
       plaid-db:
         condition: service_healthy
       configserver:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     extends:
       file: common-test.yml
