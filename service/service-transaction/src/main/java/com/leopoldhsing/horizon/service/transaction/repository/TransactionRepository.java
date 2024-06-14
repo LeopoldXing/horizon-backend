@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     @Query("SELECT t FROM Transaction t WHERE t.receiverAccountId = :accountId OR t.senderAccountId = :accountId")
     List<Transaction> findAllByAccountId(Long accountId);

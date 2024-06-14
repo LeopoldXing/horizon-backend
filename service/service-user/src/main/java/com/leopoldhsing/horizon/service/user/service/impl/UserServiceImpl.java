@@ -167,6 +167,12 @@ public class UserServiceImpl implements IUserService {
         accountDtoList.forEach(account -> {
             String plaidAccountId = account.getPlaidAccountId();
             List<TransactionDto> transactionDtoList = plaidFeignClient.getTransactionsFromPlaidByPlaidAccountId(plaidAccountId);
+            transactionDtoList = transactionDtoList.stream().peek(transaction -> {
+                transaction.setReceiverAccount(account);
+                transaction.setSenderAccount(account);
+                transaction.setSender(userDto);
+                transaction.setReceiver(userDto);
+            }).toList();
             transactionFeignClient.saveTransactionList(transactionDtoList);
         });
     }

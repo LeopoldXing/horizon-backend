@@ -5,6 +5,7 @@ import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class TransactionDto {
@@ -24,14 +25,14 @@ public class TransactionDto {
     private LocalDate authorizedDate;
     private LocalDateTime authorizedDatetime;
     private TransactionStatus status;
-    private CategoryDto category;
+    private List<CategoryDto> categories;
     private String channel;
     private String email;
 
     public TransactionDto() {
     }
 
-    public TransactionDto(Long id, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, AccountDto senderAccount, AccountDto receiverAccount, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, TransactionStatus status, CategoryDto category, String channel, String email) {
+    public TransactionDto(Long id, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, UserDto sender, UserDto receiver, AccountDto senderAccount, AccountDto receiverAccount, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, TransactionStatus status, List<CategoryDto> categories, String channel, String email) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -47,7 +48,7 @@ public class TransactionDto {
         this.authorizedDate = authorizedDate;
         this.authorizedDatetime = authorizedDatetime;
         this.status = status;
-        this.category = category;
+        this.categories = categories;
         this.channel = channel;
         this.email = email;
     }
@@ -70,7 +71,7 @@ public class TransactionDto {
                 ", authorizedDate=" + authorizedDate +
                 ", authorizedDatetime=" + authorizedDatetime +
                 ", status=" + status +
-                ", category=" + category +
+                ", categories=" + categories +
                 ", channel='" + channel + '\'' +
                 ", email='" + email + '\'' +
                 '}';
@@ -196,12 +197,12 @@ public class TransactionDto {
         this.status = status;
     }
 
-    public CategoryDto getCategory() {
-        return category;
+    public List<CategoryDto> getCategories() {
+        return categories;
     }
 
-    public void setCategory(CategoryDto category) {
-        this.category = category;
+    public void setCategories(List<CategoryDto> categories) {
+        this.categories = categories;
     }
 
     public String getChannel() {
@@ -226,7 +227,7 @@ public class TransactionDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         TransactionDto that = (TransactionDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(senderAccount, that.senderAccount) && Objects.equals(receiverAccount, that.receiverAccount) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && status == that.status && Objects.equals(category, that.category) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(senderAccount, that.senderAccount) && Objects.equals(receiverAccount, that.receiverAccount) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && status == that.status && Objects.equals(categories, that.categories) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
@@ -246,7 +247,7 @@ public class TransactionDto {
         result = 31 * result + Objects.hashCode(authorizedDate);
         result = 31 * result + Objects.hashCode(authorizedDatetime);
         result = 31 * result + Objects.hashCode(status);
-        result = 31 * result + Objects.hashCode(category);
+        result = 31 * result + Objects.hashCode(categories);
         result = 31 * result + Objects.hashCode(channel);
         result = 31 * result + Objects.hashCode(email);
         return result;

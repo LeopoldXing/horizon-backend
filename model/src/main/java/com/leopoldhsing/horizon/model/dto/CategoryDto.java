@@ -12,6 +12,12 @@ public class CategoryDto {
     public CategoryDto() {
     }
 
+    public CategoryDto (String categoryName) {
+        this.categoryName = categoryName;
+        this.categoryCode = categoryName;
+        this.description = categoryName;
+    }
+
     public CategoryDto(Long id, String categoryName, String description, String categoryCode) {
         this.id = id;
         this.categoryName = categoryName;

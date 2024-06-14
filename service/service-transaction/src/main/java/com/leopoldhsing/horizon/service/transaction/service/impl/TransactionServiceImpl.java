@@ -7,17 +7,21 @@ import com.leopoldhsing.horizon.common.utils.exception.FailToCreateTransferExcep
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.dwolla.DwollaFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.dto.CategoryDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.TransferCreationDto;
 import com.leopoldhsing.horizon.model.entity.Transaction;
 import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 import com.leopoldhsing.horizon.model.vo.TransactionCreationVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
+import com.leopoldhsing.horizon.service.transaction.repository.CategoryRepository;
 import com.leopoldhsing.horizon.service.transaction.repository.TransactionRepository;
+import com.leopoldhsing.horizon.service.transaction.service.ICategoryService;
 import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
@@ -35,8 +39,15 @@ public class TransactionServiceImpl implements ITransactionService {
 
     @Autowired
     private TransactionMapper2 transactionMapper;
+
     @Autowired
     private DwollaFeignClient dwollaFeignClient;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ICategoryService categoryService;
 
     @Override
     public List<TransactionDto> getTransactionListByAccountId(Long accountId) {
@@ -64,11 +75,11 @@ public class TransactionServiceImpl implements ITransactionService {
 
     @Override
     public void saveTransactionList(List<TransactionDto> transactionDtoList) {
-        transactionRepository.saveAll(transactionDtoList
+        List<Transaction> transactionList = transactionDtoList
                 .stream()
                 .map(transactionMapper::mapToTransaction)
-                .toList()
-        );
+                .toList();
+        transactionRepository.saveAll(transactionList);
     }
 
     @Transactional

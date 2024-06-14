@@ -1,5 +1,6 @@
 package com.leopoldhsing.horizon.feign.transaction;
 
+import com.leopoldhsing.horizon.model.dto.CategoryDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,4 +19,7 @@ public interface TransactionFeignClient {
 
     @GetMapping("/api/v1/inner/transaction/accountId/{accountId}")
     List<TransactionResponseVo> getTransactionListByAccountId(@PathVariable("accountId") Long accountId);
+
+    @PostMapping("/api/v1/inner/transaction/category/save/{category}")
+    CategoryDto saveCategory(@PathVariable String category);
 }

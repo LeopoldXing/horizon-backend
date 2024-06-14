@@ -1,12 +1,12 @@
 package com.leopoldhsing.horizon.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "transactions")
 @Entity
@@ -26,7 +26,15 @@ public class Transaction extends BaseEntity {
     private String status;
     private Long senderAccountId;
     private Long receiverAccountId;
-    private Long categoryId;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "link_transaction_category",
+            joinColumns = {@JoinColumn(name = "transaction_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    private Set<Category> categories;
+
     private String channel;
     private String email;
 
@@ -37,7 +45,7 @@ public class Transaction extends BaseEntity {
         super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
     }
 
-    public Transaction(String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderAccountId, Long receiverAccountId, Long categoryId, String channel, String email) {
+    public Transaction(String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderAccountId, Long receiverAccountId, Set<Category> categories, String channel, String email) {
         this.name = name;
         this.amount = amount;
         this.currency = currency;
@@ -52,12 +60,12 @@ public class Transaction extends BaseEntity {
         this.status = status;
         this.senderAccountId = senderAccountId;
         this.receiverAccountId = receiverAccountId;
-        this.categoryId = categoryId;
+        this.categories = categories;
         this.channel = channel;
         this.email = email;
     }
 
-    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderAccountId, Long receiverAccountId, Long categoryId, String channel, String email) {
+    public Transaction(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String name, BigDecimal amount, String currency, String routingNumber, String beneficiaryName, Long senderId, Long receiverId, LocalDate date, LocalDateTime datetime, LocalDate authorizedDate, LocalDateTime authorizedDatetime, String status, Long senderAccountId, Long receiverAccountId, Set<Category> categories, String channel, String email) {
         super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
         this.name = name;
         this.amount = amount;
@@ -73,7 +81,7 @@ public class Transaction extends BaseEntity {
         this.status = status;
         this.senderAccountId = senderAccountId;
         this.receiverAccountId = receiverAccountId;
-        this.categoryId = categoryId;
+        this.categories = categories;
         this.channel = channel;
         this.email = email;
     }
@@ -95,7 +103,7 @@ public class Transaction extends BaseEntity {
                 ", status='" + status + '\'' +
                 ", senderAccountId=" + senderAccountId +
                 ", receiverAccountId=" + receiverAccountId +
-                ", categoryId=" + categoryId +
+                ", categories=" + categories +
                 ", channel='" + channel + '\'' +
                 ", email='" + email + '\'' +
                 '}';
@@ -213,12 +221,12 @@ public class Transaction extends BaseEntity {
         this.receiverAccountId = receiverAccountId;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     public String getChannel() {
@@ -244,7 +252,7 @@ public class Transaction extends BaseEntity {
         if (!super.equals(o)) return false;
 
         Transaction that = (Transaction) o;
-        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && Objects.equals(status, that.status) && Objects.equals(senderAccountId, that.senderAccountId) && Objects.equals(receiverAccountId, that.receiverAccountId) && Objects.equals(categoryId, that.categoryId) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
+        return Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency) && Objects.equals(routingNumber, that.routingNumber) && Objects.equals(beneficiaryName, that.beneficiaryName) && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(date, that.date) && Objects.equals(datetime, that.datetime) && Objects.equals(authorizedDate, that.authorizedDate) && Objects.equals(authorizedDatetime, that.authorizedDatetime) && Objects.equals(status, that.status) && Objects.equals(senderAccountId, that.senderAccountId) && Objects.equals(receiverAccountId, that.receiverAccountId) && Objects.equals(categories, that.categories) && Objects.equals(channel, that.channel) && Objects.equals(email, that.email);
     }
 
     @Override
@@ -264,7 +272,7 @@ public class Transaction extends BaseEntity {
         result = 31 * result + Objects.hashCode(status);
         result = 31 * result + Objects.hashCode(senderAccountId);
         result = 31 * result + Objects.hashCode(receiverAccountId);
-        result = 31 * result + Objects.hashCode(categoryId);
+        result = 31 * result + Objects.hashCode(categories);
         result = 31 * result + Objects.hashCode(channel);
         result = 31 * result + Objects.hashCode(email);
         return result;

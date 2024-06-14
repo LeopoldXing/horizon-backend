@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/inner/transaction")
-public class TransactionApi {
+public class TransactionFeignApi {
 
     @Autowired
     private ITransactionService transactionService;

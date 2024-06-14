@@ -3,8 +3,10 @@ package com.leopoldhsing.horizon.service.transaction.mapper;
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.user.UserFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
+import com.leopoldhsing.horizon.model.dto.CategoryDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
+import com.leopoldhsing.horizon.model.entity.Category;
 import com.leopoldhsing.horizon.model.entity.Transaction;
 import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 import com.leopoldhsing.horizon.model.vo.TransactionCreationVo;
@@ -12,9 +14,13 @@ import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class TransactionMapper2 {
@@ -32,6 +38,10 @@ public class TransactionMapper2 {
         transaction.setReceiverId(transactionDto.getReceiver() == null ? null : transactionDto.getReceiver().getId());
         transaction.setSenderAccountId(transactionDto.getSenderAccount() == null ? null : transactionDto.getSenderAccount().getId());
         transaction.setReceiverAccountId(transactionDto.getReceiverAccount() == null ? null : transactionDto.getReceiverAccount().getId());
+        List<CategoryDto> categoryDtos = transactionDto.getCategories();
+        if (!CollectionUtils.isEmpty(categoryDtos)) {
+            transaction.setCategories(categoryDtos.stream().map(CategoryMapper::mapToCategory).collect(Collectors.toSet()));
+        }
         return transaction;
     }
 
@@ -66,7 +76,10 @@ public class TransactionMapper2 {
         } else {
             transactionDto.setReceiverAccount(new AccountDto());
         }
-
+        Set<Category> categories = transaction.getCategories();
+        if (!CollectionUtils.isEmpty(categories)) {
+            transactionDto.setCategories(categories.stream().map(CategoryMapper::mapToCategoryDto).toList());
+        }
         return transactionDto;
     }
 
@@ -77,6 +90,10 @@ public class TransactionMapper2 {
         transactionDto.setReceiver(userFeignClient.getUser(transaction.getReceiverId()));
         transactionDto.setReceiverAccount(senderAccount);
         transactionDto.setSenderAccount(receiverAccount);
+        Set<Category> categories = transaction.getCategories();
+        if (!CollectionUtils.isEmpty(categories)) {
+            transactionDto.setCategories(categories.stream().map(CategoryMapper::mapToCategoryDto).toList());
+        }
         return transactionDto;
     }
 
@@ -87,6 +104,10 @@ public class TransactionMapper2 {
         transactionDto.setReceiver(userFeignClient.getUser(transaction.getReceiverId()));
         transactionDto.setReceiverAccount(receiverAccount);
         transactionDto.setSenderAccount(senderAccount);
+        Set<Category> categories = transaction.getCategories();
+        if (!CollectionUtils.isEmpty(categories)) {
+            transactionDto.setCategories(categories.stream().map(CategoryMapper::mapToCategoryDto).toList());
+        }
         return transactionDto;
     }
 
@@ -104,6 +125,10 @@ public class TransactionMapper2 {
         transactionResponseVo.setAmount(transaction.getAmount().doubleValue());
         transactionResponseVo.setPending(Objects.equals(transaction.getStatus(), TransactionStatus.PENDING.toString()));
         transactionResponseVo.set$createdAt(String.valueOf(transaction.getCreatedAt()));
+        Set<Category> categories = transaction.getCategories();
+        if (!CollectionUtils.isEmpty(categories)) {
+            transactionResponseVo.setCategory(categories.iterator().next().getCategoryName());
+        }
         return transactionResponseVo;
     }
 }

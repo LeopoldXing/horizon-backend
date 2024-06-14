@@ -17,8 +17,12 @@ public class Category extends BaseEntity {
     public Category() {
     }
 
-    public Category(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Category(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
     }
 
     public Category(String categoryName, String description, String categoryCode) {
@@ -27,8 +31,8 @@ public class Category extends BaseEntity {
         this.categoryCode = categoryCode;
     }
 
-    public Category(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy, String updatedBy, String categoryName, String description, String categoryCode) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy);
+    public Category(Long id, LocalDateTime createdAt, LocalDateTime lastModifiedAt, String createdBy, String lastModifiedBy, String categoryName, String description, String categoryCode) {
+        super(id, createdAt, lastModifiedAt, createdBy, lastModifiedBy);
         this.categoryName = categoryName;
         this.description = description;
         this.categoryCode = categoryCode;

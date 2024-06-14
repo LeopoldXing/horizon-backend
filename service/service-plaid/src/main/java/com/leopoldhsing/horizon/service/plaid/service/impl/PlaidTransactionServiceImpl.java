@@ -2,6 +2,8 @@ package com.leopoldhsing.horizon.service.plaid.service.impl;
 
 import com.leopoldhsing.horizon.common.utils.RequestUtil;
 import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
+import com.leopoldhsing.horizon.feign.transaction.TransactionFeignClient;
+import com.leopoldhsing.horizon.model.dto.CategoryDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.enumeration.TransactionStatus;
 import com.leopoldhsing.horizon.service.plaid.service.IPlaidTransactionService;
@@ -13,6 +15,7 @@ import com.plaid.client.request.PlaidApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -29,6 +32,9 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
 
     @Autowired
     private PlaidApi plaidClient;
+
+    @Autowired
+    private TransactionFeignClient transactionFeignClient;
 
     @Override
     public List<TransactionDto> getTransactionsByPlaidAccountId(String plaidAccountId) throws IOException {
@@ -69,13 +75,14 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
 
         // 4. processing transaction list: sort (oldest -> latest) and filter by accountId
         added.sort(Comparator.comparing(Transaction::getDate));
-        List<Transaction> transactionList = added
+        /*List<Transaction> transactionList = added
                 .stream()
                 .filter(transaction -> plaidAccountId.equals(transaction.getAccountId()))
-                .toList();
+                .toList();*/
 
         // 5. convert plaid transaction -> transactionDto
-        List<TransactionDto> res = transactionList
+        /*List<TransactionDto> res = transactionList*/
+        List<TransactionDto> res = added
                 .stream()
                 .map(transaction -> {
                     TransactionDto dto = new TransactionDto();
@@ -86,6 +93,13 @@ public class PlaidTransactionServiceImpl implements IPlaidTransactionService {
                     dto.setName(transaction.getName());
                     dto.setChannel("online");
                     dto.setStatus(transaction.getPending() ? TransactionStatus.PENDING : TransactionStatus.PROCESSED);
+                    // category
+                    List<String> categoryList = transaction.getCategory();
+                    if (!CollectionUtils.isEmpty(categoryList)) {
+                        /*List<CategoryDto> categoryDtoList = categoryList.stream().map(transactionFeignClient::saveCategory).toList();*/
+                        List<CategoryDto> categoryDtoList = categoryList.stream().map(CategoryDto::new).toList();
+                        dto.setCategories(categoryDtoList);
+                    }
                     return dto;
                 }).toList();
 

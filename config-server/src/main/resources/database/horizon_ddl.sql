@@ -209,3 +209,21 @@ CREATE TABLE `transactions`
     CONSTRAINT `transactions_users_FK` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
     CONSTRAINT `transactions_users_FK_1` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- horizon.link_transaction_category definition
+DROP TABLE IF EXISTS `link_transaction_category`;
+CREATE TABLE `link_transaction_category`
+(
+    `id`               bigint                                  DEFAULT NULL,
+    `transaction_id`   bigint                                  DEFAULT NULL,
+    `category_id`      bigint                                  DEFAULT NULL,
+    `created_at`       datetime                                DEFAULT NULL,
+    `created_by`       varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `last_modified_at` datetime                                DEFAULT NULL,
+    `last_modified_by` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    KEY                `link_transaction_category_transactions_FK` (`transaction_id`),
+    KEY                `link_transaction_category_categories_FK` (`category_id`),
+    CONSTRAINT `link_transaction_category_categories_FK` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+    CONSTRAINT `link_transaction_category_transactions_FK` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
