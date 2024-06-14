@@ -4,7 +4,6 @@ import com.leopoldhsing.horizon.model.dto.GeneralResponseDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.vo.TransactionCreationVo;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
-import com.leopoldhsing.horizon.model.vo.TransactionVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
 import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;

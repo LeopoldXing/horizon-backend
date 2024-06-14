@@ -7,7 +7,6 @@ import com.leopoldhsing.horizon.common.utils.exception.FailToCreateTransferExcep
 import com.leopoldhsing.horizon.feign.account.AccountFeignClient;
 import com.leopoldhsing.horizon.feign.dwolla.DwollaFeignClient;
 import com.leopoldhsing.horizon.model.dto.AccountDto;
-import com.leopoldhsing.horizon.model.dto.CategoryDto;
 import com.leopoldhsing.horizon.model.dto.TransactionDto;
 import com.leopoldhsing.horizon.model.dto.TransferCreationDto;
 import com.leopoldhsing.horizon.model.entity.Transaction;
@@ -21,7 +20,6 @@ import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;

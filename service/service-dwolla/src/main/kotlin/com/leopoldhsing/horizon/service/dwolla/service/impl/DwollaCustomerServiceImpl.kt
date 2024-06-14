@@ -5,7 +5,6 @@ import com.dwolla.api.shared.DateOfBirth
 import com.dwolla.shared.USState
 import com.leopoldhsing.horizon.common.utils.exception.ResourceNotFoundException
 import com.leopoldhsing.horizon.model.dto.DwollaCustomerDto
-import com.leopoldhsing.horizon.model.dto.TransactionDto
 import com.leopoldhsing.horizon.model.entity.DwollaCustomer
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerStatus
 import com.leopoldhsing.horizon.model.enumeration.DwollaCustomerType
