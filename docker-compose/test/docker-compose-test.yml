@@ -5,6 +5,8 @@ services:
     environment:
       - REDIS_PASSWORD=1234
     command: [ "redis-server", "--requirepass", "1234" ]
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     ports:
       - 36379:6379
     extends:
@@ -79,54 +81,54 @@ services:
 
   configserver:
     container_name: horizon-config-server
-    image: dbroccoli/config-server:latest
+    image: leopoldhsing2/horizon.config-server:0.0.1
     ports:
       - 9000:8080
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
       timeout: 10s
-      retries: 20
-      interval: 2s
-      start_period: 3s
+      retries: 40
+      interval: 3s
+      start_period: 5s
     environment:
-      SPRING_PROFILES_ACTIVE: test
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8080/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
-    depends_on:
-      redis:
-        condition: service_healthy
+      SPRING_PROFILES_ACTIVE: native
+      # SPRING_CONFIG_IMPORT: configserver:http://localhost:8080/
     extends:
       file: common-test.yml
       service: horizon-base-config
 
   eureka-server:
     container_name: horizon-eureka-server
-    image: dbroccoli/horizon/eureka-server:latest
+    image: leopoldhsing2/horizon.eureka-server:0.0.1
     ports:
       - 9002:8080
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
       timeout: 10s
-      retries: 20
-      interval: 2s
-      start_period: 3s
+      retries: 40
+      interval: 3s
+      start_period: 5s
     environment:
       SPRING_PROFILES_ACTIVE: test
-      SPRING_CONFIG_IMPORT: eureka:http://eureka:8080/
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      configserver:
+        condition: service_healthy
     extends:
       file: common-test.yml
       service: horizon-base-config
 
   gateway:
     container_name: horizon-gateway
-    image: dbroccoli/horizon/gateway:latest
+    image: leopoldhsing2/horizon.gateway:0.0.1
     ports:
       - 9005:8080
     environment:
       SPRING_APPLICATION_NAME: "gateway"
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -138,12 +140,14 @@ services:
 
   account:
     container_name: horizon-account
-    image: dbroccoli/horizon/account:latest
+    image: leopoldhsing2/horizon.account:0.0.1
     ports:
       - 9007:8080
     environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "account"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://account-db:3306/accounts"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-account-db:3306/accounts"
     depends_on:
       account-db:
         condition: service_healthy
@@ -157,12 +161,14 @@ services:
 
   transaction:
     container_name: horizon-transaction
-    image: dbroccoli/horizon/transaction:latest
+    image: leopoldhsing2/horizon.transaction:0.0.1
     ports:
       - 9008:8080
     environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "transaction"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://transaction-db:3306/transactions"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-transaction-db:3306/transactions"
     depends_on:
       transaction-db:
         condition: service_healthy
@@ -176,12 +182,14 @@ services:
 
   bank:
     container_name: horizon-bank
-    image: dbroccoli/horizon/bank:latest
+    image: leopoldhsing2/horizon.bank:0.0.1
     ports:
       - 9001:8080
     environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "bank"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://bank-db:3306/banks"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-bank-db:3306/banks"
     depends_on:
       bank-db:
         condition: service_healthy
@@ -195,12 +203,14 @@ services:
 
   user:
     container_name: horizon-user
-    image: dbroccoli/horizon/user:latest
+    image: leopoldhsing2/horizon.user:0.0.1
     ports:
       - 9002:8080
     environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "user"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://user-db:3306/users"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-user-db:3306/users"
     depends_on:
       user-db:
         condition: service_healthy
@@ -214,12 +224,20 @@ services:
 
   dwolla:
     container_name: horizon-dwolla
-    image: dbroccoli/horizon/dwolla:latest
+    image: leopoldhsing2/horizon.dwolla:0.0.1
     ports:
       - 9003:8080
+    env_file:
+      - .env.local
     environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "dwolla"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://dwolla-db:3306/dwolla"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-dwolla-db:3306/dwolla"
+      DWOLLA_BASE_URL: ${DWOLLA_BASE_URL}
+      DWOLLA_KEY: ${DWOLLA_KEY}
+      DWOLLA_SECRET: ${DWOLLA_SECRET}
+      DWOLLA_ENV: ${DWOLLA_ENV}
     depends_on:
       dwolla-db:
         condition: service_healthy
@@ -233,12 +251,19 @@ services:
 
   plaid:
     container_name: horizon-plaid
-    image: dbroccoli/horizon/plaid:latest
+    image: leopoldhsing2/horizon.plaid:0.0.1
     ports:
       - 9004:8080
+    env_file:
+      - .env.local
     environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "plaid"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://plaid-db:3306/plaid"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-plaid-db:3306/plaid"
+      PLAID_CLIENT_ID: "${PLAID_CLIENT_ID}"
+      PLAID_SECRET: "${PLAID_SECRET}"
+      PLAID_ENV: "${PLAID_ENV}"
     depends_on:
       plaid-db:
         condition: service_healthy

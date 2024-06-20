@@ -3,7 +3,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          memory: 1g
     extends:
       service: horizon-network-service
 

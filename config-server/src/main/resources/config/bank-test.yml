@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://bank-db:3306/horizon
+    url: jdbc:mysql://horizon-bank-db:3306/horizon
     username: root
     password: 1234
   jpa:
@@ -17,7 +17,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://eureka:8080/eureka/
+      defaultZone: http://horizon-eureka-server:8080/eureka/
 
 management:
   endpoints:

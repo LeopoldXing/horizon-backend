@@ -39,7 +39,7 @@ spring:
             - Path=/api/*/bank/**
   data:
     redis:
-      host: redis
+      host: horizon-redis
       port: 6379
       password: 1234
       database: 0
@@ -51,7 +51,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://eureka:8080/eureka/
+      defaultZone: http://horizon-eureka-server:8080/eureka/
 
 management:
   endpoints:
@@ -81,7 +81,7 @@ horizon:
         - /ts/**
         - /img/**
         - /fonts/**
-      login-path: http://horizon.leopoldhsing.com:3000/sign-in
+      login-path: http://horizon.discobroccoli.com:54646/sign-in
       require-auth-uri-patterns:
         - /api/**
       sign-in-uri-patterns: /api/*/user/sign-in

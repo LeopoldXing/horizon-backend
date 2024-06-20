@@ -50,7 +50,7 @@
                 <configuration>
                     <mainClass>com.leopoldhsing.horizon.service.plaid.PlaidApplication</mainClass>
                     <image>
-                        <name>docker.io/dbroccoli/horizon/${project.artifactId}:${version}</name>
+                        <name>leopoldhsing2/horizon.${artifactId}:${version}</name>
                     </image>
                 </configuration>
                 <executions>

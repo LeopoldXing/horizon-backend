@@ -4,17 +4,11 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dwolla-db:3306/horizon
+    url: jdbc:mysql://horizon-dwolla-db:3306/horizon
     username: root
     password: 1234
   jpa:
     show-sql: true
-
-dwolla:
-  base-url: https://api-sandbox.dwolla.com
-  key: 4XeCnXt8G1z2ak8iGLM1aAhNtAI3axX2djSSDoGrAHHrvhfbEf
-  secret: 1wKHN3dL9grT45hlkeyr5d0AkRYLkkgkuZicpe5HqOe66M5oKS
-  env: sandbox
 
 eureka:
   instance:
@@ -23,7 +17,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://eureka:8080/eureka/
+      defaultZone: http://horizon-eureka-server:8080/eureka/
 
 management:
   endpoints:

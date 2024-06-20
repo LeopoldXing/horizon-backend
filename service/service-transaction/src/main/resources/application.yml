@@ -4,4 +4,4 @@ spring:
   profiles:
     active: test
   config:
-    import: "configserver:http://configserver:8080/"
+    import: "configserver:http://horizon-config-server:8080/"

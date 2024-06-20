@@ -15,6 +15,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -22,10 +23,28 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-server</artifactId>
         </dependency>
+        <!--  actuator  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!--<plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
+                <configuration>
+                    <from>
+                        <image>mcr.microsoft.com/openjdk/jdk:17-ubuntu</image>
+                    </from>
+                    <to>
+                        <image>leopoldhsing2/horizon.${artifactId}:${version}</image>
+                    </to>
+                </configuration>
+            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -33,7 +52,7 @@
                 <configuration>
                     <mainClass>com.leopoldhsing.horizon.configserver.ConfigServerApplication</mainClass>
                     <image>
-                        <name>docker.io/dbroccoli/horizon/${project.artifactId}:${version}</name>
+                        <name>leopoldhsing2/horizon.${artifactId}:${version}</name>
                     </image>
                 </configuration>
                 <executions>
@@ -46,5 +65,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
