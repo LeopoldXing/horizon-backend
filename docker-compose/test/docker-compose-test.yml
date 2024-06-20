@@ -92,7 +92,6 @@ services:
       start_period: 5s
     environment:
       SPRING_PROFILES_ACTIVE: native
-      # SPRING_CONFIG_IMPORT: configserver:http://localhost:8080/
     extends:
       file: common-test.yml
       service: horizon-base-config
@@ -205,7 +204,7 @@ services:
     container_name: horizon-user
     image: leopoldhsing2/horizon.user:0.0.1
     ports:
-      - 9002:8080
+      - 9006:8080
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/

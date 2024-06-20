@@ -15,7 +15,7 @@ eureka:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
-anagement:
+management:
   endpoints:
     web:
       exposure:

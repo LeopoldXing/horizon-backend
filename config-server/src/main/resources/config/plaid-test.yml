@@ -25,36 +25,6 @@ eureka:
     service-url:
       defaultZone: http://horizon-eureka-server:8080/eureka/
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
-  endpoint:
-    health:
-      probes:
-        enabled: true
-    shutdown:
-      enabled: true
-  info:
-    env:
-      enabled: true
-
-endpoints:
-  shutdown:
-    enabled: true
-
-info:
-  app:
-    name: "plaid"
-    description: "Horizon plaid microservice application"
-    version: "0.0.1"
-
 plaid:
   products:
     - auth

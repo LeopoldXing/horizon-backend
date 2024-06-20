@@ -53,24 +53,6 @@ eureka:
     service-url:
       defaultZone: http://localhost:9002/eureka/
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    gateway:
-      enabled: true
-  info:
-    env:
-      enabled: true
-
-info:
-  app:
-    name: "gateway"
-    description: "Horizon gateway server"
-    version: "0.0.1"
-
 horizon:
   url:
     pattern:

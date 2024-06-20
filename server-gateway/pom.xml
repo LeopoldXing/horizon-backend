@@ -70,6 +70,16 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <to>
+                        <image>leopoldhsing2/horizon.${artifactId}:${version}</image>
+                    </to>
+                </configuration>
+            </plugin>
+            <!--<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.6</version>
@@ -86,7 +96,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

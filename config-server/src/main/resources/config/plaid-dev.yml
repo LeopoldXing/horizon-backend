@@ -25,36 +25,6 @@ eureka:
     service-url:
       defaultZone: http://localhost:9002/eureka/
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
-  endpoint:
-    health:
-      probes:
-        enabled: true
-    shutdown:
-      enabled: true
-  info:
-    env:
-      enabled: true
-
-endpoints:
-  shutdown:
-    enabled: true
-
-info:
-  app:
-    name: "plaid"
-    description: "Horizon plaid microservice application"
-    version: "0.0.1"
-
 plaid:
   client-id: 6650078958d6ed001ce3678b
   secret: 3284df443e512d1dc2c452444a33aa
