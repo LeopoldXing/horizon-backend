@@ -28,7 +28,7 @@
                 <version>3.4.1</version>
                 <configuration>
                     <to>
-                        <image>leopoldhsing2/horizon.${artifactId}:${version}</image>
+                        <image>leopoldhsing2/horizon.${artifactId}:latest</image>
                     </to>
                 </configuration>
             </plugin>
