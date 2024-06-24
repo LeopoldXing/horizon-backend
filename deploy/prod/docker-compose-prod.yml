@@ -2,151 +2,143 @@ services:
   redis:
     container_name: horizon-redis
     image: redis:7.0.14
+    volumes:
+      - ./redis/data:/data
+      - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
     environment:
-      - REDIS_PASSWORD=1234
-    command: [ "redis-server", "--requirepass", "1234" ]
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-    ports:
-      - 36379:6379
     extends:
-      file: common-test.yml
+      file: common.yml
       service: horizon-base-config
 
   account-db:
     container_name: horizon-account-db
     image: mysql:8.2.0
-    ports:
-      - 10004:3306
+    volumes:
+      - ./horizon-account-db-data:/var/lib/mysql
+      - ./horizon-account-db-conf:/etc/mysql
     environment:
       MYSQL_DATABASE: horizon
     extends:
-      file: common-test.yml
+      file: common.yml
       service: horizon-db-config
 
   transaction-db:
     container_name: horizon-transaction-db
     image: mysql:8.2.0
-    ports:
-      - 10005:3306
+    volumes:
+      - ./horizon-transaction-db-data:/var/lib/mysql
+      - ./horizon-transaction-db-conf:/etc/mysql
     environment:
       MYSQL_DATABASE: horizon
     extends:
-      file: common-test.yml
+      file: common.yml
       service: horizon-db-config
 
   bank-db:
     container_name: horizon-bank-db
     image: mysql:8.2.0
-    ports:
-      - 10000:3306
+    volumes:
+      - ./horizon-bank-db-data:/var/lib/mysql
+      - ./horizon-bank-db-conf:/etc/mysql
     environment:
       MYSQL_DATABASE: horizon
     extends:
-      file: common-test.yml
+      file: common.yml
       service: horizon-db-config
 
   user-db:
     container_name: horizon-user-db
     image: mysql:8.2.0
-    ports:
-      - 10001:3306
+    volumes:
+      - ./horizon-user-db-data:/var/lib/mysql
+      - ./horizon-user-db-conf:/etc/mysql
     environment:
       MYSQL_DATABASE: horizon
+      SPRING_DATA_REDIS_PASSWORD: "${REDIS_PASSWORD}"
     extends:
-      file: common-test.yml
+      file: common.yml
       service: horizon-db-config
 
   dwolla-db:
     container_name: horizon-dwolla-db
     image: mysql:8.2.0
-    ports:
-      - 10002:3306
+    volumes:
+      - ./horizon-dwolla-db-data:/var/lib/mysql
+      - ./horizon-dwolla-db-conf:/etc/mysql
     environment:
       MYSQL_DATABASE: horizon
     extends:
-      file: common-test.yml
+      file: common.yml
       service: horizon-db-config
 
   plaid-db:
     container_name: horizon-plaid-db
     image: mysql:8.2.0
-    ports:
-      - 10003:3306
+    volumes:
+      - ./horizon-plaid-db-data:/var/lib/mysql
+      - ./horizon-plaid-db-conf:/etc/mysql
     environment:
       MYSQL_DATABASE: horizon
     extends:
-      file: common-test.yml
+      file: common.yml
       service: horizon-db-config
 
   configserver:
     container_name: horizon-config-server
-    image: leopoldhsing2/horizon.config-server:0.0.1
-    ports:
-      - 9000:8080
-    healthcheck:
-      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
-      timeout: 10s
-      retries: 40
-      interval: 3s
-      start_period: 5s
+    image: leopoldhsing2/horizon.config-server
     environment:
       SPRING_PROFILES_ACTIVE: native
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   eureka-server:
     container_name: horizon-eureka-server
-    image: leopoldhsing2/horizon.eureka-server:0.0.1
-    ports:
-      - 9002:8080
-    healthcheck:
-      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
-      timeout: 10s
-      retries: 40
-      interval: 3s
-      start_period: 5s
+    image: leopoldhsing2/horizon.eureka-server
     environment:
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
     depends_on:
       configserver:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   gateway:
     container_name: horizon-gateway
-    image: leopoldhsing2/horizon.gateway:0.0.1
-    ports:
-      - 9005:8080
+    image: leopoldhsing2/horizon.gateway
     environment:
       SPRING_APPLICATION_NAME: "gateway"
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
+      SPRING_DATA_REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      HORIZON_URL_PATTERN_LOGIN_PATH: "https://horizon.discobroccoli.com/sign-in"
     depends_on:
       eureka-server:
         condition: service_healthy
       configserver:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   account:
     container_name: horizon-account
-    image: leopoldhsing2/horizon.account:0.0.1
-    ports:
-      - 9007:8080
+    image: leopoldhsing2/horizon.account
     environment:
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "account"
       SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-account-db:3306/horizon"
+      SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
     depends_on:
       account-db:
         condition: service_healthy
@@ -155,19 +147,19 @@ services:
       configserver:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   transaction:
     container_name: horizon-transaction
-    image: leopoldhsing2/horizon.transaction:0.0.1
-    ports:
-      - 9008:8080
+    image: leopoldhsing2/horizon.transaction
     environment:
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "transaction"
       SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-transaction-db:3306/horizon"
+      SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
     depends_on:
       transaction-db:
         condition: service_healthy
@@ -176,19 +168,19 @@ services:
       configserver:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   bank:
     container_name: horizon-bank
-    image: leopoldhsing2/horizon.bank:0.0.1
-    ports:
-      - 9001:8080
+    image: leopoldhsing2/horizon.bank
     environment:
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "bank"
       SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-bank-db:3306/horizon"
+      SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
     depends_on:
       bank-db:
         condition: service_healthy
@@ -197,19 +189,20 @@ services:
       eureka-server:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   user:
     container_name: horizon-user
-    image: leopoldhsing2/horizon.user:0.0.1
-    ports:
-      - 9006:8080
+    image: leopoldhsing2/horizon.user
     environment:
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "user"
       SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-user-db:3306/horizon"
+      SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
+      SPRING_DATA_REDIS_PASSWORD: "${REDIS_PASSWORD}"
     depends_on:
       user-db:
         condition: service_healthy
@@ -218,23 +211,23 @@ services:
       eureka-server:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   dwolla:
     container_name: horizon-dwolla
-    image: leopoldhsing2/horizon.dwolla:0.0.1
-    ports:
-      - 9003:8080
+    image: leopoldhsing2/horizon.dwolla
     environment:
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "dwolla"
       SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-dwolla-db:3306/horizon"
-      DWOLLA_BASE_URL: ${DWOLLA_BASE_URL}
-      DWOLLA_KEY: ${DWOLLA_KEY}
-      DWOLLA_SECRET: ${DWOLLA_SECRET}
-      DWOLLA_ENV: ${DWOLLA_ENV}
+      SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
+      DWOLLA_BASE_URL: "${DWOLLA_BASE_URL}"
+      DWOLLA_KEY: "${DWOLLA_KEY}"
+      DWOLLA_SECRET: "${DWOLLA_SECRET}"
+      DWOLLA_ENV: "${DWOLLA_ENV}"
     depends_on:
       dwolla-db:
         condition: service_healthy
@@ -243,19 +236,20 @@ services:
       eureka-server:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
   plaid:
     container_name: horizon-plaid
-    image: leopoldhsing2/horizon.plaid:0.0.1
-    ports:
-      - 9004:8080
+    image: leopoldhsing2/horizon.plaid
     environment:
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "plaid"
       SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-plaid-db:3306/horizon"
+      SPRING_DATASOURCE_USERNAME: "${MYSQL_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
+      SPRING_DATA_REDIS_PASSWORD: "${REDIS_PASSWORD}"
       PLAID_CLIENT_ID: "${PLAID_CLIENT_ID}"
       PLAID_SECRET: "${PLAID_SECRET}"
       PLAID_ENV: "${PLAID_ENV}"
@@ -267,10 +261,10 @@ services:
       eureka-server:
         condition: service_healthy
     extends:
-      file: common-test.yml
-      service: horizon-base-config
+      file: common.yml
+      service: horizon-microservice-config
 
 networks:
-  horizon-test-network:
+  horizon-default-network:
     driver: "bridge"
-    name: "horizon-test-network"
+    name: "horizon-default-network"

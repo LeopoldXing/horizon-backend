@@ -1,0 +1,32 @@
+services:
+  horizon-base-config:
+    extends:
+      service: horizon-network-service
+
+  horizon-network-service:
+    networks:
+      - horizon-default-network
+
+  horizon-db-config:
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping","-h", "localhost" ]
+      timeout: 10s
+      retries: 20
+      interval: 2s
+      start_period: 3s
+    volumes:
+      - ./docker-entrypoint:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    extends:
+      service: horizon-base-config
+
+  horizon-microservice-config:
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      timeout: 10s
+      retries: 40
+      interval: 3s
+      start_period: 3s
+    extends:
+      service: horizon-base-config

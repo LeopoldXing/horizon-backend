@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://horizon-user-db:3306/horizon
+  jpa:
+    show-sql: true
+  data:
+    redis:
+      host: horizon-redis
+      port: 6379
+      database: 0
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://horizon-eureka-server:8080/eureka/

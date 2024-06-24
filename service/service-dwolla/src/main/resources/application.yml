@@ -2,7 +2,7 @@ spring:
   application:
     name: dwolla
   profiles:
-    active: test
+    active: prod
   config:
     import: "configserver:http://horizon-config-server:8080/"
 
