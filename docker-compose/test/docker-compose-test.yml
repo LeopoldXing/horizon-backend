@@ -19,7 +19,7 @@ services:
     ports:
       - 10004:3306
     environment:
-      MYSQL_DATABASE: accounts
+      MYSQL_DATABASE: horizon
     extends:
       file: common-test.yml
       service: horizon-db-config
@@ -30,7 +30,7 @@ services:
     ports:
       - 10005:3306
     environment:
-      MYSQL_DATABASE: transactions
+      MYSQL_DATABASE: horizon
     extends:
       file: common-test.yml
       service: horizon-db-config
@@ -41,7 +41,7 @@ services:
     ports:
       - 10000:3306
     environment:
-      MYSQL_DATABASE: banks
+      MYSQL_DATABASE: horizon
     extends:
       file: common-test.yml
       service: horizon-db-config
@@ -52,7 +52,7 @@ services:
     ports:
       - 10001:3306
     environment:
-      MYSQL_DATABASE: users
+      MYSQL_DATABASE: horizon
     extends:
       file: common-test.yml
       service: horizon-db-config
@@ -63,7 +63,7 @@ services:
     ports:
       - 10002:3306
     environment:
-      MYSQL_DATABASE: dwolla
+      MYSQL_DATABASE: horizon
     extends:
       file: common-test.yml
       service: horizon-db-config
@@ -74,7 +74,7 @@ services:
     ports:
       - 10003:3306
     environment:
-      MYSQL_DATABASE: plaid
+      MYSQL_DATABASE: horizon
     extends:
       file: common-test.yml
       service: horizon-db-config
@@ -146,7 +146,7 @@ services:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "account"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-account-db:3306/accounts"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-account-db:3306/horizon"
     depends_on:
       account-db:
         condition: service_healthy
@@ -167,7 +167,7 @@ services:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "transaction"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-transaction-db:3306/transactions"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-transaction-db:3306/horizon"
     depends_on:
       transaction-db:
         condition: service_healthy
@@ -188,7 +188,7 @@ services:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "bank"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-bank-db:3306/banks"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-bank-db:3306/horizon"
     depends_on:
       bank-db:
         condition: service_healthy
@@ -209,7 +209,7 @@ services:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "user"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-user-db:3306/users"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-user-db:3306/horizon"
     depends_on:
       user-db:
         condition: service_healthy
@@ -226,13 +226,11 @@ services:
     image: leopoldhsing2/horizon.dwolla:0.0.1
     ports:
       - 9003:8080
-    env_file:
-      - .env.local
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "dwolla"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-dwolla-db:3306/dwolla"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-dwolla-db:3306/horizon"
       DWOLLA_BASE_URL: ${DWOLLA_BASE_URL}
       DWOLLA_KEY: ${DWOLLA_KEY}
       DWOLLA_SECRET: ${DWOLLA_SECRET}
@@ -253,13 +251,11 @@ services:
     image: leopoldhsing2/horizon.plaid:0.0.1
     ports:
       - 9004:8080
-    env_file:
-      - .env.local
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
       SPRING_APPLICATION_NAME: "plaid"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-plaid-db:3306/plaid"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://horizon-plaid-db:3306/horizon"
       PLAID_CLIENT_ID: "${PLAID_CLIENT_ID}"
       PLAID_SECRET: "${PLAID_SECRET}"
       PLAID_ENV: "${PLAID_ENV}"

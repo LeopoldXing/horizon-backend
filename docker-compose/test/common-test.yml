@@ -18,6 +18,8 @@ services:
       retries: 20
       interval: 2s
       start_period: 3s
+    volumes:
+      - ./docker-entrypoint:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: 1234
     extends:
