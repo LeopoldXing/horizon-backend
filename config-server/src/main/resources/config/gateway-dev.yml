@@ -8,6 +8,12 @@ spring:
       port: 36379
       password: 1234
       database: 0
+  cloud:
+    gateway:
+      # set time out
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: -1
 
 eureka:
   instance:
