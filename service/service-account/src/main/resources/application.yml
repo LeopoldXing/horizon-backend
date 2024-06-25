@@ -2,9 +2,10 @@ spring:
   application:
     name: account
   profiles:
-    active: prod
+    active: dev
   config:
-    import: "configserver:http://horizon-config-server:8080/"
+    #import: "configserver:http://horizon-config-server:8080/"
+    import: "configserver:http://localhost:8080/"
 
 management:
   endpoints:
@@ -32,6 +33,6 @@ endpoints:
 
 info:
   app:
-    name: "dwolla"
-    description: "Horizon dwolla microservice application"
+    name: "account"
+    description: "Horizon account microservice application"
     version: "0.0.1"

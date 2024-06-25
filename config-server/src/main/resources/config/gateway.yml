@@ -1,0 +1,71 @@
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true
+      routes:
+        - id: service_transaction
+          uri: lb://transaction
+          predicates:
+            - Path=/api/*/transaction/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: transactionCircuitBreaker
+                fallbackUri: forward:/fallback/transaction
+        - id: service_bank
+          uri: lb://bank
+          predicates:
+            - Path=/api/*/bank/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: bankCircuitBreaker
+                fallbackUri: forward:/fallback/bank
+        - id: service_dwolla
+          uri: lb://dwolla
+          predicates:
+            - Path=/api/*/dwolla/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: dwollaCircuitBreaker
+                fallbackUri: forward:/fallback/dwolla
+        - id: service_plaid
+          uri: lb://plaid
+          predicates:
+            - Path=/api/*/plaid/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: plaidCircuitBreaker
+                fallbackUri: forward:/fallback/plaid
+        - id: service_user
+          uri: lb://user
+          predicates:
+            - Path=/api/*/user/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userCircuitBreaker
+                fallbackUri: forward:/fallback/user
+        - id: service_account
+          uri: lb://account
+          predicates:
+            - Path=/api/*/account/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: accountCircuitBreaker
+                fallbackUri: forward:/fallback/account

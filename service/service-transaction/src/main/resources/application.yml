@@ -2,9 +2,10 @@ spring:
   application:
     name: transaction
   profiles:
-    active: test
+    active: dev
   config:
-    import: "configserver:http://horizon-config-server:8080/"
+    #import: "configserver:http://horizon-config-server:8080/"
+    import: "configserver:http://localhost:8080/"
 
 management:
   endpoints:
