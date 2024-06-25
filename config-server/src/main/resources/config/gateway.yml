@@ -26,6 +26,18 @@ spring:
               args:
                 name: transactionCircuitBreaker
                 fallbackUri: forward:/fallback/transaction
+            - name: Retry
+              args:
+                retries: 3 # 重试次数
+                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # 需要重试的HTTP状态码
+                methods: GET # 需要重试的HTTP方法
+                exceptions:
+                  - java.io.IOException # 需要重试的异常
+                backoff:
+                  firstBackoff: 1s # 初次重试间隔时间
+                  maxBackoff: 10s # 最大重试间隔时间
+                  factor: 2 # 间隔时间倍增因子
+                  basedOnPreviousValue: true # 是否基于上一次的间隔时间进行倍增
         - id: service_bank
           uri: lb://bank
           predicates:
@@ -35,6 +47,18 @@ spring:
               args:
                 name: bankCircuitBreaker
                 fallbackUri: forward:/fallback/bank
+            - name: Retry
+              args:
+                retries: 3 # 重试次数
+                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # 需要重试的HTTP状态码
+                methods: GET # 需要重试的HTTP方法
+                exceptions:
+                  - java.io.IOException # 需要重试的异常
+                backoff:
+                  firstBackoff: 1s # 初次重试间隔时间
+                  maxBackoff: 10s # 最大重试间隔时间
+                  factor: 2 # 间隔时间倍增因子
+                  basedOnPreviousValue: true # 是否基于上一次的间隔时间进行倍增
         - id: service_dwolla
           uri: lb://dwolla
           predicates:
@@ -44,6 +68,18 @@ spring:
               args:
                 name: dwollaCircuitBreaker
                 fallbackUri: forward:/fallback/dwolla
+            - name: Retry
+              args:
+                retries: 3 # 重试次数
+                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # 需要重试的HTTP状态码
+                methods: GET # 需要重试的HTTP方法
+                exceptions:
+                  - java.io.IOException # 需要重试的异常
+                backoff:
+                  firstBackoff: 1s # 初次重试间隔时间
+                  maxBackoff: 10s # 最大重试间隔时间
+                  factor: 2 # 间隔时间倍增因子
+                  basedOnPreviousValue: true # 是否基于上一次的间隔时间进行倍增
         - id: service_plaid
           uri: lb://plaid
           predicates:
@@ -53,6 +89,18 @@ spring:
               args:
                 name: plaidCircuitBreaker
                 fallbackUri: forward:/fallback/plaid
+            - name: Retry
+              args:
+                retries: 3 # 重试次数
+                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # 需要重试的HTTP状态码
+                methods: GET # 需要重试的HTTP方法
+                exceptions:
+                  - java.io.IOException # 需要重试的异常
+                backoff:
+                  firstBackoff: 1s # 初次重试间隔时间
+                  maxBackoff: 10s # 最大重试间隔时间
+                  factor: 2 # 间隔时间倍增因子
+                  basedOnPreviousValue: true # 是否基于上一次的间隔时间进行倍增
         - id: service_user
           uri: lb://user
           predicates:
@@ -62,6 +110,18 @@ spring:
               args:
                 name: userCircuitBreaker
                 fallbackUri: forward:/fallback/user
+            - name: Retry
+              args:
+                retries: 3 # 重试次数
+                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # 需要重试的HTTP状态码
+                methods: GET # 需要重试的HTTP方法
+                exceptions:
+                  - java.io.IOException # 需要重试的异常
+                backoff:
+                  firstBackoff: 1s # 初次重试间隔时间
+                  maxBackoff: 10s # 最大重试间隔时间
+                  factor: 2 # 间隔时间倍增因子
+                  basedOnPreviousValue: true # 是否基于上一次的间隔时间进行倍增
         - id: service_account
           uri: lb://account
           predicates:
@@ -71,3 +131,15 @@ spring:
               args:
                 name: accountCircuitBreaker
                 fallbackUri: forward:/fallback/account
+            - name: Retry
+              args:
+                retries: 3 # 重试次数
+                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # 需要重试的HTTP状态码
+                methods: GET # 需要重试的HTTP方法
+                exceptions:
+                  - java.io.IOException # 需要重试的异常
+                backoff:
+                  firstBackoff: 1s # 初次重试间隔时间
+                  maxBackoff: 10s # 最大重试间隔时间
+                  factor: 2 # 间隔时间倍增因子
+                  basedOnPreviousValue: true # 是否基于上一次的间隔时间进行倍增
