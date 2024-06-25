@@ -9,7 +9,7 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     command: [ "sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\"" ]
     healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG"]
       timeout: 10s
       retries: 40
       interval: 3s
@@ -276,9 +276,9 @@ services:
     image: leopoldhsing2/horizon.frontend
     environment:
       BASE_URL: http://horizon-gateway:8080/api/v1
-      PLAID_CLIENT_ID: 6650078958d6ed001ce3678b
-      PLAID_SECRET: 3284df443e512d1dc2c452444a33aa
-      PLAID_ENV: sandbox
+      PLAID_CLIENT_ID: ${PLAID_CLIENT_ID}
+      PLAID_SECRET: ${PLAID_SECRET}
+      PLAID_ENV: ${PLAID_ENV}
       PLAID_PRODUCTS: auth,transactions,identity
       PLAID_COUNTRY_CODES: US,CA
 
