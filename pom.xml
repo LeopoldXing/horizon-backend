@@ -28,6 +28,7 @@
         <spring.jpa.version>3.2.6</spring.jpa.version>
         <spring.web.version>3.2.6</spring.web.version>
         <redis.version>3.2.6</redis.version>
+        <redis.reactive.version>3.2.3</redis.reactive.version>
         <openfeign.version>4.1.1</openfeign.version>
     </properties>
     <dependencies>
@@ -106,11 +107,17 @@
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
             </dependency>
-            <!-- openfeign -->
+            <!--  openfeign  -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-openfeign</artifactId>
                 <version>${openfeign.version}</version>
+            </dependency>
+            <!--   redis rate limiter  -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+                <version>${redis.reactive.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

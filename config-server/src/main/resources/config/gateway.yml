@@ -38,6 +38,13 @@ spring:
                   maxBackoff: 10s # Maximum retry interval
                   factor: 2 # Interval multiplier
                   basedOnPreviousValue: true # Whether to base on the previous interval
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@defaultRateLimiter}"
+                key-resolver: "#{@userKeyResolver}"
+                # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
+                # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
+                # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
         - id: service_bank
           uri: lb://bank
           predicates:
@@ -59,6 +66,13 @@ spring:
                   maxBackoff: 10s # Maximum retry interval
                   factor: 2 # Interval multiplier
                   basedOnPreviousValue: true # Whether to base on the previous interval
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@defaultRateLimiter}"
+                key-resolver: "#{@userKeyResolver}"
+                # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
+                # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
+                # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
         - id: service_dwolla
           uri: lb://dwolla
           predicates:
@@ -80,6 +94,13 @@ spring:
                   maxBackoff: 10s # Maximum retry interval
                   factor: 2 # Interval multiplier
                   basedOnPreviousValue: true # Whether to base on the previous interval
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@defaultRateLimiter}"
+                key-resolver: "#{@userKeyResolver}"
+                # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
+                # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
+                # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
         - id: service_plaid
           uri: lb://plaid
           predicates:
@@ -101,6 +122,13 @@ spring:
                   maxBackoff: 10s # Maximum retry interval
                   factor: 2 # Interval multiplier
                   basedOnPreviousValue: true # Whether to base on the previous interval
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@defaultRateLimiter}"
+                key-resolver: "#{@userKeyResolver}"
+                # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
+                # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
+                # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
         - id: service_user
           uri: lb://user
           predicates:
@@ -122,6 +150,13 @@ spring:
                   maxBackoff: 10s # Maximum retry interval
                   factor: 2 # Interval multiplier
                   basedOnPreviousValue: true # Whether to base on the previous interval
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@defaultRateLimiter}"
+                key-resolver: "#{@userKeyResolver}"
+                # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
+                # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
+                # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
         - id: service_account
           uri: lb://account
           predicates:
@@ -143,3 +178,10 @@ spring:
                   maxBackoff: 10s # Maximum retry interval
                   factor: 2 # Interval multiplier
                   basedOnPreviousValue: true # Whether to base on the previous interval
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@defaultRateLimiter}"
+                key-resolver: "#{@userKeyResolver}"
+                # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
+                # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
+                # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
