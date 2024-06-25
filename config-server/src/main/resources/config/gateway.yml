@@ -8,6 +8,8 @@ resilience4j:
         waitDurationInOpenState: 10s
 
 spring:
+  application:
+    name: gateway
   cloud:
     gateway:
       discovery:

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import java.util.HashMap;
 
 @EnableFeignClients(basePackages = {"com.leopoldhsing.horizon.feign"})
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.leopoldhsing.horizon")
 public class PlaidApplication {
 
     @Autowired

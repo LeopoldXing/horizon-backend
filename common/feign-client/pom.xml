@@ -18,11 +18,16 @@
     </properties>
 
     <dependencies>
-        <!-- openfeign -->
+        <!--  openfeign  -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
+        </dependency>
+        <!--  openfeign & resilience4j  -->
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-spring-cloud2</artifactId>
         </dependency>
     </dependencies>
 

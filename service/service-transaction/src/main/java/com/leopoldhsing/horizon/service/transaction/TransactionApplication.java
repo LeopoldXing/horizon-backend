@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients(basePackages = {"com.leopoldhsing.horizon.feign"})
 @EntityScan(basePackages = {"com.leopoldhsing.horizon.model"})
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.leopoldhsing.horizon")
 public class TransactionApplication {
     public static void main(String[] args) {
         SpringApplication.run(TransactionApplication.class, args);

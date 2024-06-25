@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient("account")
+@FeignClient(name = "account", fallback = AccountFeignClientFallback.class)
 public interface AccountFeignClient {
 
     @GetMapping("/api/v1/inner/account/list/{uid}")

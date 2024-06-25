@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient("plaid")
+@FeignClient(name = "plaid", fallback = PlaidFeignClientFallback.class)
 public interface PlaidFeignClient {
 
     @GetMapping("/api/v1/inner/plaid/account/list/{uid}")

@@ -8,7 +8,7 @@ import com.leopoldhsing.horizon.model.vo.DwollaCustomerCreationVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient("dwolla")
+@FeignClient(name = "dwolla", fallback = DwollaFeignClientFallback.class)
 public interface DwollaFeignClient {
 
     @PostMapping("/api/v1/inner/dwolla/customer/{type}")

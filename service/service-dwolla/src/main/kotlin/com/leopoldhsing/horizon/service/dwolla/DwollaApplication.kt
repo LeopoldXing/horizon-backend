@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean
 
 @EnableFeignClients(basePackages = ["com.leopoldhsing.horizon.feign"])
 @EntityScan(basePackages = ["com.leopoldhsing.horizon.model.entity"])
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["com.leopoldhsing.horizon"])
 class DwollaApplication @Autowired constructor(
     private val configurationProperties: DwollaConfigurationProperties
 ) {

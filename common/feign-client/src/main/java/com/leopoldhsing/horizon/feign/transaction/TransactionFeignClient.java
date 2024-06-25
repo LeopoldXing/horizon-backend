@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient("transaction")
+@FeignClient(name = "transaction", fallback = TransactionFeignClientFallback.class)
 public interface TransactionFeignClient {
 
     @PostMapping("/api/v1/inner/transaction/list")
