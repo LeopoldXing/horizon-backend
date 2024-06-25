@@ -41,4 +41,10 @@ resilience4j:
           initialInterval: 500ms
           multiplier: 2
           randomizationFactor: 0.5
+  ratelimiter:
+    configs:
+      default:
+        timeoutDuration: 1000
+        limitRefreshPeriod: 5000
+        limitForPeriod: 1000
 

@@ -6,6 +6,7 @@ import com.leopoldhsing.horizon.model.vo.TransactionCreationVo;
 import com.leopoldhsing.horizon.model.vo.TransactionResponseVo;
 import com.leopoldhsing.horizon.service.transaction.mapper.TransactionMapper2;
 import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class TransactionController {
     @Autowired
     private TransactionMapper2 transactionMapper;
 
+    @RateLimiter(name = "getTransactionListByAccountIdRateLimiter", fallbackMethod = "getTransactionListByAccountIdFallback")
     @Retry(name = "getTransactionListByAccountIdRetry", fallbackMethod = "getTransactionListByAccountIdFallback")
     @GetMapping("/account/{accountId}")
     public ResponseEntity<GeneralResponseDto<List<TransactionResponseVo>>> getTransactionListByAccountId(
@@ -45,6 +47,8 @@ public class TransactionController {
         return ResponseEntity.ok(new GeneralResponseDto<>(null));
     }
 
+
+    @RateLimiter(name = "createTransactionRateLimiter", fallbackMethod = "createTransactionFallback")
     @Retry(name = "createTransactionRetry", fallbackMethod = "createTransactionFallback")
     @PostMapping
     public ResponseEntity<GeneralResponseDto<TransactionResponseVo>> createTransaction(

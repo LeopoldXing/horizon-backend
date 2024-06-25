@@ -7,6 +7,12 @@ spring:
     url: jdbc:mysql://horizon-transaction-db:3306/horizon
     username: root
     password: 1234
+  data:
+    redis:
+      host: horizon-redis
+      port: 6379
+      password: 1234
+      database: 2
   jpa:
     show-sql: true
 
