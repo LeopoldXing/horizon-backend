@@ -13,6 +13,108 @@ services:
       file: common-test.yml
       service: horizon-base-config
 
+  es01:
+    container_name: horizon-log-service-es01
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    environment:
+      - node.name=es01
+      - cluster.name=horizon-log-service-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    # volumes:
+    #   - es01-log-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -I http://localhost:9200 || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    extends:
+      file: common-test.yml
+      service: horizon-network-service
+
+  es02:
+    container_name: horizon-log-service-es02
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    environment:
+      - node.name=es02
+      - cluster.name=horizon-log-service-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+#    volumes:
+#      - es02-log-data:/usr/share/elasticsearch/data
+    ports:
+      - "9201:9200"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -I http://localhost:9200 || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    extends:
+      file: common-test.yml
+      service: horizon-network-service
+
+  es03:
+    container_name: horizon-log-service-es03
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    environment:
+      - node.name=es03
+      - cluster.name=horizon-log-service-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+#    volumes:
+#      - es03-log-data:/usr/share/elasticsearch/data
+    ports:
+      - "9202:9200"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -I http://localhost:9200 || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    extends:
+      file: common-test.yml
+      service: horizon-network-service
+
+  kibana:
+    container_name: horizon-log-service-kibana
+    image: kibana:7.17.21
+    ports:
+      - "5601:5601"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -I http://localhost:5601 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
+    extends:
+      file: common-test.yml
+      service: horizon-network-service
+
   account-db:
     container_name: horizon-account-db
     image: mysql:8.2.0
@@ -81,7 +183,7 @@ services:
 
   configserver:
     container_name: horizon-config-server
-    image: leopoldhsing2/horizon.config-server:0.0.1
+    image: leopoldhsing2/horizon.config-server
     ports:
       - 9000:8080
     healthcheck:
@@ -92,13 +194,20 @@ services:
       start_period: 5s
     environment:
       SPRING_PROFILES_ACTIVE: native
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
     extends:
       file: common-test.yml
       service: horizon-base-config
 
   eureka-server:
     container_name: horizon-eureka-server
-    image: leopoldhsing2/horizon.eureka-server:0.0.1
+    image: leopoldhsing2/horizon.eureka-server
     ports:
       - 9002:8080
     healthcheck:
@@ -108,10 +217,9 @@ services:
       interval: 3s
       start_period: 5s
     environment:
+      SPRING_APPLICATION_NAME: eureka
       SPRING_PROFILES_ACTIVE: test
       SPRING_CONFIG_IMPORT: configserver:http://horizon-config-server:8080/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
     depends_on:
       configserver:
         condition: service_healthy
@@ -121,7 +229,7 @@ services:
 
   gateway:
     container_name: horizon-gateway
-    image: leopoldhsing2/horizon.gateway:0.0.1
+    image: leopoldhsing2/horizon.gateway
     ports:
       - 9005:8080
     environment:
@@ -140,7 +248,7 @@ services:
 
   account:
     container_name: horizon-account
-    image: leopoldhsing2/horizon.account:0.0.1
+    image: leopoldhsing2/horizon.account
     ports:
       - 9007:8080
     environment:
@@ -161,7 +269,7 @@ services:
 
   transaction:
     container_name: horizon-transaction
-    image: leopoldhsing2/horizon.transaction:0.0.1
+    image: leopoldhsing2/horizon.transaction
     ports:
       - 9008:8080
     environment:
@@ -182,7 +290,7 @@ services:
 
   bank:
     container_name: horizon-bank
-    image: leopoldhsing2/horizon.bank:0.0.1
+    image: leopoldhsing2/horizon.bank
     ports:
       - 9001:8080
     environment:
@@ -203,7 +311,7 @@ services:
 
   user:
     container_name: horizon-user
-    image: leopoldhsing2/horizon.user:0.0.1
+    image: leopoldhsing2/horizon.user
     ports:
       - 9006:8080
     environment:
@@ -224,7 +332,7 @@ services:
 
   dwolla:
     container_name: horizon-dwolla
-    image: leopoldhsing2/horizon.dwolla:0.0.1
+    image: leopoldhsing2/horizon.dwolla
     ports:
       - 9003:8080
     environment:
@@ -249,7 +357,7 @@ services:
 
   plaid:
     container_name: horizon-plaid
-    image: leopoldhsing2/horizon.plaid:0.0.1
+    image: leopoldhsing2/horizon.plaid
     ports:
       - 9004:8080
     environment:
