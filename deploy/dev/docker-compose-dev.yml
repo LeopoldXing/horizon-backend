@@ -23,35 +23,65 @@ services:
 
   # ELK Stack
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
-    container_name: es01
+    container_name: horizon-log-service-elasticsearch
+    image: elasticsearch:8.14.1
     environment:
-      - node.name=es01
-      - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es02,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      # enable SSL
+      # - xpack.security.enabled=true
+      # - xpack.security.transport.ssl.enabled=true
+      # - xpack.security.transport.ssl.verification_mode=certificate
+      # - xpack.security.transport.ssl.key=/path/to/your/certificate.key
+      # - xpack.security.transport.ssl.certificate=/path/to/your/certificate.crt
+      # - xpack.security.transport.ssl.certificate_authorities=/path/to/your/ca.crt
     ulimits:
       memlock:
         soft: -1
         hard: -1
+    # volumes:
+    #   - es01-log-data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
     networks:
       - horizon-dev-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -I http://localhost:9200 || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  logstash:
+    image: logstash:8.14.1
+    container_name: horizon-log-service-logstash
+    volumes:
+      - ./monitoring/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "34560:4560"
+      - "34561:4561"
+      - "34562:4562"
+      - "34563:4563"
+    networks:
+      - horizon-dev-network
+    depends_on:
+      - elasticsearch
+      - kafka
   kibana:
     container_name: horizon-log-service-kibana
     image: kibana:7.17.21
     ports:
       - "5601:5601"
+    volumes:
+      - ./monitoring/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     healthcheck:
       test: ["CMD-SHELL", "curl -I http://localhost:5601 || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 5
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     networks:
       - horizon-dev-network
 
@@ -66,6 +96,7 @@ services:
     networks:
       - horizon-dev-network
   kafka:
+    container_name: horizon-kafka
     image: bitnami/kafka:3.6
     user: root
     ports:
