@@ -1,50 +1,50 @@
 spring:
   application:
     name: transaction
-  cloud:
-    openfeign:
-      circuitbreaker:
-        enabled: true
-
-resilience4j:
-  circuitbreaker:
-    configs:
-      default:
-        slidingWindowSize: 10
-        permittedNumberOfCallsInHalfOpenState: 5
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10s
-  retry:
-    instances:
-      transactionRetry:
-        maxAttempts: 3 # Maximum number of retry attempts
-        waitDuration: 1s # Wait duration between retry attempts
-        retryExceptions:
-          - java.io.IOException # Exceptions to retry
-        ignoreExceptions: # Exceptions to ignore for retry
-          - java.lang.NullPointerException
-        intervalFunction:
-          type: exponentialRandomBackoff # Type of backoff strategy
-          initialInterval: 500ms # Initial interval
-          multiplier: 2 # Multiplier for exponential backoff
-          randomizationFactor: 0.5 # Randomization factor for backoff
-    configs:
-      default:
-        maxAttempts: 3
-        waitDuration: 1s
-        retryExceptions:
-          - java.io.IOException
-        ignoreExceptions:
-          - java.lang.NullPointerException
-        intervalFunction:
-          type: exponentialRandomBackoff
-          initialInterval: 500ms
-          multiplier: 2
-          randomizationFactor: 0.5
-  ratelimiter:
-    configs:
-      default:
-        timeoutDuration: 1000
-        limitRefreshPeriod: 5000
-        limitForPeriod: 1000
+#  cloud:
+#    openfeign:
+#      circuitbreaker:
+#        enabled: true
+#
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        slidingWindowSize: 10
+#        permittedNumberOfCallsInHalfOpenState: 5
+#        failureRateThreshold: 50
+#        waitDurationInOpenState: 10s
+#  retry:
+#    instances:
+#      transactionRetry:
+#        maxAttempts: 3 # Maximum number of retry attempts
+#        waitDuration: 1s # Wait duration between retry attempts
+#        retryExceptions:
+#          - java.io.IOException # Exceptions to retry
+#        ignoreExceptions: # Exceptions to ignore for retry
+#          - java.lang.NullPointerException
+#        intervalFunction:
+#          type: exponentialRandomBackoff # Type of backoff strategy
+#          initialInterval: 500ms # Initial interval
+#          multiplier: 2 # Multiplier for exponential backoff
+#          randomizationFactor: 0.5 # Randomization factor for backoff
+#    configs:
+#      default:
+#        maxAttempts: 3
+#        waitDuration: 1s
+#        retryExceptions:
+#          - java.io.IOException
+#        ignoreExceptions:
+#          - java.lang.NullPointerException
+#        intervalFunction:
+#          type: exponentialRandomBackoff
+#          initialInterval: 500ms
+#          multiplier: 2
+#          randomizationFactor: 0.5
+#  ratelimiter:
+#    configs:
+#      default:
+#        timeoutDuration: 1000
+#        limitRefreshPeriod: 5000
+#        limitForPeriod: 1000
 

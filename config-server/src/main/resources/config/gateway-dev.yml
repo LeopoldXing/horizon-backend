@@ -13,7 +13,7 @@ spring:
       # set time out
       httpclient:
         connect-timeout: 5000
-        response-timeout: 30000
+        response-timeout: 60000
 
 eureka:
   instance:
