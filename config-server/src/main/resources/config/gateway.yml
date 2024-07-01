@@ -37,27 +37,27 @@ spring:
           uri: lb://transaction
           predicates:
             - Path=/api/*/transaction/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: transactionCircuitBreaker
-                fallbackUri: forward:/fallback/transaction
-            - name: Retry
-              args:
-                retries: 3 # Number of retries
-                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
-                methods: GET, POST # HTTP methods to retry
-                exceptions:
-                  - java.io.IOException # Exceptions to retry
-                backoff:
-                  firstBackoff: 1s # Initial retry interval
-                  maxBackoff: 10s # Maximum retry interval
-                  factor: 2 # Interval multiplier
-                  basedOnPreviousValue: true # Whether to base on the previous interval
-            - name: RequestRateLimiter
-              args:
-                rate-limiter: "#{@defaultRateLimiter}"
-                key-resolver: "#{@userKeyResolver}"
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: transactionCircuitBreaker
+#                fallbackUri: forward:/fallback/transaction
+#            - name: Retry
+#              args:
+#                retries: 3 # Number of retries
+#                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
+#                methods: GET, POST # HTTP methods to retry
+#                exceptions:
+#                  - java.io.IOException # Exceptions to retry
+#                backoff:
+#                  firstBackoff: 1s # Initial retry interval
+#                  maxBackoff: 10s # Maximum retry interval
+#                  factor: 2 # Interval multiplier
+#                  basedOnPreviousValue: true # Whether to base on the previous interval
+#            - name: RequestRateLimiter
+#              args:
+#                rate-limiter: "#{@defaultRateLimiter}"
+#                key-resolver: "#{@userKeyResolver}"
                 # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
                 # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
                 # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
@@ -65,27 +65,27 @@ spring:
           uri: lb://bank
           predicates:
             - Path=/api/*/bank/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: bankCircuitBreaker
-                fallbackUri: forward:/fallback/bank
-            - name: Retry
-              args:
-                retries: 3 # Number of retries
-                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
-                methods: GET, POST # HTTP methods to retry
-                exceptions:
-                  - java.io.IOException # Exceptions to retry
-                backoff:
-                  firstBackoff: 1s # Initial retry interval
-                  maxBackoff: 10s # Maximum retry interval
-                  factor: 2 # Interval multiplier
-                  basedOnPreviousValue: true # Whether to base on the previous interval
-            - name: RequestRateLimiter
-              args:
-                rate-limiter: "#{@defaultRateLimiter}"
-                key-resolver: "#{@userKeyResolver}"
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: bankCircuitBreaker
+#                fallbackUri: forward:/fallback/bank
+#            - name: Retry
+#              args:
+#                retries: 3 # Number of retries
+#                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
+#                methods: GET, POST # HTTP methods to retry
+#                exceptions:
+#                  - java.io.IOException # Exceptions to retry
+#                backoff:
+#                  firstBackoff: 1s # Initial retry interval
+#                  maxBackoff: 10s # Maximum retry interval
+#                  factor: 2 # Interval multiplier
+#                  basedOnPreviousValue: true # Whether to base on the previous interval
+#            - name: RequestRateLimiter
+#              args:
+#                rate-limiter: "#{@defaultRateLimiter}"
+#                key-resolver: "#{@userKeyResolver}"
                 # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
                 # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
                 # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
@@ -93,27 +93,27 @@ spring:
           uri: lb://dwolla
           predicates:
             - Path=/api/*/dwolla/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: dwollaCircuitBreaker
-                fallbackUri: forward:/fallback/dwolla
-            - name: Retry
-              args:
-                retries: 3 # Number of retries
-                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
-                methods: GET, POST # HTTP methods to retry
-                exceptions:
-                  - java.io.IOException # Exceptions to retry
-                backoff:
-                  firstBackoff: 1s # Initial retry interval
-                  maxBackoff: 10s # Maximum retry interval
-                  factor: 2 # Interval multiplier
-                  basedOnPreviousValue: true # Whether to base on the previous interval
-            - name: RequestRateLimiter
-              args:
-                rate-limiter: "#{@defaultRateLimiter}"
-                key-resolver: "#{@userKeyResolver}"
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: dwollaCircuitBreaker
+#                fallbackUri: forward:/fallback/dwolla
+#            - name: Retry
+#              args:
+#                retries: 3 # Number of retries
+#                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
+#                methods: GET, POST # HTTP methods to retry
+#                exceptions:
+#                  - java.io.IOException # Exceptions to retry
+#                backoff:
+#                  firstBackoff: 1s # Initial retry interval
+#                  maxBackoff: 10s # Maximum retry interval
+#                  factor: 2 # Interval multiplier
+#                  basedOnPreviousValue: true # Whether to base on the previous interval
+#            - name: RequestRateLimiter
+#              args:
+#                rate-limiter: "#{@defaultRateLimiter}"
+#                key-resolver: "#{@userKeyResolver}"
                 # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
                 # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
                 # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
@@ -121,27 +121,27 @@ spring:
           uri: lb://plaid
           predicates:
             - Path=/api/*/plaid/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: plaidCircuitBreaker
-                fallbackUri: forward:/fallback/plaid
-            - name: Retry
-              args:
-                retries: 3 # Number of retries
-                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
-                methods: GET, POST # HTTP methods to retry
-                exceptions:
-                  - java.io.IOException # Exceptions to retry
-                backoff:
-                  firstBackoff: 1s # Initial retry interval
-                  maxBackoff: 10s # Maximum retry interval
-                  factor: 2 # Interval multiplier
-                  basedOnPreviousValue: true # Whether to base on the previous interval
-            - name: RequestRateLimiter
-              args:
-                rate-limiter: "#{@defaultRateLimiter}"
-                key-resolver: "#{@userKeyResolver}"
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: plaidCircuitBreaker
+#                fallbackUri: forward:/fallback/plaid
+#            - name: Retry
+#              args:
+#                retries: 3 # Number of retries
+#                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
+#                methods: GET, POST # HTTP methods to retry
+#                exceptions:
+#                  - java.io.IOException # Exceptions to retry
+#                backoff:
+#                  firstBackoff: 1s # Initial retry interval
+#                  maxBackoff: 10s # Maximum retry interval
+#                  factor: 2 # Interval multiplier
+#                  basedOnPreviousValue: true # Whether to base on the previous interval
+#            - name: RequestRateLimiter
+#              args:
+#                rate-limiter: "#{@defaultRateLimiter}"
+#                key-resolver: "#{@userKeyResolver}"
                 # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
                 # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
                 # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
@@ -150,27 +150,27 @@ spring:
           predicates:
             - Path=/api/*/user/**
             - Method=GET,POST,PUT,DELETE
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: userCircuitBreaker
-                fallbackUri: forward:/fallback/user
-            - name: Retry
-              args:
-                retries: 3
-                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR
-                methods: GET, POST
-                exceptions:
-                  - java.io.IOException
-                backoff:
-                  firstBackoff: 1s
-                  maxBackoff: 10s
-                  factor: 2
-                  basedOnPreviousValue: true
-            - name: RequestRateLimiter
-              args:
-                rate-limiter: "#{@defaultRateLimiter}"
-                key-resolver: "#{@userKeyResolver}"
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: userCircuitBreaker
+#                fallbackUri: forward:/fallback/user
+#            - name: Retry
+#              args:
+#                retries: 3
+#                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR
+#                methods: GET, POST, DELETE, PUT
+#                exceptions:
+#                  - java.io.IOException
+#                backoff:
+#                  firstBackoff: 1s
+#                  maxBackoff: 10s
+#                  factor: 2
+#                  basedOnPreviousValue: true
+#            - name: RequestRateLimiter
+#              args:
+#                rate-limiter: "#{@defaultRateLimiter}"
+#                key-resolver: "#{@userKeyResolver}"
                 # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
                 # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
                 # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
@@ -178,67 +178,27 @@ spring:
           uri: lb://account
           predicates:
             - Path=/api/*/account/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: accountCircuitBreaker
-                fallbackUri: forward:/fallback/account
-            - name: Retry
-              args:
-                retries: 3 # Number of retries
-                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
-                methods: GET, POST # HTTP methods to retry
-                exceptions:
-                  - java.io.IOException # Exceptions to retry
-                backoff:
-                  firstBackoff: 1s # Initial retry interval
-                  maxBackoff: 10s # Maximum retry interval
-                  factor: 2 # Interval multiplier
-                  basedOnPreviousValue: true # Whether to base on the previous interval
-            - name: RequestRateLimiter
-              args:
-                rate-limiter: "#{@defaultRateLimiter}"
-                key-resolver: "#{@userKeyResolver}"
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: accountCircuitBreaker
+#                fallbackUri: forward:/fallback/account
+#            - name: Retry
+#              args:
+#                retries: 3 # Number of retries
+#                statuses: BAD_GATEWAY, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR # HTTP statuses to retry
+#                methods: GET, POST # HTTP methods to retry
+#                exceptions:
+#                  - java.io.IOException # Exceptions to retry
+#                backoff:
+#                  firstBackoff: 1s # Initial retry interval
+#                  maxBackoff: 10s # Maximum retry interval
+#                  factor: 2 # Interval multiplier
+#                  basedOnPreviousValue: true # Whether to base on the previous interval
+#            - name: RequestRateLimiter
+#              args:
+#                rate-limiter: "#{@defaultRateLimiter}"
+#                key-resolver: "#{@userKeyResolver}"
                 # redis-rate-limiter.replenishRate: 100 # 定义每秒允许 1 个请求。
                 # redis-rate-limiter.burstCapacity: 200 # 一秒钟内允许的最大 3 个请求。
                 # redis-rate-limiter.requestedTokens: 1 # 一个请求花费 1 个令牌。
-
-#spring:
-#  cloud:
-#    gateway:
-#      httpclient:
-#        connect-timeout: 5000
-#        response-timeout: 5000
-#      discovery:
-#        locator:
-#          enabled: true
-#          lower-case-service-id: true
-#      routes:
-#        - id: service_transaction
-#          uri: lb://transaction
-#          predicates:
-#            - Path=/api/*/transaction/**
-#        - id: service_bank
-#          uri: lb://bank
-#          predicates:
-#            - Path=/api/*/bank/**
-#        - id: service_dwolla
-#          uri: lb://dwolla
-#          predicates:
-#            - Path=/api/*/dwolla/**
-#        - id: service_plaid
-#          uri: lb://plaid
-#          predicates:
-#            - Path=/api/*/plaid/**
-#        - id: service_user
-#          uri: lb://user
-#          predicates:
-#            - Path=/api/*/user/**
-#        - id: service_account
-#          uri: lb://account
-#          predicates:
-#            - Path=/api/*/account/**
-#        - id: service_bank
-#          uri: lb://bank
-#          predicates:
-#            - Path=/api/*/bank/**

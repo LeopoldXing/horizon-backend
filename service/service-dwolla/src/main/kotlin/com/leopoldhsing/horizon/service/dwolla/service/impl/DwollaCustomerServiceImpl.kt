@@ -53,7 +53,8 @@ class DwollaCustomerServiceImpl @Autowired constructor(
         dwollaRepository.save(dwollaCustomer)
 
         // 4. return DwollaCustomerDto
-        return dwollaCustomerMapper.mapToDwollaCustomerDto(dwollaCustomer)
+        val dto = dwollaCustomerMapper.mapToDwollaCustomerDto(dwollaCustomer)
+        return dto
     }
 
     /**
