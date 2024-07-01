@@ -18,6 +18,8 @@ import com.leopoldhsing.horizon.service.transaction.repository.TransactionReposi
 import com.leopoldhsing.horizon.service.transaction.service.ICategoryService;
 import com.leopoldhsing.horizon.service.transaction.service.ITransactionService;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,6 +30,8 @@ import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements ITransactionService {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private AccountFeignClient accountFeignClient;
@@ -75,6 +79,7 @@ public class TransactionServiceImpl implements ITransactionService {
     public void saveTransactionList(List<TransactionDto> transactionDtoList) {
         List<Transaction> transactionList = transactionDtoList
                 .stream()
+                .peek((transaction) -> logger.info("Insert new transaction:{}", transaction))
                 .map(transactionMapper::mapToTransaction)
                 .toList();
         transactionRepository.saveAll(transactionList);
@@ -114,6 +119,7 @@ public class TransactionServiceImpl implements ITransactionService {
         // 4. store transaction into the database
         Transaction savedTransaction = transactionRepository.save(transaction);
         transactionDto.setId(savedTransaction.getId());
+        logger.info("Create new transaction:{}", transactionDto);
 
         // 5. return result
         return transactionDto;

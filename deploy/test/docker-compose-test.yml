@@ -188,7 +188,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: native
     depends_on:
-      es01:
+      elasticsearch:
         condition: service_healthy
     extends:
       file: common-test.yml

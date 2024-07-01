@@ -6,11 +6,10 @@ spring:
       circuitbreaker:
         enabled: true
 
-resilience4j:
-  circuitbreaker:
-    configs:
-      default:
-        slidingWindowSize: 10
-        permittedNumberOfCallsInHalfOpenState: 5
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10s
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 5
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10s
