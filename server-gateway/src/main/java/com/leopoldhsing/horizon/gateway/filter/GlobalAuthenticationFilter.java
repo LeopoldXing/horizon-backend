@@ -7,6 +7,8 @@ import com.leopoldhsing.horizon.common.utils.constants.RedisConstants;
 import com.leopoldhsing.horizon.gateway.config.AuthConfigurationProperties;
 import com.leopoldhsing.horizon.model.dto.ErrorResponseDto;
 import com.leopoldhsing.horizon.model.dto.UserDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -34,6 +36,8 @@ import java.util.List;
 @Order(2)
 @Component
 public class GlobalAuthenticationFilter implements GlobalFilter {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private AuthConfigurationProperties configurationProperties;
@@ -71,6 +75,8 @@ public class GlobalAuthenticationFilter implements GlobalFilter {
                 .filter(pattern -> antPathMatcher.match(pattern, path))
                 .count();
         if (innerRequestCount > 0) {
+            logger.info("Inner request received: {}, this request will be blocked", path);
+
             // inner request called externally will be blocked directly
             ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                     request.getPath().toString(),
