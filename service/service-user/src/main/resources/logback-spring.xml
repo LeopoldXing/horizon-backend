@@ -8,7 +8,7 @@
     <appender name="KAFKA" class="com.github.danielwegener.logback.kafka.KafkaAppender">
         <topic>horizon-user</topic>
         <!--<topic>horizon-user-${spring.profiles.active}</topic>-->
-        <producerConfig>bootstrap.servers=localhost:19092</producerConfig>
+        <producerConfig>bootstrap.servers=horizon-kafka:9092</producerConfig>
         <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy"/>
         <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
         <encoder>

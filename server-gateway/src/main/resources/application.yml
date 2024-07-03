@@ -2,7 +2,7 @@ spring:
   application:
     name: gateway
   profiles:
-    active: dev
+    active: test
   config:
-    #import: "configserver:http://horizon-config-server:8080/"
-    import: "configserver:http://localhost:8080/"
+    import: "configserver:http://horizon-config-server:8080/"
+    #import: "configserver:http://localhost:8080/"
