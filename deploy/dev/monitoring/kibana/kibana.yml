@@ -1,25 +1,9 @@
-server.host: 0.0.0.0
-# Listening port
+server.host: "0.0.0.0"
 server.port: 5601
-server.name: "kibana"
-
-# URL of the Elasticsearch server accessed by Kibana, multiple URLs can be separated by commas ","
-#elasticsearch.hosts: [ "http://node-1:9200","http://node-2:9201","http://node-3:9202" ]
 elasticsearch.hosts: [ "http://horizon-log-service-elasticsearch:9200" ]
 monitoring.ui.container.elasticsearch.enabled: true
-# Username and password for Kibana to access Elasticsearch (if set in Elasticsearch)
-#elasticsearch.username: "kibana"
-#elasticsearch.password: "12345"
-
-# Path to Kibana log file
-logging.dest: stdout
-# When set to true, all log output is suppressed
-logging.silent: false
-# When set to true, all log output except for error messages is suppressed
-logging.quiet: false
-# When set to true, all events are logged, including system usage information and all requests
-logging.verbose: false
-
-ops.interval: 5000
-# Kibana web language
-#i18n.locale: "zh-CN"
+# 以下部分暂时注释掉
+# logging.dest: stdout
+# logging.silent: false
+# logging.quiet: false
+# logging.verbose: false

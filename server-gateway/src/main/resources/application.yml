@@ -6,10 +6,3 @@ spring:
   config:
     #import: "configserver:http://horizon-config-server:8080/"
     import: "configserver:http://localhost:8080/"
-
-logging:
-  level:
-    org.springframework: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.cloud.gateway: DEBUG
-
